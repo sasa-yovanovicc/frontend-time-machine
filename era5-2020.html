@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: 2020+ :: Server Components & Edge Era</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05060f;
+      --s1: #0d0f1e;
+      --s2: #12152a;
+      --s3: #1a1f38;
+      --border: rgba(255,255,255,0.08);
+      --border-bright: rgba(255,255,255,0.15);
+      --text: #e8eaf0;
+      --muted: #5a6080;
+      --dim: #8890a8;
+      --accent: #818cf8;
+      --accent2: #34d399;
+      --pink: #f472b6;
+      --amber: #fbbf24;
+      --mono: 'Space Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(129,140,248,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(129,140,248,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(129,140,248,0.07); top: -100px; left: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(52,211,153,0.05); bottom: 0; right: -100px; }
+    .orb-3 { width: 300px; height: 300px; background: rgba(244,114,182,0.04); top: 50%; left: 50%; }
+
+    /* All real content above orbs */
+    .topbar, main, footer { position: relative; z-index: 1; }
+
+    /* ---- TOPBAR ---- */
+    .topbar {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      background: rgba(5,6,15,0.7);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+    .nav {
+      display: flex;
+      gap: 2px;
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+    }
+    .nav a {
+      padding: 5px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.15s;
+      font-family: var(--mono);
+    }
+    .nav a:hover { color: var(--text); }
+    .nav a.active {
+      background: var(--s3);
+      color: var(--accent);
+      border: 1px solid var(--border-bright);
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 48px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      border: 1px solid rgba(129,140,248,0.3);
+      background: rgba(129,140,248,0.08);
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -2.5px;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    .hero h1 .g1 { color: var(--accent); }
+    .hero h1 .g2 { color: var(--accent2); }
+    .hero h1 .g3 { color: var(--pink); }
+    .hero p {
+      font-size: 18px;
+      color: var(--dim);
+      max-width: 560px;
+      line-height: 1.75;
+      margin-bottom: 40px;
+    }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn-glow {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 24px rgba(129,140,248,0.35);
+      transition: all 0.2s;
+      font-family: var(--sans);
+    }
+    .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(129,140,248,0.5); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--dim);
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-family: var(--sans);
+    }
+    .btn-ghost:hover { border-color: var(--border-bright); color: var(--text); }
+
+    /* ---- MAIN ---- */
+    main { max-width: 1100px; margin: 0 auto; padding: 0 48px 96px; }
+
+    /* Section */
+    section { margin-bottom: 80px; }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .section-desc { color: var(--dim); font-size: 15px; max-width: 560px; margin-bottom: 32px; }
+
+    /* Cards */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .card {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .card:hover { border-color: var(--border-bright); transform: translateY(-3px); }
+    .card-icon { font-size: 24px; margin-bottom: 14px; display: block; }
+    .card h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .card p { font-size: 13px; color: var(--dim); line-height: 1.65; }
+    .card .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+    .badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 400;
+    }
+    .b-green  { background: rgba(52,211,153,0.12); color: var(--accent2); border: 1px solid rgba(52,211,153,0.2); }
+    .b-purple { background: rgba(129,140,248,0.12); color: var(--accent); border: 1px solid rgba(129,140,248,0.2); }
+    .b-pink   { background: rgba(244,114,182,0.12); color: var(--pink); border: 1px solid rgba(244,114,182,0.2); }
+    .b-amber  { background: rgba(251,191,36,0.12); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
+    .b-dim    { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); }
+
+    /* Code block */
+    .code-block {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    .cb-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cb-dots { display: flex; gap: 6px; }
+    .cb-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .cb-filename { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .cb-lang { font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 5px; background: rgba(129,140,248,0.12); color: var(--accent); }
+    pre {
+      padding: 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.8;
+      color: #c9d1d9;
+      overflow-x: auto;
+      background: transparent;
+      border: none;
+      margin: 0;
+    }
+    .ck { color: #ff7b72; }
+    .cf { color: #d2a8ff; }
+    .cs { color: #a5d6ff; }
+    .cn { color: #ffa657; }
+    .cc { color: #6e7681; font-style: italic; }
+    .ct { color: #7ee787; }
+    .ca { color: #79c0ff; }
+    .cok { color: #56d364; }
+
+    /* Callout */
+    .callout {
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      display: flex;
+      gap: 14px;
+      border: 1px solid;
+    }
+    .callout-story { background: rgba(129,140,248,0.06); border-color: rgba(129,140,248,0.2); }
+    .callout-warn  { background: rgba(251,191,36,0.06); border-color: rgba(251,191,36,0.2); }
+    .callout-body  { font-size: 14px; color: var(--text); line-height: 1.7; }
+    .callout-body strong { color: #fff; }
+    .callout-icon  { font-size: 20px; flex-shrink: 0; }
+
+    .ai-messages { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* Big comparison */
+    .full-circle {
+      background: linear-gradient(135deg, var(--s1) 0%, var(--s2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+    }
+    .circle-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 24px;
+    }
+    .cg-cell {
+      background: var(--s1);
+      padding: 16px;
+      font-size: 12px;
+    }
+    .cg-cell.header {
+      background: var(--s3);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+    .cg-cell .era-name { font-weight: 600; color: #fff; font-size: 13px; }
+    .cg-cell .era-yr   { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 6px; }
+
+    /* Next: full circle back to start */
+    .outro {
+      text-align: center;
+      padding: 80px 0 40px;
+    }
+    .outro h2 { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; color: #fff; margin-bottom: 16px; }
+    .outro p  { font-size: 16px; color: var(--dim); max-width: 560px; margin: 0 auto 32px; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+    footer a { color: var(--accent); text-decoration: none; font-family: var(--mono); }
+    .tech-stack { display: flex; gap: 8px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      frontend.vremenska.masina
+    </div>
+    <div class="nav">
+      <a href="era1-1994.html">1994</a>
+      <a href="era2-2000.html">2000s</a>
+      <a href="era3-2005.html">2010s</a>
+      <a href="era4-2010.html">2015s</a>
+      <a href="era5-2020.html" class="active">2020s</a>
+      <a href="era6-2025.html">2025+</a>
+      <a href="teme.html">Teme</a>
+      <a href="buducnost.html">Buducnost</a>
+      <a href="hvala.html">Hvala</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Era 5 &mdash; 2020 do danas</div>
+    <h1>
+      <span class="g1">Server</span><br>
+      <span class="g2">Components</span><br>
+      &amp; <span class="g3">Edge</span>
+    </h1>
+    <p>
+      Pun krug: od servera (90-e), kroz klijenta (2010-e),
+      nazad na server — ali pametno. TypeScript svuda, Tailwind, RSC.
+    </p>
+    <div class="hero-btns">
+      <a href="#rsc" class="btn-glow">Istraži eru →</a>
+      <a href="era1-1994.html" class="btn-ghost">← Pocetak</a>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- CARDS -->
+    <section>
+      <div class="section-label">Kljucne inovacije</div>
+      <h2>Sta Definira 2020-e</h2>
+      <p class="section-desc">Svaka era rešavala je problem prethodne. 2020-e rešavaju problem prekomjernog JavaScript-a.</p>
+
+      <div class="grid-3">
+        <div class="card">
+          <span class="card-icon">⚡</span>
+          <h3>React Server Components</h3>
+          <p>Komponente koje se renderuju iskljucivo na serveru. Zero JS u brauzeru za staticni sadrzaj.</p>
+          <div class="badge-row">
+            <span class="badge b-purple">Next.js 13+</span>
+            <span class="badge b-green">Zero bundle</span>
+          </div>
+        </div>
+        <div class="card">
+          <span class="card-icon">🎨</span>
+          <h3>Tailwind CSS</h3>
+          <p>Utility-first. Nikad ne napustaš HTML. Kontroverzno, ali produktivnost eksplodira.</p>
+          <div class="badge-row">
+            <span class="badge b-amber">Utility-first</span>
+            <span class="badge b-dim">JIT compiler</span>
+          </div>
+        </div>
+        <div class="card">
+          <span class="card-icon">🔷</span>
+          <h3>TypeScript postaje standard</h3>
+          <p>Nije više opcija — TypeScript je default. Svaki ozbiljan projekat, svaki framework, svaki novi starter template.</p>
+          <div class="badge-row">
+            <span class="badge b-blue">Type safety</span>
+            <span class="badge b-purple">2022+ standard</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RSC -->
+    <section id="rsc">
+      <div class="section-label">Pun krug</div>
+      <h2>Server Components</h2>
+      <p class="section-desc">1994. sve je bilo na serveru. 2013. sve smo premjestili na klijenta. 2023. shvatamo da smo otišli predaleko.</p>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-block">
+            <div class="cb-header">
+              <div class="cb-dots">
+                <div class="cb-dot" style="background:#ff5f57"></div>
+                <div class="cb-dot" style="background:#febc2e"></div>
+                <div class="cb-dot" style="background:#28c840"></div>
+              </div>
+              <span class="cb-filename">ProductList.tsx</span>
+              <span class="cb-lang">Server Component</span>
+            </div>
+            <pre><span class="cc">// Server Component — nema "use client"</span>
+<span class="cc">// Nula JS-a u brauzeru za ovu komponentu</span>
+
+<span class="ck">async function</span> <span class="cf">ProductList</span>() {
+  <span class="cc">// Direktno u bazu — nema fetch()</span>
+  <span class="ck">const</span> <span class="cn">products</span> = <span class="ck">await</span> <span class="cn">db</span>.<span class="cf">query</span>(
+    <span class="cs">'SELECT * FROM products'</span>
+  );
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;ul&gt;</span>
+      {<span class="cn">products</span>.<span class="cf">map</span>(<span class="cn">p</span> =&gt; (
+        <span class="ct">&lt;li&gt;</span>
+          {<span class="cn">p</span>.name}
+          <span class="cc">// Client component za dugme</span>
+          <span class="ct">&lt;AddToCart</span> <span class="ca">id</span>={<span class="cn">p</span>.id} <span class="ct">/&gt;</span>
+        <span class="ct">&lt;/li&gt;</span>
+      ))}
+    <span class="ct">&lt;/ul&gt;</span>
+  );
+}</pre>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card" style="border-color:rgba(52,211,153,0.2);">
+            <h3 style="color:var(--accent2);">✓ Sta dobijamo</h3>
+            <p>Lista 1000 proizvoda: nula JS u brauzeru. Dugme za svaki: minimalan JS samo za klik. Bundle 60% manji.</p>
+          </div>
+          <div class="card" style="border-color:rgba(251,191,36,0.2);">
+            <h3 style="color:var(--amber);">⚠ Kontroverza</h3>
+            <p>"use client" / "use server" direktive zbunjuju. Mental model kompleksniji. Vendor lock-in na Next.js.</p>
+          </div>
+          <div class="card">
+            <h3>Ostali pristupi</h3>
+            <p>Astro Islands, SvelteKit, Remix — svaki sa vlastiti odgovor na isto pitanje: manje JS, brže stranice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- PUN KRUG -->
+    <section>
+      <div class="section-label">30 godina u jednoj tabeli</div>
+      <h2>Pun Krug</h2>
+
+      <div class="full-circle">
+        <div class="circle-grid">
+          <div class="cg-cell header">Era</div>
+          <div class="cg-cell header">Layout</div>
+          <div class="cg-cell header">JS</div>
+          <div class="cg-cell header">Rendering</div>
+
+          <div class="cg-cell">
+            <div class="era-yr">1994–1999</div>
+            <div class="era-name">Dokumenti</div>
+          </div>
+          <div class="cg-cell"><span class="badge b-dim">TABLE</span></div>
+          <div class="cg-cell"><span class="badge b-dim">Nema</span></div>
+          <div class="cg-cell"><span class="badge b-purple">Server HTML</span></div>
+
+          <div class="cg-cell">
+            <div class="era-yr">2000–2006</div>
+            <div class="era-name">CSS Float</div>
+          </div>
+          <div class="cg-cell"><span class="badge b-dim">Float</span></div>
+          <div class="cg-cell"><span class="badge b-amber">jQuery</span></div>
+          <div class="cg-cell"><span class="badge b-purple">Server + Ajax</span></div>
+
+          <div class="cg-cell">
+            <div class="era-yr">2010–2018</div>
+            <div class="era-name">Bootstrap</div>
+          </div>
+          <div class="cg-cell"><span class="badge b-amber">Bootstrap grid</span></div>
+          <div class="cg-cell"><span class="badge b-amber">jQuery heavy</span></div>
+          <div class="cg-cell"><span class="badge b-purple">Server + AJAX</span></div>
+
+          <div class="cg-cell">
+            <div class="era-yr">2015–2020</div>
+            <div class="era-name">SPA</div>
+          </div>
+          <div class="cg-cell"><span class="badge b-purple">Flexbox/Grid</span></div>
+          <div class="cg-cell"><span class="badge b-pink">React/Vue — sve</span></div>
+          <div class="cg-cell"><span class="badge b-pink">Client-side SPA</span></div>
+
+          <div class="cg-cell">
+            <div class="era-yr">2020+</div>
+            <div class="era-name" style="color:var(--accent2);">Hybrid ✦</div>
+          </div>
+          <div class="cg-cell"><span class="badge b-green">CSS Grid native</span></div>
+          <div class="cg-cell"><span class="badge b-green">Minimalan + RSC</span></div>
+          <div class="cg-cell"><span class="badge b-green">Server + Hydration</span></div>
+        </div>
+      </div>
+
+      <div class="callout callout-warn" style="margin-top:20px;">
+        <span class="callout-icon">🔄</span>
+        <div class="callout-body">
+          <strong>Ironijna poanta za kraj predavanja:</strong> 30 godina razvoja frontenda
+          i stigli smo nazad na server-rendered HTML — ali sada ga zovemo
+          "React Server Components" i za to trebamo npm, TypeScript, Webpack,
+          Node.js i cloud deployment. Berners-Lee je to radio s Perl skriptom.
+        </div>
+      </div>
+    </section>
+
+    <!-- NASTAVAK -->
+    <div style="text-align:center;padding:48px 0 32px;">
+      <a href="era6-2025.html" class="btn-glow" style="font-size:16px;padding:14px 32px;">
+        2025+ era: AI, LLM i Vibe Coding →
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>
+      Frontend Vremenska Masina &nbsp;·&nbsp; Era 5: 2020+
+      &nbsp;·&nbsp; <a href="era1-1994.html">← 1994</a>
+    </span>
+    <div class="tech-stack">
+      <span class="badge b-purple">CSS Grid</span>
+      <span class="badge b-green">Custom props</span>
+      <span class="badge b-dim">Space Mono</span>
+      <span class="badge b-pink">DM Sans</span>
+      <span class="badge b-amber">No framework</span>
+    </div>
+  </footer>
+
+</body>
+</html>

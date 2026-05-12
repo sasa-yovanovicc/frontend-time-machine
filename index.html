@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontend Vremenska Masina — Pregled</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#06070f;color:#e2e4ed;min-height:100vh;padding:48px 32px}
+.title{font-family:'Space Mono',monospace;font-size:13px;color:#5a5f7a;text-transform:uppercase;letter-spacing:2px;text-align:center;margin-bottom:16px}
+h1{font-size:clamp(28px,5vw,52px);font-weight:700;text-align:center;letter-spacing:-2px;color:#fff;margin-bottom:12px}
+.sub{text-align:center;color:#5a5f7a;font-size:15px;margin-bottom:56px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;max-width:1100px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)}
+.era-link{display:block;text-decoration:none;padding:28px 24px;background:#0d0f1e;border-right:1px solid rgba(255,255,255,0.06);transition:background 0.15s,transform 0.15s;position:relative;overflow:hidden}
+.era-link:hover{background:#12152a;transform:scale(1.01)}
+.era-link::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.15s}
+.era-link:hover::before{opacity:1}
+.e1::before{background:linear-gradient(135deg,rgba(255,255,0,0.04) 0%,transparent 60%)}
+.e2::before{background:linear-gradient(135deg,rgba(255,153,0,0.04) 0%,transparent 60%)}
+.e3::before{background:linear-gradient(135deg,rgba(52,152,219,0.06) 0%,transparent 60%)}
+.e4::before{background:linear-gradient(135deg,rgba(97,218,251,0.06) 0%,transparent 60%)}
+.e5::before{background:linear-gradient(135deg,rgba(129,140,248,0.08) 0%,transparent 60%)}
+.era-yr{font-family:'Space Mono',monospace;font-size:11px;margin-bottom:10px;font-weight:700;letter-spacing:1px}
+.e1 .era-yr{color:#888800}
+.e2 .era-yr{color:#cc7700}
+.e3 .era-yr{color:#3498db}
+.e4 .era-yr{color:#61dafb}
+.e5 .era-yr{color:#818cf8}
+.era-name{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-0.5px}
+.era-desc{font-size:13px;color:#5a5f7a;line-height:1.6;margin-bottom:14px}
+.era-tech{display:flex;flex-wrap:wrap;gap:4px}
+.tech-pill{font-family:'Space Mono',monospace;font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid rgba(255,255,255,0.1);color:#6a708a}
+.arrow{font-size:18px;position:absolute;right:20px;top:50%;transform:translateY(-50%);opacity:0;transition:opacity 0.15s,right 0.15s;color:#818cf8}
+.era-link:hover .arrow{opacity:1;right:16px}
+.footer{text-align:center;margin-top:40px;font-size:12px;color:#3a3f55;font-family:'Space Mono',monospace}
+.tech-note{text-align:center;margin-top:20px;font-size:12px;color:#3a3f55;line-height:1.8;max-width:600px;margin-left:auto;margin-right:auto}
+</style>
+</head>
+<body>
+
+<div class="title">Interaktivna prezentacija</div>
+<h1>Frontend Vremenska Masina</h1>
+<p class="sub">
+  Svaka era prikazana tehnologijom tog doba.<br>
+  Od čistog HTML 3.2 do React Server Components.
+</p>
+
+<div class="grid">
+
+  <a href="era1-1994.html" class="era-link e1">
+    <div class="era-yr">1994 — 1999</div>
+    <div class="era-name">Budjenje Veba</div>
+    <div class="era-desc">Tabele za layout, FONT tagovi, spacer.gif, bgcolor. Autentični HTML 3.2 bez ijedne linije CSS-a.</div>
+    <div class="era-tech">
+      <span class="tech-pill">TABLE layout</span>
+      <span class="tech-pill">FONT tag</span>
+      <span class="tech-pill">bgcolor</span>
+      <span class="tech-pill">marquee</span>
+      <span class="tech-pill">CGI/Perl</span>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+
+  <a href="era2-2000.html" class="era-link e2">
+    <div class="era-yr">2000 — 2006</div>
+    <div class="era-name">CSS Float Era</div>
+    <div class="era-desc">XHTML, CSS float layout, clearfix hack, Ajax revolucija, jQuery dolazi. Kraj table layouta.</div>
+    <div class="era-tech">
+      <span class="tech-pill">CSS float</span>
+      <span class="tech-pill">XHTML</span>
+      <span class="tech-pill">XMLHttpRequest</span>
+      <span class="tech-pill">jQuery 1.0</span>
+      <span class="tech-pill">clearfix</span>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+
+  <a href="era3-2005.html" class="era-link e3">
+    <div class="era-yr">2010 — 2018</div>
+    <div class="era-name">Bootstrap & jQuery</div>
+    <div class="era-desc">Bootstrap 3, Font Awesome, CSS3 animacije, flat design, responsive grid, mobile-first. React kuca na vrata.</div>
+    <div class="era-tech">
+      <span class="tech-pill">Bootstrap 3</span>
+      <span class="tech-pill">Font Awesome</span>
+      <span class="tech-pill">CSS3</span>
+      <span class="tech-pill">jQuery</span>
+      <span class="tech-pill">Google Fonts</span>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+
+  <a href="era4-2010.html" class="era-link e4">
+    <div class="era-yr">2015 — 2020</div>
+    <div class="era-name">React & Komponente</div>
+    <div class="era-desc">Dark theme, CSS custom properties, CSS Grid, Inter font, Virtual DOM, useState, moderne JS ES6+ tehnike.</div>
+    <div class="era-tech">
+      <span class="tech-pill">React/Vue</span>
+      <span class="tech-pill">CSS Grid</span>
+      <span class="tech-pill">CSS vars</span>
+      <span class="tech-pill">ES6+</span>
+      <span class="tech-pill">Webpack</span>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+
+  <a href="era5-2020.html" class="era-link e5">
+    <div class="era-yr">2020 — danas</div>
+    <div class="era-name">RSC & AI Era</div>
+    <div class="era-desc">Space Mono + DM Sans, glassmorphism, CSS grid, custom props, radijalni glow efekti. AI-assisted coding.</div>
+    <div class="era-tech">
+      <span class="tech-pill">Server Components</span>
+      <span class="tech-pill">Tailwind</span>
+      <span class="tech-pill">TypeScript</span>
+      <span class="tech-pill">AI coding</span>
+      <span class="tech-pill">Vite</span>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+
+
+  <a href="era6-2025.html" class="era-link e5" style="border-top:1px solid rgba(99,179,237,0.15)">
+    <div class="era-yr" style="color:#63b3ed">2025 — danas</div>
+    <div class="era-name" style="color:#9f7aea">AI, LLM & Vibe Coding</div>
+    <div class="era-desc">Claude Code, Copilot, promptovi kao kod. Knutov paradoks. Markdown kao programski jezik. Cena neznanja u eri AI-a.</div>
+    <div class="era-tech">
+      <span class="tech-pill">Claude Code</span>
+      <span class="tech-pill">Vibe Coding</span>
+      <span class="tech-pill">Prompt Eng.</span>
+      <span class="tech-pill">LLM</span>
+      <span class="tech-pill">Markdown</span>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+  
+  <a href="buducnost.html" class="era-link" style="background:linear-gradient(135deg,rgba(2,4,8,0.9) 0%,rgba(8,12,20,0.9) 100%);border-color:rgba(103,232,249,0.15)">
+    <div class="era-yr" style="color:#67e8f9">Budućnost</div>
+    <div class="era-name" style="color:#67e8f9">Šta nas čeka?</div>
+    <div class="era-desc">Hologrami, VR, gesture, glas. Smart uredjaji kao novi frontend. Zakljucak za 22. vek.</div>
+    <div class="era-tech"><span class="tech-pill">AR/XR</span><span class="tech-pill">Voice UI</span><span class="tech-pill">Smart devices</span><span class="tech-pill">Spekulativno</span></div>
+    <span class="arrow">→</span>
+  </a>
+
+  
+  <a href="hvala.html" class="era-link" style="background:linear-gradient(135deg,rgba(52,211,153,0.05) 0%,rgba(56,189,248,0.05) 100%);border-color:rgba(52,211,153,0.15)">
+    <div class="era-yr" style="color:#34d399">Hvala na pažnji</div>
+    <div class="era-name" style="color:#34d399">GitHub & Kraj</div>
+    <div class="era-desc">Preuzmi prezentaciju. Knjige. Kontakt. 30 godina u jednom repo-u.</div>
+    <div class="era-tech"><span class="tech-pill">GitHub</span><span class="tech-pill">Punk Guide</span><span class="tech-pill">Copilot Won't Save You</span></div>
+    <span class="arrow">→</span>
+  </a>
+
+  <a href="teme.html" class="era-link" style="grid-column:1/-1;background:linear-gradient(135deg,rgba(56,189,248,0.06) 0%,rgba(167,139,250,0.06) 100%);border-color:rgba(56,189,248,0.2)">
+    <div class="era-yr" style="color:#38bdf8">Tematska predavanja</div>
+    <div class="era-name" style="color:#a78bfa">Sva velika pitanja</div>
+    <div class="era-desc">Tehnologije po erama, Google i SEO, pametni telefoni, AI i CMS-ovi, buducnost veba. I "S Veba pa u rebra".</div>
+    <div class="era-tech"><span class="tech-pill">5 tema</span><span class="tech-pill">Google</span><span class="tech-pill">Mobilni</span><span class="tech-pill">AI</span><span class="tech-pill">Buducnost</span></div>
+    <span class="arrow">→</span>
+  </a>
+
+</div>
+<div class="tech-note">
+  Svaki fajl napisan iskljucivo tehnologijom te ere.<br>
+  era1: nema CSS-a &nbsp;·&nbsp; era2: float + XHTML &nbsp;·&nbsp; era3: Bootstrap 3 + jQuery &nbsp;·&nbsp; era4: CSS Grid + custom props &nbsp;·&nbsp; era5: moderna 2024 estetika &nbsp;·&nbsp; era6: Syne + IBM Plex Mono, AI era estetika
+</div>
+
+<div class="footer">
+  Frontend Vremenska Masina &nbsp;·&nbsp; 8 era &nbsp;·&nbsp; 10 HTML fajlova &nbsp;·&nbsp; 30 godina frontend historije
+</div>
+
+</body>
+</html>

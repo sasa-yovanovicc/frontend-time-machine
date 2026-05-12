@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: 2015-2020 :: React & Component Era</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #0f1117;
+      --surface:  #1a1d27;
+      --surface2: #222636;
+      --border:   #2d3148;
+      --accent:   #61dafb;
+      --accent2:  #764abc;
+      --green:    #41b883;
+      --red:      #ff6b6b;
+      --amber:    #fbbf24;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --font:     'Inter', sans-serif;
+      --mono:     'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ---- TOPBAR ---- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,17,23,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .topbar-logo {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar-logo span { color: var(--accent); }
+    .topbar-nav { display: flex; gap: 4px; }
+    .topbar-nav a {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.15s;
+      font-weight: 500;
+    }
+    .topbar-nav a:hover { color: var(--text); background: var(--surface); }
+    .topbar-nav a.active { color: var(--accent); background: rgba(97,218,251,0.1); }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 64px 32px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(97,218,251,0.08);
+      border: 1px solid rgba(97,218,251,0.2);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 500px;
+    }
+    .hero-buttons { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-outline:hover { border-color: var(--accent); background: rgba(97,218,251,0.06); }
+
+    /* Component preview card */
+    .component-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .cp-header {
+      background: var(--surface2);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cp-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .cp-filename { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-left: 4px; }
+    .cp-code { padding: 16px; font-family: var(--mono); font-size: 12px; line-height: 1.7; }
+    .ct  { color: #ff7b72; }  /* tag */
+    .ca  { color: #79c0ff; }  /* attr */
+    .cs  { color: #a5d6ff; }  /* string */
+    .cf  { color: #d2a8ff; }  /* function */
+    .ck  { color: #ff7b72; }  /* keyword */
+    .cc  { color: #8b949e; font-style: italic; }  /* comment */
+    .cn  { color: #ffa657; }  /* variable */
+    .cok { color: #7ee787; }  /* success */
+
+    /* ---- LAYOUT ---- */
+    .page { max-width: 1100px; margin: 0 auto; padding: 0 32px 64px; }
+
+    /* Section */
+    .section { margin-bottom: 64px; }
+    .section-header { margin-bottom: 32px; }
+    .section-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .section-desc { color: var(--muted); font-size: 15px; max-width: 600px; }
+
+    /* Cards grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+    .card h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* Code block */
+    .code-block {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+    .code-block-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .code-block-header span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .code-block-header .lang-badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(97,218,251,0.1);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .code-block pre {
+      padding: 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: #cdd9e5;
+      overflow-x: auto;
+      margin: 0;
+      background: transparent;
+      border: none;
+    }
+
+    /* Callout */
+    .callout {
+      border: 1px solid;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .callout-info  { border-color: rgba(97,218,251,0.3); background: rgba(97,218,251,0.05); }
+    .callout-warn  { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.05); }
+    .callout-story { border-color: rgba(118,74,188,0.3); background: rgba(118,74,188,0.05); }
+    .callout-icon  { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout-body  { font-size: 13px; color: var(--text); line-height: 1.7; }
+    .callout-body strong { color: #fff; }
+
+    /* Two col -->
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+
+    /* Comparison table */
+    .cmp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .cmp-table th {
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cmp-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+    .cmp-table tr:last-child td { border-bottom: none; }
+    .cmp-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .badge {
+      display: inline-flex;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-green { background: rgba(65,184,131,0.15); color: var(--green); }
+    .badge-red   { background: rgba(255,107,107,0.15); color: var(--red); }
+    .badge-blue  { background: rgba(97,218,251,0.15); color: var(--accent); }
+    .badge-amber { background: rgba(251,191,36,0.15); color: var(--amber); }
+
+    /* Interactive component demo */
+    .demo-area {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 16px 0;
+    }
+    .demo-area h4 { font-size: 13px; color: var(--muted); margin-bottom: 16px; font-weight: 500; }
+    #counter-display {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--accent);
+      text-align: center;
+      margin: 16px 0;
+      font-family: var(--mono);
+      letter-spacing: -2px;
+      transition: transform 0.1s;
+    }
+    .counter-btns { display: flex; gap: 12px; justify-content: center; }
+    .counter-btns button {
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 20px;
+      cursor: pointer;
+      font-family: var(--mono);
+      transition: all 0.15s;
+    }
+    .counter-btns button:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+    .state-display {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .state-val { color: var(--accent); }
+
+    /* Timeline divider */
+    .timeline-strip {
+      display: flex;
+      gap: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px 0;
+      border: 1px solid var(--border);
+    }
+    .ts-item {
+      flex: 1;
+      padding: 14px 12px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      text-align: center;
+      transition: background 0.15s;
+    }
+    .ts-item:last-child { border-right: none; }
+    .ts-item:hover { background: var(--surface2); }
+    .ts-year { font-size: 11px; color: var(--accent); font-family: var(--mono); font-weight: 600; }
+    .ts-name { font-size: 12px; color: var(--text); font-weight: 500; margin-top: 4px; }
+
+    /* Next era */
+    .next-era {
+      background: linear-gradient(135deg, rgba(97,218,251,0.08) 0%, rgba(118,74,188,0.08) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      margin-top: 48px;
+    }
+    .next-era p { color: var(--muted); margin: 8px 0 24px; font-size: 15px; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <div class="topbar-logo">
+      ⏱ Frontend <span>Vremenska Masina</span>
+    </div>
+    <div class="topbar-nav">
+        <a href="era1-1994.html">← 1994</a>
+        <a href="era2-2000.html">2000s</a>
+        <a href="era3-2005.html">2010s</a>
+        <a href="era4-2010.html" class="active">2015s</a>
+        <a href="era5-2020.html">2020+</a>
+        <a href="era6-2025.html">2025+</a>
+        <a href="teme.html">Teme</a>
+        <a href="buducnost.html">Buducnost</a>
+        <a href="hvala.html">Hvala</a>
+      </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="hero-tag">⚛ Era 4 &mdash; 2015&ndash;2020</div>
+      <h1>React, Vue<br>&amp; <em>Komponente</em></h1>
+      <p>Virtual DOM. State management. Webpack bundling. TypeScript. Frontend postaje software engineering disciplina.</p>
+      <div class="hero-buttons">
+        <a href="#komponente" class="btn-primary">⚛ Istraži</a>
+        <a href="era5-2020.html" class="btn-outline">2020s →</a>
+      </div>
+    </div>
+    <!-- Code preview -->
+    <div class="component-preview">
+      <div class="cp-header">
+        <div class="cp-dot" style="background:#ff5f57"></div>
+        <div class="cp-dot" style="background:#febc2e"></div>
+        <div class="cp-dot" style="background:#28c840"></div>
+        <span class="cp-filename">Counter.jsx</span>
+      </div>
+      <div class="cp-code">
+        <span class="ck">import</span> <span class="cn">React</span>, { <span class="cf">useState</span> } <span class="ck">from</span> <span class="cs">'react'</span>;<br>
+        <br>
+        <span class="ck">export default function</span> <span class="cf">Counter</span>() {<br>
+        &nbsp;&nbsp;<span class="ck">const</span> [<span class="cn">count</span>, <span class="cn">setCount</span>] = <span class="cf">useState</span>(<span class="cn">0</span>);<br>
+        <br>
+        &nbsp;&nbsp;<span class="ck">return</span> (<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">&lt;div</span> <span class="ca">className</span>=<span class="cs">"counter"</span><span class="ct">&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">&lt;h2&gt;</span>{<span class="cn">count</span>}<span class="ct">&lt;/h2&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">&lt;button</span> <span class="ca">onClick</span>={() =&gt; <span class="cf">setCount</span>(<span class="cn">c</span> + <span class="cn">1</span>)}<span class="ct">&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">&lt;/button&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">&lt;/div&gt;</span><br>
+        &nbsp;&nbsp;);<br>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- TIMELINE STRIP -->
+    <div class="timeline-strip">
+      <div class="ts-item"><div class="ts-year">2013</div><div class="ts-name">React</div></div>
+      <div class="ts-item"><div class="ts-year">2014</div><div class="ts-name">Vue.js</div></div>
+      <div class="ts-item"><div class="ts-year">2015</div><div class="ts-name">ES6</div></div>
+      <div class="ts-item"><div class="ts-year">2016</div><div class="ts-name">Webpack 2</div></div>
+      <div class="ts-item"><div class="ts-year">2017</div><div class="ts-name">CSS Grid</div></div>
+      <div class="ts-item"><div class="ts-year">2019</div><div class="ts-name">React Hooks</div></div>
+    </div>
+
+    <!-- KOMPONENTE -->
+    <div class="section" id="komponente">
+      <div class="section-header">
+        <div class="section-eyebrow">Revolucija razmišljanja</div>
+        <h2 class="section-title">Sve je Komponenta</h2>
+        <p class="section-desc">Kraj jQuery imperativnog pristupa. Deklarativni UI — opisuješ kako treba izgledati, framework se brine o tome kako to postići.</p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon" style="background:rgba(97,218,251,0.1);">⚛</div>
+          <h3>React — "Just the View"</h3>
+          <p>Facebook 2013. Nije framework — biblioteka. Samo UI. Virtual DOM. JSX. One-way data flow. Ti biraš sve ostalo.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background:rgba(65,184,131,0.1);">💚</div>
+          <h3>Vue.js — Progressive Framework</h3>
+          <p>Evan You 2014. Uzmi ono dobro iz Angulara i Reacta, baci ostatak. Single File Components — template + script + style u jednom fajlu.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background:rgba(251,191,36,0.1);">📦</div>
+          <h3>Webpack + npm</h3>
+          <p>Modules, bundling, tree-shaking. npm postaje de facto standard. node_modules postaje najteži folder na računaru.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERAKTIVNI DEMO -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-eyebrow">Filozofija u akciji</div>
+        <h2 class="section-title">State Management Demo</h2>
+        <p class="section-desc">React Hooks (2019) — useState umjesto class komponenti. Isti princip, čišći kod.</p>
+      </div>
+
+      <!-- REACT DEMO: jednosmerni tok podataka -->
+      <div class="demo-area" style="margin-bottom:16px;">
+        <h4 style="margin-bottom:4px;">⚛ Sta React zaista demonstrira — jednosmerni tok podataka</h4>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">
+          Promeni ime u polju. Gledaj kako se <strong>sve tri komponente</strong> ažuriraju istovremeno
+          iz jednog izvora — bez da jedna "zna" za drugu. To jQuery ne moze bez koda koji drži stanje.
+        </p>
+
+        <!-- State vizualizacija -->
+        <div style="display:grid;grid-template-columns:1fr 40px 1fr 1fr;gap:12px;align-items:start;margin-bottom:16px;">
+
+          <!-- INPUT: jedini izvor promene -->
+          <div style="background:var(--s2);border:1px solid rgba(97,218,251,0.3);border-radius:8px;padding:14px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+              📝 Komponenta: Input
+            </div>
+            <input
+              id="react-name-input"
+              type="text"
+              placeholder="Upiši ime..."
+              oninput="reactStateUpdate(this.value)"
+              style="width:100%;background:var(--s3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:6px;font-family:var(--mono);font-size:13px;"
+              value="Saša"
+            >
+            <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:8px;">
+              onChange → setState({name})
+            </div>
+          </div>
+
+          <!-- STRELICA -->
+          <div style="text-align:center;padding-top:30px;font-size:20px;color:var(--accent);">↓</div>
+
+          <!-- STATE: jedini izvor istine -->
+          <div style="background:rgba(97,218,251,0.08);border:1px solid rgba(97,218,251,0.4);border-radius:8px;padding:14px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+              🗃 State (jedini izvor)
+            </div>
+            <div style="font-family:var(--mono);font-size:12px;color:var(--text);line-height:1.8;">
+              {<br>
+              &nbsp;&nbsp;name: "<span id="state-name-display" style="color:var(--accent);">Saša</span>",<br>
+              &nbsp;&nbsp;renders: <span id="state-renders" style="color:var(--accent);">1</span><br>
+              }
+            </div>
+          </div>
+
+          <!-- 3 komponente koje citaju state -->
+          <div style="display:flex;flex-direction:column;gap:8px;">
+
+            <!-- Kartica korisnika -->
+            <div id="comp-card" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px;transition:border-color 0.2s;">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:5px;">Komponenta: &lt;UserCard&gt;</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;color:#000;font-weight:700;" id="comp-avatar">S</div>
+                <div style="font-size:13px;color:var(--text);font-weight:600;" id="comp-card-name">Saša</div>
+              </div>
+            </div>
+
+            <!-- Pozdrav -->
+            <div id="comp-greeting" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px;transition:border-color 0.2s;">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:4px;">Komponenta: &lt;Greeting&gt;</div>
+              <div style="font-size:13px;color:var(--text);">Zdravo, <strong id="comp-greeting-name" style="color:var(--accent);">Saša</strong>! 👋</div>
+            </div>
+
+            <!-- Naslov -->
+            <div id="comp-title" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px;transition:border-color 0.2s;">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:4px;">Komponenta: &lt;PageTitle&gt;</div>
+              <div style="font-size:11px;color:var(--muted);">Profil korisnika</div>
+              <div style="font-size:13px;color:var(--text);font-weight:600;" id="comp-title-name">Saša — Frontend Dev</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- jQuery vs React poredjenje -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+          <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-radius:6px;padding:12px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">❌ jQuery način</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;">
+              <span style="color:var(--red);">$('#input').on('input', function() {</span><br>
+              &nbsp;var n = $(this).val();<br>
+              &nbsp;<span style="color:var(--red);"># Rucno azuriraj svaki element:</span><br>
+              &nbsp;$('.card-name').text(n);<br>
+              &nbsp;$('.greeting').text('Zdravo, '+n);<br>
+              &nbsp;$('.page-title').text(n+' — Dev');<br>
+              &nbsp;$('.avatar').text(n[0]);<br>
+              <span style="color:var(--red);">});</span>
+            </div>
+            <div style="font-size:11px;color:var(--red);margin-top:8px;">Zaboravis jedan → bug. Dodas komponentu → azuriras handler.</div>
+          </div>
+          <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:6px;padding:12px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">✓ React način</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;">
+              <span style="color:var(--green);">const [name, setName] = useState('');</span><br><br>
+              <span style="color:var(--muted);"># Svaka komponenta sama cita:</span><br>
+              <span style="color:var(--green);">&lt;UserCard name={name} /&gt;</span><br>
+              <span style="color:var(--green);">&lt;Greeting name={name} /&gt;</span><br>
+              <span style="color:var(--green);">&lt;PageTitle name={name} /&gt;</span><br><br>
+              <span style="color:var(--green);">// Input menja samo state.</span><br>
+              <span style="color:var(--green);">// Ostalo se samo azurira.</span>
+            </div>
+            <div style="font-size:11px;color:var(--green);margin-top:8px;">Dodas komponentu → automatski prima state. Handler ne menjas.</div>
+          </div>
+        </div>
+
+        <div style="font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;margin-top:10px;">
+          Re-renderovan: <span id="render-flash" style="color:var(--accent);">1</span> put/a
+          &nbsp;·&nbsp; Virtual DOM diff: samo promenjeni tekst, ne cela stranica
+        </div>
+      </div>
+    </div>
+
+    <!-- ANGULAR VS REACT VS VUE -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-eyebrow">Veliki rat</div>
+        <h2 class="section-title">Angular vs React vs Vue</h2>
+      </div>
+
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>Aspekt</th>
+            <th>Angular</th>
+            <th>React</th>
+            <th>Vue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tip</td>
+            <td>Framework</td>
+            <td>Library</td>
+            <td>Progressive framework</td>
+          </tr>
+          <tr>
+            <td>Data binding</td>
+            <td><span class="badge badge-blue">Two-way</span></td>
+            <td><span class="badge badge-green">One-way</span></td>
+            <td><span class="badge badge-amber">Reactive</span></td>
+          </tr>
+          <tr>
+            <td>Template sintaksa</td>
+            <td>HTML + directives</td>
+            <td>JSX</td>
+            <td>Single File Component</td>
+          </tr>
+          <tr>
+            <td>Learning curve</td>
+            <td><span class="badge badge-red">Strma</span></td>
+            <td><span class="badge badge-amber">Srednja</span></td>
+            <td><span class="badge badge-green">Blaga</span></td>
+          </tr>
+          <tr>
+            <td>Tržišna dominacija 2018.</td>
+            <td>Enterprise</td>
+            <td><span class="badge badge-green">Svuda</span></td>
+            <td>Azija, indie</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- KLIJENTI I PIXEL PUSHING -->
+    <div class="section" style="padding-bottom:32px;">
+      <div class="section-header">
+        <div class="section-eyebrow">Lična ispovest</div>
+        <h2 class="section-title">Otprilike ovde sam počeo da mrzim frontend</h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+
+        <div style="background:var(--s1);border:1px solid rgba(248,113,113,0.25);border-radius:10px;padding:22px;">
+          <div style="font-size:22px;margin-bottom:12px;">🖱️</div>
+          <h4 style="font-size:14px;font-weight:600;color:#fff;margin-bottom:10px;">Pixel po piksel</h4>
+          <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:10px;">
+            Bootstrap i CSS3 su dali klijentima moć da vide savršen UI u browseru —
+            i odmah im dali i milijardu ideja.
+            Svaki dizajn je odjednom bio diskusija o tome da li je plava
+            <em>dovoljno plava</em>.
+          </p>
+          <div style="background:rgba(248,113,113,0.08);border-left:3px solid var(--red);padding:10px 14px;border-radius:0 6px 6px 0;font-size:13px;color:#fca5a5;line-height:1.7;font-style:italic;">
+            "Pixel ovamo, piksel onamo... e ova plava treba da bude malo plavija...
+            pravougaonik ima previše oštre uglove..."
+          </div>
+        </div>
+
+        <div style="background:var(--s1);border:1px solid rgba(251,191,36,0.25);border-radius:10px;padding:22px;">
+          <div style="font-size:22px;margin-bottom:12px;">💬</div>
+          <h4 style="font-size:14px;font-weight:600;color:#fff;margin-bottom:10px;">"Ma to je za tebe lako"</h4>
+          <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:10px;">
+            Napredak u FE toolingu imao je neželjenu posledicu:
+            klijenti su videli da se stvari brzo prave —
+            i zaključili da je sve brzo.
+          </p>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <div style="background:rgba(251,191,36,0.08);border-radius:6px;padding:8px 12px;font-size:12px;color:#fcd34d;font-family:var(--mono);">
+              "To su par linija koda, ne?"
+            </div>
+            <div style="background:rgba(251,191,36,0.08);border-radius:6px;padding:8px 12px;font-size:12px;color:#fcd34d;font-family:var(--mono);">
+              "Može li da animira kad skrolujem?"
+            </div>
+            <div style="background:rgba(251,191,36,0.08);border-radius:6px;padding:8px 12px;font-size:12px;color:#fcd34d;font-family:var(--mono);">
+              "Baš kao na onom sajtu, samo drugačije."
+            </div>
+            <div style="background:rgba(251,191,36,0.08);border-radius:6px;padding:8px 12px;font-size:12px;color:#fcd34d;font-family:var(--mono);">
+              "Na mobilnom izgleda malo drugačije, to se lako fiksira?"
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:18px 22px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="font-size:28px;flex-shrink:0;">🤔</div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px;">
+              Zašto se ovo desilo baš u ovoj eri
+            </div>
+            <p style="font-size:13px;color:var(--muted);line-height:1.8;margin:0;">
+              Pre Bootstrap-a, klijent je dobijao statičan Photoshop mockup — i to je bio kraj diskusije.
+              Kad je Bootstrap omogućio da se za sat napravi klikabilni prototype u browseru,
+              svaki klijent je odjednom imao <em>interaktivan referentni okvir</em> za feedback.
+              Što je dobro za produkt — ali je otvorilo Pandorinu kutiju sitnih izmena
+              koje su individualno trivijalne, a skupno gutaju nedeljama.
+              <br><br>
+              Ovo je direktno rodilo industriju <strong>UX dizajnera</strong>,
+              <strong>product owner-a</strong> i <strong>design systems-a</strong> —
+              sve kao pokušaj da se taj haos strukturiše pre nego što kod uopšte počne.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEBPACK ERA -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-eyebrow">Alati</div>
+        <h2 class="section-title">Webpack &amp; Build Pipeline</h2>
+        <p class="section-desc">Frontend postaje kompiliran jezik. Pišeš JSX, TypeScript, SASS — dobiveš optimizirani bundle.</p>
+      </div>
+
+
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>JavaScript fatigue (2016)</strong> — u jednoj godini pojavile se deseci novih frameworka,
+          build toolova, CSS-in-JS rešenja i state management biblioteka.
+          Članak
+          <a href="#" onclick="document.getElementById('modal-js-fatigue').style.display='flex';return false;"
+             style="color:var(--accent);font-weight:600;">
+            "How it feels to learn JavaScript in 2016"
+          </a>
+          postao viralan — satirizira koliko je kompleksno postalo napisati "Hello World".
+          <a href="#" onclick="document.getElementById('modal-js-fatigue').style.display='flex';return false;"
+             style="color:var(--accent);font-size:11px;margin-left:6px;">
+            [čitaj →]
+          </a>
+        </div>
+      </div>
+
+      <!-- MODAL — 2016 Hacker News / Medium estetika -->
+      <div id="modal-js-fatigue"
+           style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;"
+           onclick="if(event.target===this)this.style.display='none'">
+        <div style="background:#fff;max-width:780px;width:95%;max-height:90vh;overflow-y:auto;border-radius:3px;box-shadow:0 4px 32px rgba(0,0,0,0.4);font-family:Georgia,serif;">
+
+          <!-- 2016 Medium-style header -->
+          <div style="background:#292929;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <!-- HackerNoon logo simulacija -->
+              <div style="background:#00d100;color:#000;font-family:monospace;font-size:11px;font-weight:700;padding:3px 7px;border-radius:2px;">HN</div>
+              <span style="color:#aaa;font-size:12px;font-family:Arial,sans-serif;">HackerNoon · Oct 2016</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <!-- Share dugmad u 2016 stilu -->
+              <div style="background:#3b5998;color:#fff;font-size:11px;padding:4px 10px;border-radius:2px;font-family:Arial,sans-serif;cursor:pointer;">f Share</div>
+              <div style="background:#1da1f2;color:#fff;font-size:11px;padding:4px 10px;border-radius:2px;font-family:Arial,sans-serif;cursor:pointer;">🐦 Tweet</div>
+              <div style="background:#ff6600;color:#fff;font-size:11px;padding:4px 10px;border-radius:2px;font-family:Arial,sans-serif;cursor:pointer;">▲ HN</div>
+              <button onclick="document.getElementById('modal-js-fatigue').style.display='none'"
+                      style="background:none;border:none;color:#888;font-size:22px;cursor:pointer;line-height:1;padding:0 4px;">&times;</button>
+            </div>
+          </div>
+
+          <!-- Sadrzaj -->
+          <div style="padding:32px 40px 24px;">
+
+            <!-- Autor info — Medium stil 2016 -->
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #e8e8e8;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#2ecc71;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Arial;font-size:14px;font-weight:700;">JR</div>
+              <div>
+                <div style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#292929;">José Aguinaga</div>
+                <div style="font-family:Arial,sans-serif;font-size:12px;color:#999;">Oct 3, 2016 · 8 min read · ♥ 47,293 recommends</div>
+              </div>
+              <div style="margin-left:auto;background:#fff;border:1px solid #292929;color:#292929;font-family:Arial,sans-serif;font-size:12px;padding:6px 14px;border-radius:100px;cursor:pointer;">Follow</div>
+            </div>
+
+            <!-- Naslov -->
+            <h1 style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:#292929;line-height:1.2;margin-bottom:12px;">
+              How it feels to learn JavaScript in 2016
+            </h1>
+            <h2 style="font-family:Georgia,serif;font-size:18px;font-weight:400;color:#666;margin-bottom:28px;line-height:1.4;">
+              A satirical dialogue about modern JavaScript tooling overwhelm
+            </h2>
+
+            <!-- Dijalog iz clanka — rekonstrukcija -->
+            <div style="font-family:Georgia,serif;font-size:16px;color:#292929;line-height:1.8;">
+
+              <p style="margin-bottom:16px;"><em>— Hej, naučio sam JavaScript. Kako da napravim sajt?</em></p>
+
+              <p style="margin-bottom:16px;">— Super! Instaliraš Node, npm, zatim Webpack kao module bundler, Babel za transpilaciju ES6, React za UI, Redux za state, React-Router za routing, Axios za HTTP, Jest za testove, ESLint za linting...</p>
+
+              <p style="margin-bottom:16px;"><em>— Čekaj, mislio sam samo da ispišem "Hello World" na ekran?</em></p>
+
+              <p style="margin-bottom:16px;">— Da, da. Ali najpre konfigurišeš webpack.config.js, .babelrc, .eslintrc, package.json scripts... Ah, i treba ti Yarn umesto npm-a, brži je. I probaj create-react-app, ali ne, to je za početnike. Bolje napravi svoju konfiguraciju da razumeš.</p>
+
+              <p style="margin-bottom:16px;"><em>— Ali to je sve samo da pišem JavaScript?</em></p>
+
+              <p style="margin-bottom:16px;">— Pa, pišeš TypeScript, koji se kompajlira u JavaScript. I CSS-in-JS jer regular CSS je antipattern. I JSX koji izgleda kao HTML ali nije. I možda Flow za type checking mada TypeScript ionako...</p>
+
+              <p style="margin-bottom:24px;"><em>— Idem nazad na jQuery.</em></p>
+            </div>
+
+            <!-- Kontekst zasto je clanak bio vazan -->
+            <div style="background:#f9f9f9;border-left:3px solid #00d100;padding:14px 18px;margin:24px 0;font-family:Arial,sans-serif;">
+              <div style="font-size:12px;font-weight:700;color:#292929;margin-bottom:6px;">Zašto je ovaj članak odjeknuo</div>
+              <div style="font-size:13px;color:#555;line-height:1.7;">
+                2016. je bila godina u kojoj je JavaScript ekosistem eksplodirao u kompleksnosti.
+                Na npm-u je objavljeno <strong>150,000+ novih paketa</strong> te godine.
+                Pojavili su se: Webpack 2, Angular 2 (rewrite!), Vue 2, Create React App,
+                Yarn, Rollup, Parcel, CSS Modules, Styled Components, MobX...
+                Članak je dobio 47,000+ reakcija jer je svaki developer prepoznao sebe.
+              </div>
+            </div>
+
+            <!-- Tech stack koji se koristio 2016 -->
+            <div style="margin:20px 0;">
+              <div style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#292929;margin-bottom:12px;">
+                Tipičan "moderan" JavaScript stack 2016:
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-family:monospace;font-size:12px;">
+                <div style="background:#f0f0f0;padding:8px;border-radius:2px;"><span style="color:#e74c3c">npm/yarn</span><br><span style="color:#999">package manager</span></div>
+                <div style="background:#f0f0f0;padding:8px;border-radius:2px;"><span style="color:#e74c3c">Webpack 2</span><br><span style="color:#999">bundler</span></div>
+                <div style="background:#f0f0f0;padding:8px;border-radius:2px;"><span style="color:#e74c3c">Babel</span><br><span style="color:#999">ES6→ES5</span></div>
+                <div style="background:#f0f0f0;padding:8px;border-radius:2px;"><span style="color:#61dafb">React 15</span><br><span style="color:#999">UI library</span></div>
+                <div style="background:#f0f0f0;padding:8px;border-radius:2px;"><span style="color:#764abc">Redux</span><br><span style="color:#999">state mgmt</span></div>
+                <div style="background:#f0f0f0;padding:8px;border-radius:2px;"><span style="color:#ca4245">React Router</span><br><span style="color:#999">routing</span></div>
+                <div style="background:#f0f0f0;padding:8px;border-radius:2px;"><span style="color:#c21325">Jest</span><br><span style="color:#999">testing</span></div>
+                <div style="background:#f0f0f0;padding:8px;border-radius:2px;"><span style="color:#4b32c3">ESLint</span><br><span style="color:#999">linting</span></div>
+                <div style="background:#f0f0f0;padding:8px;border-radius:2px;"><span style="color:#cc6699">Sass/Less</span><br><span style="color:#999">CSS prepro.</span></div>
+              </div>
+            </div>
+
+            <!-- Footer sa linkovima -->
+            <div style="border-top:1px solid #e8e8e8;padding-top:16px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-family:Arial,sans-serif;">
+              <div style="font-size:12px;color:#999;">
+                Originalni članak na HackerNoon.com
+              </div>
+              <a href="https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f"
+                 target="_blank"
+                 style="background:#292929;color:#fff;font-size:12px;padding:8px 16px;border-radius:2px;text-decoration:none;font-family:Arial,sans-serif;">
+                Čitaj originalni članak →
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>webpack.config.js &mdash; tipičan 2017.</span>
+          <span class="lang-badge">JS</span>
+        </div>
+        <pre><span class="cc">// 200 linija config-a za "jednostavan" projekt</span>
+<span class="ck">module</span>.exports = {
+  <span class="cn">entry</span>: <span class="cs">'./src/index.js'</span>,
+  <span class="cn">output</span>: { <span class="cn">path</span>: <span class="cf">path</span>.<span class="cf">resolve</span>(<span class="cn">__dirname</span>, <span class="cs">'dist'</span>) },
+  <span class="cn">module</span>: {
+    <span class="cn">rules</span>: [
+      { <span class="cn">test</span>: /\.jsx?$/, <span class="cn">use</span>: <span class="cs">'babel-loader'</span> },
+      { <span class="cn">test</span>: /\.css$/,  <span class="cn">use</span>: [<span class="cs">'style-loader'</span>, <span class="cs">'css-loader'</span>] },
+      { <span class="cn">test</span>: /\.scss$/, <span class="cn">use</span>: [<span class="cs">'style-loader'</span>, <span class="cs">'css-loader'</span>, <span class="cs">'sass-loader'</span>] }
+    ]
+  },
+  <span class="cn">plugins</span>: [ <span class="cc">/* HtmlWebpackPlugin, MiniCssExtractPlugin... */</span> ]
+};</pre>
+      </div>
+
+      <div class="callout callout-story">
+        <span class="callout-icon">💜</span>
+        <div class="callout-body">
+          <strong>Vite (2020) je riješio Webpack bol</strong> — no bundling u dev modu,
+          native ES modules, instant HMR. Ono sto je Webpack konfigurirao u 200 linija,
+          Vite radi automatski.
+        </div>
+      </div>
+    </div>
+
+    <!-- NEXT ERA -->
+    <div class="next-era">
+      <div style="font-size:32px;margin-bottom:12px;">🚀</div>
+      <h2 style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.5px;">Sledeca Era: 2020+</h2>
+      <p>Server Components, TypeScript svuda, Tailwind, AI-assisted coding&hellip;</p>
+      <a href="era5-2020.html" class="btn-primary" style="font-size:15px;padding:12px 28px;">
+        2020+ Era →
+      </a>
+    </div>
+
+  </div><!-- /page -->
+
+  <footer>
+    <p>
+      Frontend Vremenska Masina &nbsp;·&nbsp;
+      Era 4: React &amp; Component Era &nbsp;·&nbsp;
+      <a href="era1-1994.html">← Pocetak</a>
+    </p>
+    <p style="margin-top:4px;font-size:11px;">
+      Ova stranica koristi CSS custom properties, CSS Grid, Inter font, modern JS — autentične tehnike 2015–2020.
+    </p>
+  </footer>
+
+  <script>
+    let renderCount = 1;
+
+    function reactStateUpdate(value) {
+      renderCount++;
+
+      // Azuriraj state prikaz
+      document.getElementById('state-name-display').textContent = value || '""';
+      document.getElementById('state-renders').textContent = renderCount;
+      document.getElementById('render-flash').textContent = renderCount;
+
+      // Azuriraj sve tri komponente — simulacija React re-rendera
+      const name = value || '...';
+      const initial = name.charAt(0).toUpperCase() || '?';
+
+      document.getElementById('comp-card-name').textContent = name;
+      document.getElementById('comp-avatar').textContent = initial;
+      document.getElementById('comp-greeting-name').textContent = name;
+      document.getElementById('comp-title-name').textContent = name + ' — Frontend Dev';
+
+      // Vizuelni flash na komponentama — simulira React highlight
+      ['comp-card','comp-greeting','comp-title'].forEach(function(id) {
+        var el = document.getElementById(id);
+        el.style.borderColor = 'rgba(97,218,251,0.7)';
+        el.style.background = 'rgba(97,218,251,0.06)';
+        setTimeout(function() {
+          el.style.borderColor = '';
+          el.style.background = '';
+        }, 300);
+      });
+    }
+
+    // Inicijalizacija
+    document.addEventListener('DOMContentLoaded', function() {
+      var input = document.getElementById('react-name-input');
+      if (input) reactStateUpdate(input.value);
+    });
+  </script>
+
+</body>
+</html>

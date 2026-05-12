@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: Tematska Predavanja</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#050609; --s1:#0a0d16; --s2:#0f1220; --s3:#141828;
+      --border:rgba(148,163,184,0.1); --border2:rgba(148,163,184,0.2);
+      --text:#e2e8f0; --dim:#4a5568; --muted:#64748b;
+      --blue:#38bdf8; --green:#34d399; --amber:#fbbf24;
+      --pink:#f472b6; --red:#f87171; --purple:#a78bfa;
+      --sans:'Syne',sans-serif; --mono:'IBM Plex Mono',monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(56,189,248,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,0.015) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+
+    nav{position:sticky;top:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(5,6,9,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .logo{font-family:var(--mono);font-size:13px;color:var(--blue);text-decoration:none}
+    .nav-links{display:flex;gap:3px}
+    .nav-links a{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:5px;color:var(--muted);text-decoration:none;transition:all .15s;text-transform:uppercase;letter-spacing:.5px}
+    .nav-links a:hover{color:var(--text);background:var(--s2)}
+    .nav-links a.active{color:var(--blue);background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.15)}
+
+    .page-header{max-width:860px;margin:0 auto;padding:64px 40px 48px;position:relative;z-index:1}
+    .eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:14px}
+    .page-header h1{font-size:clamp(30px,5vw,52px);font-weight:800;letter-spacing:-2px;color:#fff;line-height:1.05;margin-bottom:16px}
+    .page-header p{font-size:16px;color:var(--muted);max-width:600px;line-height:1.75}
+
+    /* Sticky topic nav */
+    .layout{display:grid;grid-template-columns:220px 1fr;max-width:1100px;margin:0 auto;padding:0 40px 100px;position:relative;z-index:1}
+    .snav{position:sticky;top:72px;height:fit-content;padding-right:24px;padding-top:8px}
+    .snav-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--dim);padding:0 10px 10px}
+    .snav a{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;border-radius:7px;color:var(--muted);text-decoration:none;font-size:13px;line-height:1.35;transition:all .15s;border:1px solid transparent;margin-bottom:3px}
+    .snav a:hover{color:var(--text);background:var(--s1)}
+    .snav a.on{color:var(--blue);background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.15)}
+    .snav-n{font-family:var(--mono);font-size:10px;color:var(--blue);flex-shrink:0;margin-top:1px}
+    .snav hr{border:none;border-top:1px solid var(--border);margin:12px 10px 14px}
+
+    .content{padding-left:32px;border-left:1px solid var(--border)}
+
+    /* Sekcije */
+    .sec{padding:52px 0 64px;border-bottom:1px solid var(--border)}
+    .sec:last-child{border-bottom:none}
+    .sec-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:12px}
+    .sec h2{font-size:26px;font-weight:800;letter-spacing:-.8px;color:#fff;margin-bottom:12px;line-height:1.15}
+    .sec>.lead{color:var(--muted);font-size:15px;max-width:680px;margin-bottom:28px;line-height:1.8}
+
+    /* Tekst paragrafi */
+    .prose{max-width:720px}
+    .prose p{color:var(--muted);font-size:14px;line-height:1.85;margin-bottom:16px}
+    .prose p strong{color:var(--text)}
+    .prose p em{color:var(--blue);font-style:normal}
+
+    /* Era kartice — horizontalne */
+    .era-strip{display:flex;gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin:20px 0}
+    .es-item{flex:1;background:var(--s1);padding:16px 14px;transition:background .15s}
+    .es-item:hover{background:var(--s2)}
+    .es-yr{font-family:var(--mono);font-size:10px;margin-bottom:6px}
+    .es-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+    .es-stack{font-size:11px;color:var(--muted);line-height:1.6}
+    .es-stack code{font-family:var(--mono);font-size:10px;color:var(--blue)}
+
+    /* Kartice grid */
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+    .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+    .card{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:20px;transition:border-color .15s}
+    .card:hover{border-color:var(--border2)}
+    .card-era{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+    .card h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}
+    .card p{font-size:13px;color:var(--muted);line-height:1.65}
+    .pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+    .pill{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;border:1px solid}
+    .pb{color:var(--blue);border-color:rgba(56,189,248,.25);background:rgba(56,189,248,.06)}
+    .pg{color:var(--green);border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.06)}
+    .pa{color:var(--amber);border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.06)}
+    .pp{color:var(--purple);border-color:rgba(167,139,250,.25);background:rgba(167,139,250,.06)}
+    .pk{color:var(--pink);border-color:rgba(244,114,182,.25);background:rgba(244,114,182,.06)}
+    .pr{color:var(--red);border-color:rgba(248,113,113,.25);background:rgba(248,113,113,.06)}
+    .pd{color:var(--muted);border-color:var(--border);background:rgba(255,255,255,.03)}
+
+    /* Callout */
+    .callout{border-radius:8px;padding:16px 18px;margin:16px 0;display:flex;gap:12px;border:1px solid}
+    .ca-b{background:rgba(56,189,248,.05);border-color:rgba(56,189,248,.2)}
+    .ca-g{background:rgba(52,211,153,.05);border-color:rgba(52,211,153,.2)}
+    .ca-a{background:rgba(251,191,36,.05);border-color:rgba(251,191,36,.2)}
+    .ca-p{background:rgba(167,139,250,.05);border-color:rgba(167,139,250,.2)}
+    .ca-r{background:rgba(248,113,113,.05);border-color:rgba(248,113,113,.2)}
+    .ca-k{background:rgba(244,114,182,.05);border-color:rgba(244,114,182,.2)}
+    .ci{font-size:18px;flex-shrink:0;margin-top:2px}
+    .cb{font-size:13px;color:var(--text);line-height:1.8}
+    .cb strong{color:#fff}
+    .cb em{color:var(--blue);font-style:normal}
+    .cb code{font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:3px;color:var(--blue)}
+
+    /* Uticaj tabela */
+    .impact-t{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}
+    .impact-t th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;font-weight:400;background:var(--s1)}
+    .impact-t td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text);vertical-align:top;font-size:13px}
+    .impact-t tr:hover td{background:rgba(255,255,255,.015)}
+    .impact-t tr:last-child td{border-bottom:none}
+    .impact-t .sub{color:var(--muted);font-size:11px;margin-top:3px;line-height:1.5}
+    .ok{color:var(--green);font-weight:600}
+    .warn{color:var(--amber);font-weight:600}
+    .bad{color:var(--red);font-weight:600}
+
+    /* Vizualizacija */
+    .timeline-v{position:relative;padding-left:24px;margin:20px 0}
+    .timeline-v::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:var(--border)}
+    .tv-item{position:relative;margin-bottom:20px;padding-left:20px}
+    .tv-dot{position:absolute;left:-17px;top:5px;width:10px;height:10px;border-radius:50%;border:2px solid var(--border);background:var(--bg)}
+    .tv-yr{font-family:var(--mono);font-size:10px;margin-bottom:4px}
+    .tv-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+    .tv-desc{font-size:13px;color:var(--muted);line-height:1.65}
+
+    /* Future cards — poseban stil */
+    .future-card{background:linear-gradient(135deg,var(--s1) 0%,var(--s2) 100%);border:1px solid var(--border);border-radius:12px;padding:22px;transition:all .2s;position:relative;overflow:hidden}
+    .future-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(56,189,248,.03) 0%,transparent 60%);pointer-events:none}
+    .future-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+    .fc-prob{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:8px}
+    .fc-prob span{color:var(--green);font-weight:700}
+    .future-card h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}
+    .future-card p{font-size:13px;color:var(--muted);line-height:1.65}
+
+    /* Quote */
+    .blockquote{border-left:3px solid var(--blue);padding:12px 18px;margin:20px 0;background:rgba(56,189,248,.04);border-radius:0 8px 8px 0}
+    .blockquote p{font-size:14px;color:#c0cce0;font-style:italic;line-height:1.8;margin:0}
+    .blockquote cite{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;font-style:normal}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--dim);position:relative;z-index:1}
+    footer a{color:var(--blue);text-decoration:none}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">// vremenska.masina</a>
+    <div class="nav-links">
+    <a href="era1-1994.html">1994</a>
+    <a href="era2-2000.html">2000s</a>
+    <a href="era3-2005.html">2010s</a>
+    <a href="era4-2010.html">2015s</a>
+    <a href="era5-2020.html">2020s</a>
+    <a href="era6-2025.html">2025+</a>
+    <a href="teme.html" class="active">Teme</a>
+    <a href="buducnost.html">Buducnost</a>
+    <a href="hvala.html">Hvala</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="eyebrow">// tematska predavanja</div>
+  <h1>Velika Pitanja<br>Istorije Veba</h1>
+  <p>Tehnologije po erama, Google efekat, pametni telefoni, AI i CMS-ovi, buducnost. I kako je covek sa dial-up modema u Beogradu sve ovo preziveo zivu.</p>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR NAV -->
+  <div class="snav">
+    <div class="snav-title">Pitanja</div>
+    <a href="#tehnologije" class="on"><span class="snav-n">01</span>Tehnologije po erama</a>
+    <a href="#google"><span class="snav-n">02</span>Google i SEO revolucija</a>
+    <a href="#mobilni"><span class="snav-n">03</span>Pametni telefoni</a>
+    <a href="#ai-cms"><span class="snav-n">04</span>AI i CMS-ovi</a>
+    <a href="#buducnost"><span class="snav-n">05</span>Buducnost veba</a>
+    <hr>
+    <a href="era1-1994.html"><span class="snav-n">←</span>Nazad na ere</a>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ==================== 01 TEHNOLOGIJE ==================== -->
+    <div class="sec" id="tehnologije">
+      <div class="sec-label">01 / Pregled</div>
+      <h2>Tehnologije kroz sve ere</h2>
+      <p class="lead">
+        Svaka era imala je jednu "prekretnicku" tehnologiju koja je promenila sve ostalo.
+        Nije to bio evolucioni proces — bili su to skokovi, cesto bolni.
+      </p>
+
+      <div class="era-strip">
+        <div class="es-item">
+          <div class="es-yr" style="color:var(--amber)">1994–1999</div>
+          <div class="es-name">Budjenje Veba</div>
+          <div class="es-stack">
+            <code>HTML 3.2</code> tabele<br>
+            <code>CGI/Perl</code> backend<br>
+            <code>Netscape</code> brauzer<br>
+            <code>GIF</code> animacije
+          </div>
+        </div>
+        <div class="es-item">
+          <div class="es-yr" style="color:var(--green)">2000–2006</div>
+          <div class="es-name">CSS Float Era</div>
+          <div class="es-stack">
+            <code>CSS2</code> lejaut<br>
+            <code>PHP+MySQL</code><br>
+            <code>Flash</code> dominira<br>
+            <code>Ajax</code> revolucija
+          </div>
+        </div>
+        <div class="es-item">
+          <div class="es-yr" style="color:var(--blue)">2007–2014</div>
+          <div class="es-name">Mobilni Udar</div>
+          <div class="es-stack">
+            <code>jQuery</code> standard<br>
+            <code>Bootstrap</code> grid<br>
+            <code>CSS3</code> animacije<br>
+            <code>Responsive</code>
+          </div>
+        </div>
+        <div class="es-item">
+          <div class="es-yr" style="color:var(--purple)">2015–2020</div>
+          <div class="es-name">Komponente</div>
+          <div class="es-stack">
+            <code>React/Vue</code><br>
+            <code>Webpack</code> build<br>
+            <code>TypeScript</code><br>
+            <code>CSS Grid</code>
+          </div>
+        </div>
+        <div class="es-item">
+          <div class="es-yr" style="color:var(--pink)">2021–2025</div>
+          <div class="es-name">Server + AI</div>
+          <div class="es-stack">
+            <code>Next.js RSC</code><br>
+            <code>Tailwind</code><br>
+            <code>Edge compute</code><br>
+            <code>LLM tooling</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider-label" style="display:flex;align-items:center;gap:12px;margin:28px 0 16px"><span style="flex:1;height:1px;background:var(--border)"></span><span style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px">Detalji po era</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-era" style="color:var(--amber)">1994 — 1999</div>
+          <h4>HTML je bio jedini alat</h4>
+          <p>Nije bilo CSS-a koji radi. Nije bilo JavaScript-a vrednog pomena. Sve je bila tabela unutar tabele. <strong>CGI skripte u Perlu</strong> za dinamicnost — i 360 stranica rucno pisanog HTML-a, sto je tada bio ozbiljan projekat.</p>
+          <div class="pills">
+            <span class="pill pa">HTML 3.2</span>
+            <span class="pill pa">CGI/Perl</span>
+            <span class="pill pa">TABLE layout</span>
+            <span class="pill pa">GIF</span>
+            <span class="pill pd">Netscape vs IE</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-era" style="color:var(--green)">2000 — 2006</div>
+          <h4>PHP osvaja svet, Flash dominira</h4>
+          <p><strong>PHP + MySQL</strong> zamenjuju Perl kao standard za dinamicke sajtove. Flash postaje jedini nacin za video i animacije. <strong>Gmail 2004.</strong> dokazuje da veb moze biti aplikacija. Potom dolazi jQuery — jedan red koda umesto deset.</p>
+          <div class="pills">
+            <span class="pill pg">PHP/MySQL</span>
+            <span class="pill pg">Flash</span>
+            <span class="pill pg">Ajax</span>
+            <span class="pill pg">jQuery 2006</span>
+            <span class="pill pd">WordPress 2003</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-era" style="color:var(--blue)">2007 — 2014</div>
+          <h4>iPhone ubija Flash, radja Responsive</h4>
+          <p>Steve Jobs odbija Flash na iPhoneu 2007. Flash umire polako. <strong>Ethan Marcotte</strong> kuje termin "Responsive Web Design" 2010. Bootstrap 2011. daje svima besplatan grid sistem. <strong>CSS3</strong> animacije zamenjuju JavaScript trikove.</p>
+          <div class="pills">
+            <span class="pill pb">Bootstrap</span>
+            <span class="pill pb">CSS3</span>
+            <span class="pill pb">Media queries</span>
+            <span class="pill pb">HTML5</span>
+            <span class="pill pd">Flash R.I.P.</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-era" style="color:var(--purple)">2015 — 2020</div>
+          <h4>Sve je komponenta, sve se kompajlira</h4>
+          <p>React, Vue, Angular — tri odgovora na isto pitanje. <strong>JavaScript fatigue 2016.</strong> — toliko novih frameworka da je satiricni clanak "How it feels to learn JS" dobio milione pregleda. TypeScript polako postaje standard.</p>
+          <div class="pills">
+            <span class="pill pp">React</span>
+            <span class="pill pp">Vue</span>
+            <span class="pill pp">TypeScript</span>
+            <span class="pill pp">Webpack</span>
+            <span class="pill pp">CSS Grid</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout ca-b">
+        <span class="ci">🔑</span>
+        <div class="cb">
+          <strong>Sablonska prica svake ere:</strong> nova tehnologija resava problem prethodne,
+          ali donosi novi problem koji sledeca era mora da resi.
+          Tabele su resile lejaut, ali unistile semantiku.
+          CSS je popravio semantiku, ali uveo browser ratove.
+          jQuery je resio ratove, ali skaliranjem postao haos.
+          React je doneo red, ali i Webpack bol.
+          RSC resava Webpack, ali komplikuje mental model.
+          Ciklus se nastavlja.
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 02 GOOGLE ==================== -->
+    <div class="sec" id="google">
+      <div class="sec-label">02 / Google efekat</div>
+      <h2>Kako je Google promenio sve</h2>
+      <p class="lead">
+        Google nije samo trazio veb — on ga je <em>oblikovao</em>.
+        Svaki put kad je Google promenio algoritam, milioni sajtova su morali
+        da se menjaju ili da nestanu.
+      </p>
+
+      <div class="prose">
+        <p>
+          <strong>Pre Google-a (1994–1998)</strong>, veb je bio direktorijum.
+          Yahoo je imao urednike koji su rucno kategorizovali sajtove.
+          AltaVista je pretrazivao tekst, ali bez razumevanja vaznosti.
+          Nijedno pretrazivanje nije razumelo <em>sta korisnik zaista hoce</em>.
+        </p>
+        <p>
+          Google dolazi 1998. sa <strong>PageRank algoritmom</strong> —
+          sajt je vazan koliko ga drugi vazni sajtovi linkuju.
+          Genijalno prosto. I odmah je promenilo nacin na koji se prave sajtovi:
+          umesto da pravite lepe stranice za korisnike, poceli ste da pravite
+          stranice za <em>Google pajka</em>.
+        </p>
+      </div>
+
+      <div class="timeline-v" style="margin-top:24px">
+        <div class="tv-item">
+          <div class="tv-dot" style="border-color:var(--amber);background:var(--amber)"></div>
+          <div class="tv-yr" style="color:var(--amber)">1998 — PageRank</div>
+          <div class="tv-title">Linkovi kao glasovi</div>
+          <div class="tv-desc">Svaki link ka vasem sajtu je glas. Vise linkova = visa pozicija. Industrija linkova eksplodira — i spam i legitimni.</div>
+        </div>
+        <div class="tv-item">
+          <div class="tv-dot" style="border-color:var(--amber)"></div>
+          <div class="tv-yr" style="color:var(--amber)">2003 — Florida Update</div>
+          <div class="tv-title">Kraj keyword stuffinga</div>
+          <div class="tv-desc">Pisanje "cipele cipele cipele cipele" 500 puta prestaje da radi. Google pocinje da razumeva kontekst. Sajtovi koji su varali nestaju preko noci.</div>
+        </div>
+        <div class="tv-item">
+          <div class="tv-dot" style="border-color:var(--blue)"></div>
+          <div class="tv-yr" style="color:var(--blue)">2010 — Mayday + Panda</div>
+          <div class="tv-title">Kvalitet sadrzaja postaje merljiv</div>
+          <div class="tv-desc">Tanke stranice s malo sadrzaja gube pozicije. Ezoterija "content is king" postaje bukvalna istina. Industrija content marketinga rodjena.</div>
+        </div>
+        <div class="tv-item">
+          <div class="tv-dot" style="border-color:var(--blue)"></div>
+          <div class="tv-yr" style="color:var(--blue)">2012 — Penguin</div>
+          <div class="tv-title">Kraj kupovine linkova</div>
+          <div class="tv-desc">Google kaznjava kupljene i vesticke link seme. SEO industrija koja je gradila ceo biznis na tome se rusi. Pocinje era "white hat" SEO-a.</div>
+        </div>
+        <div class="tv-item">
+          <div class="tv-dot" style="border-color:var(--green)"></div>
+          <div class="tv-yr" style="color:var(--green)">2015 — Mobilegeddon</div>
+          <div class="tv-title">Mobile-friendly je obavezan</div>
+          <div class="tv-desc">Google pocinje da kaznjava sajtove koji nisu prilagodeni mobilnim uredjajima. Milioni sajtova moraju da se rebuilduju. Responsive design prestaje da bude opcija.</div>
+        </div>
+        <div class="tv-item">
+          <div class="tv-dot" style="border-color:var(--green)"></div>
+          <div class="tv-yr" style="color:var(--green)">2018 — Core Web Vitals</div>
+          <div class="tv-title">Brzina i UX kao ranking faktor</div>
+          <div class="tv-desc">LCP, FID, CLS — Google meri korisnicko iskustvo i ugraduje ga u ranking. Performans frontend koda direktno utice na poziciju u pretrazivanju.</div>
+        </div>
+        <div class="tv-item">
+          <div class="tv-dot" style="border-color:var(--purple)"></div>
+          <div class="tv-yr" style="color:var(--purple)">2023 — SGE / AI Overview</div>
+          <div class="tv-title">Google sam odgovara na pitanja</div>
+          <div class="tv-desc">AI generisani odgovori pojavljuju se pre svih organskih rezultata. Informativni sajtovi gube do 60% traffic-a. SEO industrija ponovo u krizi.</div>
+        </div>
+      </div>
+
+      <div class="callout ca-k" style="margin-top:8px">
+        <span class="ci">💀</span>
+        <div class="cb">
+          <strong>"S Veba pa u rebra"</strong> — svaki Google update bio je nozmara za SEO specijaliste.
+          Bukvalno preko noci, sajt koji je mesecima bio na prvoj strani nestaje na dvanaestoj.
+          Firme koje su gradile biznis iskljucivo na Google traffic-u zatvarale su se posle jednog algoritamskog update-a.
+          Google nije bio partner — bio je <em>vladar kome si placao porez vidljivoscu</em>.
+        </div>
+      </div>
+
+      <div class="g3" style="margin-top:20px">
+        <div class="card">
+          <h4>SEO je promenio dizajn</h4>
+          <p>H1, H2, H3 hijerarhija. Alt tekst na slikama. Meta description. Canonical URL-ovi. Sitemap.xml. Stvari koje su dizajneri ignorisali postale su obavezne.</p>
+        </div>
+        <div class="card">
+          <h4>SEO je promenio sadrzaj</h4>
+          <p>Duzina teksta, gustina kljucnih reci, interne veze, svezina sadrzaja. Copywriting i SEO postaju nerazdvojni. Rodjen je "content strategist".</p>
+        </div>
+        <div class="card">
+          <h4>SEO je promenio tehnicku stranu</h4>
+          <p>Schema markup, structured data, JSON-LD, open graph tagovi, page speed optimizacija. Frontend developer mora da zna SEO ili da radi sa nekim ko zna.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 03 MOBILNI ==================== -->
+    <div class="sec" id="mobilni">
+      <div class="sec-label">03 / Mobilna revolucija</div>
+      <h2>Pametni telefoni su srušili sve što znamo</h2>
+      <p class="lead">
+        iPhone nije bio samo novi uredaj — bio je <em>promena definicije veba</em>.
+        Odjednom, veb koji smo gradili nije radio na uredaju koji su svi imali u dzepu.
+      </p>
+
+      <div class="prose">
+        <p>
+          <strong>Januar 2007.</strong> — Steve Jobs predstavlja iPhone.
+          Na veb sajtovima toga dana nije bilo nista posebno. Ali vec sledece jutro,
+          svaki web dizajner je znao da je nesto fundamentalno prslo.
+          Sajtovi gradjeni za 1024px sirinu i precizni mis klik
+          odjednom su morali da rade na 320px ekranu sa prstom.
+        </p>
+        <p>
+          Flash je umro tog jutra, premda to nije znao jos nekoliko godina.
+          Apple nije stavio Flash na iPhone. Tacka. Bez objasnjenja, bez alternativa.
+          Godinama je Flash bio "pravi web" — video, igre, interaktivnost.
+          <strong>Jedan telefon ga je pogubio.</strong>
+        </p>
+      </div>
+
+      <div class="callout ca-a">
+        <span class="ci">📱</span>
+        <div class="cb">
+          <strong>Brojevi koji menjaju sve:</strong> 2010. mobilni saobracaj bio je 2% ukupnog veb saobracaja.
+          2015. prestizao je desktop. 2023. — preko 60% veb saobracaja dolazi s mobilnih uredjaja.
+          Svaki sajt koji nije prilagodjen mobilnom uredjaju odbija vecinsku publiku.
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-era" style="color:var(--blue)">Tehnicka posledica</div>
+          <h4>Responsive Design (2010)</h4>
+          <p>Ethan Marcotte kuje termin. CSS media queries postaju standard. Fluid grids, flexible images. Jedan kod za sve ekrane — ali kompromis: nista nije savrseno ni za koga.</p>
+          <div class="pills">
+            <span class="pill pb">Media queries</span>
+            <span class="pill pb">Viewport meta</span>
+            <span class="pill pb">Fluid grid</span>
+            <span class="pill pd">Em/rem umesto px</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-era" style="color:var(--green)">Dizajnerska posledica</div>
+          <h4>Mobile-First dizajn</h4>
+          <p>Luke Wroblewski predlaze: najpre dizajniraj za mobilni, pa prosiruj za desktop. Manje navigacije, veci touch targeti, kracak tekst. Hamburger meni postaje ikonicni simbol ere.</p>
+          <div class="pills">
+            <span class="pill pg">Touch targets</span>
+            <span class="pill pg">Thumb zone</span>
+            <span class="pill pg">Hamburger menu</span>
+            <span class="pill pd">Progressive enhancement</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-era" style="color:var(--amber)">Performansna posledica</div>
+          <h4>Brzina postaje pitanje prezivljavanja</h4>
+          <p>Mobilne veze su bile 3G — spore i skuplje. Svaki kilobajt je costao. Image optimizacija, lazy loading, code splitting — sve postaje obaveza. Google kaznjava spore sajtove.</p>
+          <div class="pills">
+            <span class="pill pa">AMP (kratko trajao)</span>
+            <span class="pill pa">PWA</span>
+            <span class="pill pa">Service Workers</span>
+            <span class="pill pa">WebP slike</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-era" style="color:var(--purple)">UX posledica</div>
+          <h4>Prst nije mis</h4>
+          <p>Hover stanja ne postoje na dodirnom ekranu. Dropdown meniji su neprijatni. Tabele su nescitljive. Ceo arsenali veb dizajna koji je radio na desktopu — prestao je da funkcionise.</p>
+          <div class="pills">
+            <span class="pill pp">No hover states</span>
+            <span class="pill pp">44px min touch</span>
+            <span class="pill pp">Swipe gestures</span>
+            <span class="pill pd">Portrait/landscape</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout ca-b" style="margin-top:8px">
+        <span class="ci">🔄</span>
+        <div class="cb">
+          <strong>Paradoks mobilnog veba:</strong> Sajtovi su postali mobilno prijatni upravo u momentu kad
+          su aplikacije (App Store, Google Play) pocele da ih zamenjuju.
+          Facebook je 2012. prebacio milijardu korisnika na native app.
+          Deceniju smo gradili mobilni veb, a korisnici su hteli native app.
+          Danas se ponovo vraca ljuljaska — PWA, Super Apps, i veb koji se ponasa kao app.
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 04 AI & CMS ==================== -->
+    <div class="sec" id="ai-cms">
+      <div class="sec-label">04 / AI i CMS revolucija</div>
+      <h2>AI nije samo alat za kod — menja i sadrzaj i CMS-ove</h2>
+      <p class="lead">
+        Dve revolucije istovremeno: AI generise tekst, slike i kod — a CMS-ovi
+        se transformisu od sistema za uredjivanje u platforme za komponovanje.
+      </p>
+
+      <div class="divider-label" style="display:flex;align-items:center;gap:12px;margin:0 0 20px"><span style="flex:1;height:1px;background:var(--border)"></span><span style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px">CMS evolucija</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+
+      <div class="g3">
+        <div class="card">
+          <div class="card-era" style="color:var(--amber)">Prva generacija (2003+)</div>
+          <h4>WordPress / Joomla / Drupal</h4>
+          <p>Monolitni CMS — backend i frontend zajedno. Teme, plugini, WYSIWYG editor. Demokratizovao pravljenje sajtova. WordPress danas pokrece 43% svih sajtova na internetu.</p>
+          <div class="pills">
+            <span class="pill pa">WordPress</span>
+            <span class="pill pa">PHP templates</span>
+            <span class="pill pa">MySQL</span>
+            <span class="pill pa">Plugin ekosistem</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-era" style="color:var(--blue)">Druga generacija (2015+)</div>
+          <h4>Headless CMS</h4>
+          <p>CMS samo cuva sadrzaj, API ga isporucuje. Frontend je potpuno odvojen — React, Next.js, Gatsby. Contentful, Sanity, Strapi. Vise slobode za developere, vise kompleksnosti za klijente.</p>
+          <div class="pills">
+            <span class="pill pb">Contentful</span>
+            <span class="pill pb">Sanity</span>
+            <span class="pill pb">Strapi</span>
+            <span class="pill pb">REST/GraphQL API</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-era" style="color:var(--purple)">Treca generacija (2022+)</div>
+          <h4>AI-Native CMS</h4>
+          <p>Sadrzaj se generise, prevodi i optimizuje pomocu AI-a direktno u editoru. Automatska SEO optimizacija. Personalizacija sadrzaja po korisniku u realnom vremenu.</p>
+          <div class="pills">
+            <span class="pill pp">AI generisanje</span>
+            <span class="pill pp">Auto-translation</span>
+            <span class="pill pp">Personalizacija</span>
+            <span class="pill pp">A/B testing AI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider-label" style="display:flex;align-items:center;gap:12px;margin:28px 0 20px"><span style="flex:1;height:1px;background:var(--border)"></span><span style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px">AI uticaj na veb</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+
+      <table class="impact-t" style="border:1px solid var(--border);border-radius:10px;overflow:hidden">
+        <thead>
+          <tr>
+            <th>Oblast</th>
+            <th>Pre AI (2020)</th>
+            <th>Sa AI (2025)</th>
+            <th>Promena</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Pisanje sadrzaja</strong><div class="sub">Blog postovi, opisi, marketing</div></td>
+            <td>Copywriter, 2-8h po tekstu</td>
+            <td>AI draft za 2 min, editor popravi za 20 min</td>
+            <td><span class="ok">10x brze</span></td>
+          </tr>
+          <tr>
+            <td><strong>Slike i grafika</strong><div class="sub">Hero slike, ilustracije, ikone</div></td>
+            <td>Fotograf / dizajner, danima</td>
+            <td>Midjourney, DALL-E, Firefly — sekunde</td>
+            <td><span class="ok">Dramaticno</span></td>
+          </tr>
+          <tr>
+            <td><strong>Pisanje koda</strong><div class="sub">Komponente, funkcije, testovi</div></td>
+            <td>Senior dev, sat po komponenti</td>
+            <td>AI generise osnovu, dev recenzira i prilagodjava</td>
+            <td><span class="ok">3-5x brze</span></td>
+          </tr>
+          <tr>
+            <td><strong>SEO optimizacija</strong><div class="sub">Meta tagovi, structured data</div></td>
+            <td>SEO specialist, rucno po stranici</td>
+            <td>AI generise, CMS primenjuje automatski</td>
+            <td><span class="ok">Automatizovano</span></td>
+          </tr>
+          <tr>
+            <td><strong>Prevodjenje sajtova</strong><div class="sub">Visejezicni sadrzaj</div></td>
+            <td>Prevodilac, skupo i sporo</td>
+            <td>AI prevod, human review za kljucno</td>
+            <td><span class="ok">100x jeftinije</span></td>
+          </tr>
+          <tr>
+            <td><strong>Chatbot podrska</strong><div class="sub">Odgovori na pitanja korisnika</div></td>
+            <td>FAQ stranica ili skupi live chat</td>
+            <td>LLM koji razume ceo sajt i odgovara prirodno</td>
+            <td><span class="ok">Kvalitativan skok</span></td>
+          </tr>
+          <tr>
+            <td><strong>Organski SEO traffic</strong><div class="sub">Korisnici koji dolaze iz Google-a</div></td>
+            <td>Primarni kanal za info sajtove</td>
+            <td>Google AI Overview odgovara direktno, traffic pada</td>
+            <td><span class="bad">-30 do -60%</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout ca-g" style="margin-top:20px">
+        <span class="ci">🤔</span>
+        <div class="cb">
+          <strong>Gorka ironija CMS-a i AI-a:</strong> WordPress plugini koji su koristili desetine hiljada sajta
+          za generisanje sadrzaja — Google je poceo da kaznjava AI generisani sadrzaj bez
+          "human expertise" signala. Dakle: AI olaksava pisanje sadrzaja,
+          ali pretraga kaznjava sadrzaj koji je preocigledono AI generisan.
+          Kvalitet koji razlikuje coveka od masine ponovo postaje vrednost.
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 05 BUDUCNOST ==================== -->
+    <div class="sec" id="buducnost">
+      <div class="sec-label">05 / Sta dolazi</div>
+      <h2>Buducnost veba — sta mozemo da ocekujemo</h2>
+      <p class="lead">
+        Predvidjanje buducnosti veba je uvek bio los sport —
+        niko 2003. nije predvideo Facebook, niko 2007. nije predvideo app store ekonomiju.
+        Ali neke tendencije su dovoljno jasne da se mogu imenovati.
+      </p>
+
+      <div class="callout ca-p">
+        <span class="ci">🎯</span>
+        <div class="cb">
+          <strong>Jedina konstanta:</strong> veb uvek resava problem trenutnog ogranicenja.
+          90-e: nema informacija online — veb ih stavlja.
+          2000-e: nema interaktivnosti — Ajax je dodaje.
+          2010-e: nema mobilnog — responsive to resava.
+          2020-e: previse JS-a — RSC ga smanjuje.
+          Sledece ogranicenje vec postoji, samo ga jos ne vidimo jasno.
+        </div>
+      </div>
+
+      <div class="g2" style="margin-top:20px">
+
+        <div class="future-card">
+          <div class="fc-prob">Verovatnoca: <span>visoka</span></div>
+          <h4>AI postaje sloj, ne alat</h4>
+          <p>Ne "AI dugme na sajtu" — AI koji razumije ceo sajt, korisnika, kontekst. Svaki sajt ce imati sopstveni LLM treniran na svom sadrzaju. Chatbot nije feature — postaje primarni interfejs za mnoge tipove sadrzaja.</p>
+          <div class="pills" style="margin-top:12px">
+            <span class="pill pp">RAG nad sadrzajem</span>
+            <span class="pill pp">Personalizacija</span>
+            <span class="pill pb">Voice interface</span>
+          </div>
+        </div>
+
+        <div class="future-card">
+          <div class="fc-prob">Verovatnoca: <span>visoka</span></div>
+          <h4>Kraj "sajt kao brošura"</h4>
+          <p>Staticni marketing sajt koji samo prikazuje informacije — odumire. Korisnik ocekuje da razgovara sa sajtom, da dobije personalizovan odgovor, da sajt "zna" ko je. Staticki sadrzaj ostaje samo tamo gde je kontekst jasan.</p>
+          <div class="pills" style="margin-top:12px">
+            <span class="pill pg">Conversational UI</span>
+            <span class="pill pa">Dynamic content</span>
+            <span class="pill pb">Context-aware</span>
+          </div>
+        </div>
+
+        <div class="future-card">
+          <div class="fc-prob">Verovatnoca: <span>srednja</span></div>
+          <h4>WebAssembly menja granice</h4>
+          <p>WASM omogucava da bilo koji jezik radi u brauzeru na native brzini. Figma, AutoCAD, video editing u brauzeru. Granica izmedju desktop aplikacije i veb stranice nestaje. Python, Rust, C++ u frontendu.</p>
+          <div class="pills" style="margin-top:12px">
+            <span class="pill pg">WASM</span>
+            <span class="pill pg">Rust u brauzeru</span>
+            <span class="pill pd">Python frontend</span>
+          </div>
+        </div>
+
+        <div class="future-card">
+          <div class="fc-prob">Verovatnoca: <span>srednja</span></div>
+          <h4>Decentralizovani veb (Web3?)</h4>
+          <p>Blockchain, IPFS, decentralizovano hostovanje. Sajtovi koji ne mogu biti ugaseni, sadrzaj koji ne moze biti cenzurisan. Kripto hype je prosao, ali tehnicka infrastruktura ostaje i dozreva sporije nego sto se ocekivalo.</p>
+          <div class="pills" style="margin-top:12px">
+            <span class="pill pa">IPFS</span>
+            <span class="pill pa">ENS domeni</span>
+            <span class="pill pd">Zreli za 5-10 god</span>
+          </div>
+        </div>
+
+        <div class="future-card">
+          <div class="fc-prob">Verovatnoca: <span>niska ali bitna</span></div>
+          <h4>Kraj URL-a kakav znamo</h4>
+          <p>Generacija koja je odrasla na TikToku i Instagramu ne ukucava URL. Pronalaze sadrzaj kroz algorithm, AI asistenta, QR kod. URL ostaje tehnicka realnost, ali ne i primarni nacin pristupa za vecinu korisnika.</p>
+          <div class="pills" style="margin-top:12px">
+            <span class="pill pr">Algorithm discovery</span>
+            <span class="pill pr">AI search</span>
+            <span class="pill pd">Dugorocno</span>
+          </div>
+        </div>
+
+        <div class="future-card">
+          <div class="fc-prob">Verovatnoca: <span>gotovo sigurno</span></div>
+          <h4>Veb developer postaje AI orchestrator</h4>
+          <p>Manje pisanja koda, vise dizajniranja sistema. Koji AI alat za koji zadatak, kako ih spojiti, kako proveriti izlaz, kako odrzavati. Fundamentalno razumevanje ostaje uslov — ali tip posla se menja fundamentalno.</p>
+          <div class="pills" style="margin-top:12px">
+            <span class="pill pp">Prompt engineering</span>
+            <span class="pill pp">AI orchestration</span>
+            <span class="pill pg">System thinking</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="blockquote" style="margin-top:28px">
+        <p>
+          Veb je doziveo tri fundamentalna prelaza: od dokumenta ka aplikaciji (2004-2010),
+          od desktopu ka mobilnom (2007-2015), od covjeka-koji-pise ka AI-koji-generise (2022-?).
+          Svaki prelaz je trajao oko 7-10 godina. Sada smo negde na sredini treceg.
+        </p>
+        <cite>— Sinteza razgovora, Frontend Vremenska Masina 2025.</cite>
+      </div>
+
+      <div class="callout ca-b" style="margin-top:20px">
+        <span class="ci">💡</span>
+        <div class="cb">
+          <strong>Sta ostaje sigurno:</strong> HTTP protokol, HTML kao osnova, CSS za izgled, JavaScript za logiku.
+          Ove cetiri tehnologije prezivele su 30 godina i svaku revoluciju.
+          Sve ostalo — frameworki, alati, workflow — to se menja svakih 5 godina.
+          Ko razumije osnove, moci ce da nauci sve sto dolazi.
+          Ko zna samo React hooks — svaki sledeci React update je kriza.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<footer>
+  <span>Frontend Vremenska Masina &nbsp;·&nbsp; Tematska Predavanja &nbsp;·&nbsp; <a href="index.html">← Sve ere</a></span>
+  <span style="color:var(--dim)">Syne + IBM Plex Mono &nbsp;·&nbsp; Vanilla HTML/CSS &nbsp;·&nbsp; Nema frameworka</span>
+</footer>
+
+<script>
+  // Aktivna stavka u sidebar navu na scroll
+  const sections = document.querySelectorAll('.sec');
+  const links = document.querySelectorAll('.snav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        links.forEach(l => {
+          l.classList.toggle('on', l.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

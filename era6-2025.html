@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: 2025+ :: AI, LLM i Vibe Coding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@300;400;500&family=Syne+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #030508;
+      --s1:        #080c14;
+      --s2:        #0c1220;
+      --s3:        #10192c;
+      --border:    rgba(99,179,237,0.1);
+      --border2:   rgba(99,179,237,0.22);
+      --ai:        #63b3ed;
+      --ai2:       #9f7aea;
+      --green:     #48bb78;
+      --red:       #fc8181;
+      --amber:     #f6ad55;
+      --pink:      #f687b3;
+      --text:      #e2e8f0;
+      --dim:       #4a5568;
+      --muted:     #718096;
+      --sans:      'Fira Code', 'Share Tech Mono', monospace;
+      --mono:      'Syne Mono', 'Share Tech Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* Scan line efekat — AI era estetika */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Ambijetno svetlo */
+    .glow-1 {
+      position: fixed; top: -200px; left: 20%; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(99,179,237,0.06) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .glow-2 {
+      position: fixed; bottom: -200px; right: 10%; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(159,122,234,0.05) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* Sve iznad glowova */
+    nav, main, footer, .hero-wrap { position: relative; z-index: 1; }
+
+    /* ---- NAV ---- */
+    nav {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(3,5,8,0.85);
+      backdrop-filter: blur(16px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--ai);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-pulse {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--ai);
+      box-shadow: 0 0 0 0 rgba(99,179,237,0.4);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(99,179,237,0.5); }
+      70% { box-shadow: 0 0 0 8px rgba(99,179,237,0); }
+      100% { box-shadow: 0 0 0 0 rgba(99,179,237,0); }
+    }
+    .nav-links { display: flex; gap: 2px; }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--s2); }
+    .nav-links a.active { color: var(--ai); background: rgba(99,179,237,0.08); border: 1px solid var(--border); }
+
+    /* ---- HERO ---- */
+    .hero-wrap {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+    }
+    .hero {
+      max-width: 820px;
+      text-align: center;
+    }
+    .era-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ai);
+      border: 1px solid var(--border2);
+      background: rgba(99,179,237,0.06);
+      padding: 5px 14px;
+      border-radius: 4px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .hero h1 {
+      font-size: clamp(38px, 6vw, 68px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -2px;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .hero h1 .line2 { color: var(--ai); }
+    .hero h1 .line3 { color: var(--ai2); }
+    .hero-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 32px;
+      line-height: 1.75;
+      font-weight: 400;
+    }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-ai {
+      background: var(--ai);
+      color: #000;
+      padding: 11px 24px;
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(99,179,237,0.3);
+      transition: all 0.2s;
+    }
+    .btn-ai:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(99,179,237,0.5); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      padding: 11px 24px;
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--border2); color: var(--text); }
+
+    /* ---- MAIN LAYOUT ---- */
+    main { max-width: 1080px; margin: 0 auto; padding: 0 40px 100px; }
+
+    section { margin-bottom: 80px; }
+    .sec-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--ai);
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.15;
+    }
+    .sec-desc { color: var(--muted); font-size: 15px; max-width: 600px; margin-bottom: 28px; line-height: 1.7; }
+
+    /* Kartice */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .card {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+      transition: border-color 0.15s;
+    }
+    .card:hover { border-color: var(--border2); }
+    .card-icon { font-size: 22px; margin-bottom: 12px; display: block; }
+    .card h3 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 7px; }
+    .card p  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .card .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+    .tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      border: 1px solid;
+    }
+    .t-ai     { color: var(--ai);   border-color: rgba(99,179,237,0.3);  background: rgba(99,179,237,0.07); }
+    .t-purple { color: var(--ai2);  border-color: rgba(159,122,234,0.3); background: rgba(159,122,234,0.07); }
+    .t-green  { color: var(--green);border-color: rgba(72,187,120,0.3);  background: rgba(72,187,120,0.07); }
+    .t-red    { color: var(--red);  border-color: rgba(252,129,129,0.3); background: rgba(252,129,129,0.07); }
+    .t-amber  { color: var(--amber);border-color: rgba(246,173,85,0.3);  background: rgba(246,173,85,0.07); }
+    .t-dim    { color: var(--muted);border-color: var(--border);         background: rgba(255,255,255,0.03); }
+
+    /* Callout */
+    .callout {
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin: 20px 0;
+      display: flex; gap: 14px;
+      border: 1px solid;
+    }
+    .c-ai     { background: rgba(99,179,237,0.05);  border-color: rgba(99,179,237,0.2); }
+    .c-purple { background: rgba(159,122,234,0.05); border-color: rgba(159,122,234,0.2); }
+    .c-amber  { background: rgba(246,173,85,0.05);  border-color: rgba(246,173,85,0.2); }
+    .c-red    { background: rgba(252,129,129,0.05); border-color: rgba(252,129,129,0.2); }
+    .c-green  { background: rgba(72,187,120,0.05);  border-color: rgba(72,187,120,0.2); }
+    .c-icon { font-size: 20px; flex-shrink: 0; }
+    .c-body { font-size: 13px; color: var(--text); line-height: 1.75; }
+    .c-body strong { color: #fff; }
+    .c-body code {
+      font-family: var(--mono);
+      font-size: 11px;
+      background: rgba(255,255,255,0.07);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--ai);
+    }
+
+    /* Kod blok */
+    .code-wrap {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+    .code-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--s3);
+    }
+    .code-head span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .code-lang {
+      font-family: var(--mono); font-size: 10px;
+      padding: 2px 8px; border-radius: 3px;
+      background: rgba(99,179,237,0.1); color: var(--ai);
+    }
+    pre {
+      padding: 18px;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.8;
+      color: #a0aec0;
+      overflow-x: auto;
+      margin: 0;
+      background: transparent;
+      border: none;
+    }
+    .ck  { color: #f687b3; }
+    .cs  { color: #9ae6b4; }
+    .cm  { color: #4a5568; font-style: italic; }
+    .ca  { color: #fbd38d; }
+    .cn  { color: #76e4f7; }
+    .co  { color: #b794f4; }
+
+    /* Prompt terminal */
+    .prompt-terminal {
+      background: #000;
+      border: 1px solid rgba(99,179,237,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .pt-bar {
+      background: #111;
+      padding: 8px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pt-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .pt-title { color: #555; font-size: 11px; margin-left: 4px; }
+    .pt-body { padding: 16px; }
+    .pt-user {
+      color: var(--ai);
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    .pt-user::before { content: '❯ '; opacity: 0.5; }
+    .pt-ai {
+      color: #68d391;
+      padding: 10px 12px;
+      background: rgba(104,211,145,0.05);
+      border-left: 2px solid #68d391;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+    .pt-comment { color: #4a5568; font-size: 11px; padding: 4px 0 10px; }
+
+    /* Cena neznanja — tabela */
+    .cost-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .cost-table th {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-weight: 400;
+    }
+    .cost-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: top;
+      color: var(--text);
+    }
+    .cost-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .cost-table tr:last-child td { border-bottom: none; }
+    .cost-ok   { color: var(--green); font-weight: 600; }
+    .cost-warn { color: var(--amber); font-weight: 600; }
+    .cost-bad  { color: var(--red);   font-weight: 600; }
+    .cost-desc { color: var(--muted); font-size: 12px; margin-top: 3px; line-height: 1.5; }
+
+    /* Markdown paradoks — vizualizacija */
+    .paradox-grid {
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr;
+      gap: 0;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .paradox-side {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .paradox-arrow {
+      text-align: center;
+      font-size: 22px;
+      color: var(--ai2);
+    }
+    .paradox-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .paradox-content {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .paradox-content code {
+      font-family: var(--mono);
+      font-size: 11px;
+      background: rgba(255,255,255,0.07);
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: var(--ai);
+      display: block;
+      margin: 4px 0;
+    }
+
+    /* Knuth sekcija — poseban stil */
+    .knuth-quote {
+      background: var(--s1);
+      border: 1px solid rgba(159,122,234,0.25);
+      border-radius: 10px;
+      padding: 28px 32px;
+      position: relative;
+      margin: 24px 0;
+    }
+    .knuth-quote::before {
+      content: '"';
+      position: absolute;
+      top: -20px; left: 20px;
+      font-size: 80px;
+      color: rgba(159,122,234,0.2);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+    .knuth-text {
+      font-size: 16px;
+      color: #c3d0e8;
+      font-style: italic;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    .knuth-cite {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .knuth-cite span { color: var(--ai2); }
+
+    /* Vibe coding demo */
+    .vibe-demo {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .vd-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+      background: var(--s2);
+    }
+    .vd-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .vd-steps { padding: 0; }
+    .vd-step {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .vd-step:last-child { border-bottom: none; }
+    .vd-num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .num-user { background: rgba(99,179,237,0.12); color: var(--ai); border: 1px solid rgba(99,179,237,0.25); }
+    .num-ai   { background: rgba(72,187,120,0.12); color: var(--green); border: 1px solid rgba(72,187,120,0.25); }
+    .num-warn { background: rgba(252,129,129,0.12); color: var(--red); border: 1px solid rgba(252,129,129,0.25); }
+    .vd-content { font-size: 13px; line-height: 1.65; color: var(--text); }
+    .vd-content strong { color: #fff; }
+    .vd-content em { color: var(--muted); font-style: normal; font-size: 12px; }
+
+    /* Horizontalni progress — znanje kroz ere */
+    .knowledge-bar {
+      margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .kb-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 60px;
+      align-items: center;
+      gap: 12px;
+    }
+    .kb-label { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+    .kb-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; }
+    .kb-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+    .kb-pct { font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: right; }
+
+    /* Outro / zakljucak */
+    .outro {
+      background: linear-gradient(135deg, var(--s1) 0%, var(--s2) 100%);
+      border: 1px solid var(--border2);
+      border-radius: 16px;
+      padding: 48px 40px;
+      text-align: center;
+      margin-top: 60px;
+    }
+    .outro h2 { font-size: 36px; letter-spacing: -1px; margin-bottom: 16px; }
+    .outro p { color: var(--muted); font-size: 15px; max-width: 580px; margin: 0 auto 28px; line-height: 1.75; }
+    .outro-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      position: relative; z-index: 1;
+    }
+    footer a { color: var(--ai); text-decoration: none; }
+
+    /* Animacija kucanja u hero */
+    .typing-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.8em;
+      background: var(--ai);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  </style>
+</head>
+<body>
+
+<div class="glow-1"></div>
+<div class="glow-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-pulse"></div>
+    vremenska.masina
+  </div>
+    <div class="nav-links">
+    <a href="era1-1994.html">1994</a>
+    <a href="era2-2000.html">2000s</a>
+    <a href="era3-2005.html">2010s</a>
+    <a href="era4-2010.html">2015s</a>
+    <a href="era5-2020.html">2020s</a>
+    <a href="era6-2025.html" class="active">2025+</a>
+    <a href="teme.html">Teme</a>
+    <a href="buducnost.html">Buducnost</a>
+    <a href="hvala.html">Hvala</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero">
+    <div class="era-tag">// era 6 — 2025 i dalje</div>
+    <h1>
+      Vibe Coding,<br>
+      <span class="line2">LLM & Claude</span><br>
+      <span class="line3">Copilot Era</span>
+    </h1>
+    <p class="hero-sub">
+      Kada AI pise kod, a ti pises prozu —
+      Knut je zeleo literatno programiranje,
+      a dobili smo programabilnu literaturu.
+    </p>
+    <div class="hero-btns">
+      <a href="#sta-se-menja" class="btn-ai">Istrazite eru</a>
+      <a href="#cena-neznanja" class="btn-ghost">Cena neznanja →</a>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- STA SE MENJA -->
+  <section id="sta-se-menja">
+    <div class="sec-label">Nova paradigma</div>
+    <h2>Sta se tacno menja 2025.?</h2>
+    <p class="sec-desc">Ne samo novi alati — drugaciji nacin razmisljanja o tome ko je programer i sta je programiranje.</p>
+
+    <div class="grid3">
+      <div class="card">
+        <span class="card-icon">🤖</span>
+        <h3>LLM kao saradnik</h3>
+        <p>Claude, GPT-4, Gemini pisu implementaciju. Ti pises nameru, arhitekturu, kontekst. Pair programming sa modelom koji nikad ne spava.</p>
+        <div class="tags">
+          <span class="tag t-ai">Claude Code</span>
+          <span class="tag t-ai">Copilot</span>
+          <span class="tag t-purple">Cursor IDE</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🎵</span>
+        <h3>Vibe Coding</h3>
+        <p>Termin koji je skovo Andrej Karpati 2025: "ne citam kod, samo opisujem sta zelim i prihvatam diff." Brzo, efikasno, i opasno ako ne razumes izlaz.</p>
+        <div class="tags">
+          <span class="tag t-amber">Karpati 2025</span>
+          <span class="tag t-red">Caveat emptor</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">📝</span>
+        <h3>Promptovi kao kod</h3>
+        <p>Prompt engineering postaje vestina. Kako opisati problem, kako dati kontekst, kako iterirati — to je novi programerski workflow.</p>
+        <div class="tags">
+          <span class="tag t-green">Prompt eng.</span>
+          <span class="tag t-ai">Context window</span>
+          <span class="tag t-purple">RAG</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KNUT PARADOKS -->
+  <section id="knut">
+    <div class="sec-label">Istorijski paradoks</div>
+    <h2>Knut je sanjao ovo — ali naopako</h2>
+
+    <div class="knuth-quote">
+      <p class="knuth-text">
+        "Literate programming... instead of imagining that our main task is to instruct
+        a computer what to do, let us concentrate rather on explaining to human beings
+        what we want a computer to do."
+      </p>
+      <div class="knuth-cite">— Donald Knuth, <span>Literate Programming (1984.)</span></div>
+    </div>
+
+    <p class="sec-desc" style="max-width:100%;">
+      Knut je zeleo da kod bude citljiv kao knjiga — proza koja objasnjava logiku,
+      a kompajler izvuce kod iz nje. TeX, CWEB, noweb — alati koji su bili ispred vremena
+      za 40 godina. Industrija ga je ignorisala. A onda je dosao LLM.
+    </p>
+
+    <div class="paradox-grid">
+      <div class="paradox-side">
+        <div class="paradox-title">Knut 1984 — Literatno programiranje</div>
+        <div class="paradox-content">
+          Pises prozu koja <strong>sadrzi kod</strong>.<br>
+          Alat izvlaci kod iz proze.<br>
+          Cilj: kod razumljiv ljudima.<br><br>
+          <code>@* The main program.</code>
+          <code>@c int main() { ... }</code>
+          Neuspelo — previse kompleksno za svakodnevnu upotrebu.
+        </div>
+      </div>
+      <div class="paradox-arrow">⇄</div>
+      <div class="paradox-side">
+        <div class="paradox-title">LLM 2025 — Programabilna proza</div>
+        <div class="paradox-content">
+          Pises prozu koja <strong>generise kod</strong>.<br>
+          LLM izvlaci kod iz proze.<br>
+          Cilj: isti — kod razumljiv ljudima.<br><br>
+          <code># Napravi React komponentu za...</code>
+          <code>## Treba da podrzava paginaciju</code>
+          Uspelo — jer proza je prirodna, alat je LLM.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout c-purple">
+      <span class="c-icon">💡</span>
+      <div class="c-body">
+        <strong>Ironija:</strong> Knut je zeleo da programeri pisu prozu a kompajler razume.
+        Dobili smo obrnuto — LLM razume prozu i pise kod.
+        Rezultat je isti, pravac je suprotan. I paradoksalno,
+        da bi proza bila dobra — moras znati markdown, jer
+        <code># Naslov</code>, <code>**bold**</code> i <code>```kod```</code>
+        su gramatika kojom razgovaras sa modelom.
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKDOWN PARADOKS -->
+  <section id="markdown-paradoks">
+    <div class="sec-label">Neocekivana vestina</div>
+    <h2>Markdown je novi programski jezik</h2>
+    <p class="sec-desc">
+      Ako zelis da budes efikasan u radu sa LLM-om, treba ti znanje koje je
+      izgledalo suvisno: kako strukturirati tekst.
+    </p>
+
+    <div class="grid2">
+      <div>
+        <div class="code-wrap">
+          <div class="code-head">
+            <span>Lose — nestrukturisano</span>
+            <span class="code-lang" style="color:var(--red);">❌ Slab prompt</span>
+          </div>
+          <pre><span class="cm">napravi mi sajt za prodavnicu
+treba da ima proizvode i korpu
+i da se moze kupiti i da ima login</span></pre>
+        </div>
+        <div class="callout c-red" style="margin-top:8px;">
+          <span class="c-icon">⚠</span>
+          <div class="c-body">
+            LLM ce nesto napraviti, ali ne ono sto si mislio.
+            Nema konteksta, nema prioriteta, nema tehnickih zahteva.
+            Genericki izlaz koji ces morati da objasnjavaš iznova.
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="code-wrap">
+          <div class="code-head">
+            <span>Dobro — strukturisano u Markdown-u</span>
+            <span class="code-lang" style="color:var(--green);">✓ Dobar prompt</span>
+          </div>
+          <pre><span class="ca"># Projekat: Online prodavnica</span>
+
+<span class="ca">## Tech stack</span>
+- <span class="cs">Next.js 14</span> (App Router)
+- <span class="cs">Prisma + PostgreSQL</span>
+- <span class="cs">Stripe</span> za placanje
+
+<span class="ca">## Faza 1 — samo ovo</span>
+1. Lista proizvoda (SSR, bez paginacije)
+2. Korpa u localStorage
+3. <span class="co">NE implementiraj auth jos</span>
+
+<span class="ca">## Ogranicenja</span>
+- Max 3 fajla po odgovoru
+- TypeScript obavezan</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout c-ai" style="margin-top:8px;">
+      <span class="c-icon">📐</span>
+      <div class="c-body">
+        <strong>Markdown struktura komunicira prioritete:</strong>
+        <code>#</code> = glavni cilj,
+        <code>##</code> = podsistemi,
+        <code>-</code> = lista zahteva,
+        <code>**bold**</code> = kriticno,
+        <code>```kod```</code> = tehnicke specifikacije.
+        LLM je treniran na milijardama Markdown dokumenata —
+        struktura direktno utice na kvalitet izlaza.
+      </div>
+    </div>
+  </section>
+
+  <!-- VIBE CODING WORKFLOW -->
+  <section id="vibe-coding">
+    <div class="sec-label">U praksi</div>
+    <h2>Vibe Coding — korak po korak</h2>
+    <p class="sec-desc">Kako izgleda moderan workflow sa Claude Code ili Cursor IDE-om. I gde zaglavis ako ne razumes fundamentale.</p>
+
+    <div class="vibe-demo">
+      <div class="vd-header">
+        <div class="vd-dot" style="background:#ff5f57"></div>
+        <div class="vd-dot" style="background:#febc2e"></div>
+        <div class="vd-dot" style="background:#28c840"></div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:8px;">claude-code — ~/projekat</span>
+      </div>
+      <div class="vd-steps">
+        <div class="vd-step">
+          <div class="vd-num num-user">1</div>
+          <div class="vd-content">
+            <strong>Ti pises prompt</strong> — opisujes sta zelis, koji tech stack, koji edge case-ovi postoje.<br>
+            <em>Ovo je sad tvoj glavni posao. Ne pisanje koda — pisanje namere.</em>
+          </div>
+        </div>
+        <div class="vd-step">
+          <div class="vd-num num-ai">2</div>
+          <div class="vd-content">
+            <strong>AI generise implementaciju</strong> — komponente, tipovi, testovi, ponekad i dokumentacija.
+            Za 30 sekundi dobijes ono sto bi pisao sat vremena.<br>
+            <em>Cursor, Claude Code, Copilot — svi rade ovako.</em>
+          </div>
+        </div>
+        <div class="vd-step">
+          <div class="vd-num num-user">3</div>
+          <div class="vd-content">
+            <strong>Ti recenziras diff</strong> — prihvatas ili odbijas izmene.<br>
+            <em>I ovde pocinje problem ako ne razumes HTML, DOM, CSS...</em>
+          </div>
+        </div>
+        <div class="vd-step">
+          <div class="vd-num num-warn">!</div>
+          <div class="vd-content">
+            <strong>Bez fundamentalnog znanja ne znas sta prihvatas.</strong>
+            AI je generisao <code>position: absolute</code> umesto <code>relative</code> —
+            izgleda isto u dev modu, puca na produkciji. Ne znas zasto.
+            AI ti objasni, ti ne razumes objasnjenje. Krug se zatvara.<br>
+            <em>Ovo je cena neznanja u 2025. — ne da ne motes da pocnes, vec da ces zaglaviti.</em>
+          </div>
+        </div>
+        <div class="vd-step">
+          <div class="vd-num num-ai">4</div>
+          <div class="vd-content">
+            <strong>Iteracija i debug</strong> — "ovo ne radi, evo greske iz konzole".<br>
+            AI ispravi, objasni. <em>Ali konzolu moras da umes da otvoris i da pitas pravo pitanje.</em>
+          </div>
+        </div>
+        <div class="vd-step">
+          <div class="vd-num num-ai">5</div>
+          <div class="vd-content">
+            <strong>Deploy</strong> — Vercel, Netlify, Railway. Klikas dugme, sajt je ziv.<br>
+            <em>Ovo je zaista lako postalo. Deployment nije vise prepreka.</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CENA NEZNANJA -->
+  <section id="cena-neznanja">
+    <div class="sec-label">Realna analiza</div>
+    <h2>Cena neznanja u 2025.</h2>
+    <p class="sec-desc">
+      Ako tek pocinjec i nemas pojma o HTML, DOM, CSS — mozec da napravis nesto.
+      Ali evo tacno gde ces zaglaviti i koliko ce te to kostati.
+    </p>
+
+    <div class="code-wrap">
+      <div class="code-head">
+        <span>Mapa zaglavljivanja — bez osnovnog znanja</span>
+        <span class="code-lang">Realni scenariji</span>
+      </div>
+    </div>
+
+    <table class="cost-table" style="background:var(--s1);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <thead>
+        <tr>
+          <th>Situacija</th>
+          <th>Bez znanja</th>
+          <th>Sa znanjem</th>
+          <th>Izgubljeno vreme</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>Dugme ne reaguje na klik</strong>
+            <div class="cost-desc">AI generisao event listener ali element je ispod drugog elementa (z-index, pointer-events)</div>
+          </td>
+          <td><span class="cost-bad">Zaglavis</span><div class="cost-desc">Ne znas sta da pitas AI. Opisujes simptom, AI daje pogresno resenje.</div></td>
+          <td><span class="cost-ok">2 min</span><div class="cost-desc">DevTools, inspector, vidis problem odmah.</div></td>
+          <td><span class="cost-warn">1-4 sata</span></td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Lejaut se raspada na mobilnom</strong>
+            <div class="cost-desc">AI napravio lejaut koji izgleda dobro na desktopu</div>
+          </td>
+          <td><span class="cost-bad">Beskrajna iteracija</span><div class="cost-desc">Kazes "popravi za mobilni", AI menja, nesto drugo puca. Ne razumes media queries.</div></td>
+          <td><span class="cost-ok">15 min</span><div class="cost-desc">Znas sta je breakpoint, znas sta trazis od AI-a.</div></td>
+          <td><span class="cost-warn">Pola dana</span></td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Stranica spora — LCP > 5s</strong>
+            <div class="cost-desc">AI nije optimizovao slike, fonts blocking render</div>
+          </td>
+          <td><span class="cost-bad">Ne znas ni da postoji problem</span><div class="cost-desc">Core Web Vitals, Lighthouse — nepoznate reci.</div></td>
+          <td><span class="cost-ok">1 sat</span><div class="cost-desc">Znas sta je LCP, CLS, FID. Daješ AI konkretan zadatak.</div></td>
+          <td><span class="cost-warn">Nikad nece biti reseno</span></td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Form data ne stize do servera</strong>
+            <div class="cost-desc">CORS, CSRF token, Content-Type header greska</div>
+          </td>
+          <td><span class="cost-bad">Mislis da ne radi kod</span><div class="cost-desc">Brises i pises iznova. Problem je u HTTP zaglavlju, ne u logici.</div></td>
+          <td><span class="cost-ok">10 min</span><div class="cost-desc">Network tab u DevTools, vidis request/response odmah.</div></td>
+          <td><span class="cost-warn">Vise dana</span></td>
+        </tr>
+        <tr>
+          <td>
+            <strong>AI generise "radi ali ne znam kako"</strong>
+            <div class="cost-desc">Kompleksna CSS animacija, async race condition</div>
+          </td>
+          <td><span class="cost-bad">Tehnicni dug koji raste</span><div class="cost-desc">Svaka izmena moze nesto da pokvari. Ne smes da dodiras.</div></td>
+          <td><span class="cost-ok">Razumes kod</span><div class="cost-desc">Mozes da menjas, optimizujes, popravljas samostalno.</div></td>
+          <td><span class="cost-warn">Buduci refaktoring</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout c-amber" style="margin-top:20px;">
+      <span class="c-icon">🎯</span>
+      <div class="c-body">
+        <strong>Zakljucak koji nije ocekivan:</strong> Pocetnici mogu brze nego ikad da naprave
+        nesto sto radi. Ali brze nego ikad dolaze i do tacke gde su potpuno zaglavljeni
+        i ne znaju ni sta ne znaju. Ranije bi to doslo posle 6 meseci ucenja.
+        Sada dolazi posle 6 sati vibe codinga.
+      </div>
+    </div>
+  </section>
+
+  <!-- STA TREBA DA ZNA -->
+  <section id="minimum-znanja">
+    <div class="sec-label">Prakticni vodic</div>
+    <h2>Minimalno znanje za efikasan AI workflow</h2>
+    <p class="sec-desc">
+      Ne treba ti sve. Treba ti dovoljno da razumes sta AI radi i da prepoznas greske.
+    </p>
+
+    <div class="knowledge-bar">
+      <div class="kb-row">
+        <div class="kb-label">HTML semantika</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:85%;background:var(--green);"></div></div>
+        <div class="kb-pct">Obavezno</div>
+      </div>
+      <div class="kb-row">
+        <div class="kb-label">CSS box model</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:85%;background:var(--green);"></div></div>
+        <div class="kb-pct">Obavezno</div>
+      </div>
+      <div class="kb-row">
+        <div class="kb-label">Flexbox osnove</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:80%;background:var(--green);"></div></div>
+        <div class="kb-pct">Obavezno</div>
+      </div>
+      <div class="kb-row">
+        <div class="kb-label">DevTools konzola</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:90%;background:var(--ai);"></div></div>
+        <div class="kb-pct">Kriticno</div>
+      </div>
+      <div class="kb-row">
+        <div class="kb-label">Network tab</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:75%;background:var(--ai);"></div></div>
+        <div class="kb-pct">Kriticno</div>
+      </div>
+      <div class="kb-row">
+        <div class="kb-label">Markdown</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:95%;background:var(--ai2);"></div></div>
+        <div class="kb-pct">Za LLM</div>
+      </div>
+      <div class="kb-row">
+        <div class="kb-label">Git osnove</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:70%;background:var(--amber);"></div></div>
+        <div class="kb-pct">Vazno</div>
+      </div>
+      <div class="kb-row">
+        <div class="kb-label">JS ES6 sintaksa</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:60%;background:var(--amber);"></div></div>
+        <div class="kb-pct">Korisno</div>
+      </div>
+      <div class="kb-row">
+        <div class="kb-label">React hooks duboko</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:30%;background:var(--dim);"></div></div>
+        <div class="kb-pct">AI radi</div>
+      </div>
+      <div class="kb-row">
+        <div class="kb-label">Webpack konfiguracija</div>
+        <div class="kb-bar"><div class="kb-fill" style="width:10%;background:var(--dim);"></div></div>
+        <div class="kb-pct">AI radi</div>
+      </div>
+    </div>
+
+    <div class="callout c-green">
+      <span class="c-icon">✦</span>
+      <div class="c-body">
+        <strong>Promena koja je stvarna:</strong> Nekada si morao da znas kako da implementiras
+        binarno pretrazivanje, hoje da konfigurisas Webpack, kako se pisu SQL joinovi.
+        Danas AI to radi umesto tebe. Ali moras da znas dovoljno da proveris da li je tacno,
+        da dijas pravo pitanje i da razumes odgovor. To je novi minimum.
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMPT DEMO -->
+  <section>
+    <div class="sec-label">Primer iz prakse</div>
+    <h2>Efikasan razgovor sa LLM-om</h2>
+
+    <div class="prompt-terminal">
+      <div class="pt-bar">
+        <div class="pt-dot" style="background:#ff5f57"></div>
+        <div class="pt-dot" style="background:#febc2e"></div>
+        <div class="pt-dot" style="background:#28c840"></div>
+        <span class="pt-title">claude-code — sesija</span>
+      </div>
+      <div class="pt-body">
+        <div class="pt-user">
+          Imam React komponentu koja prikazuje listu korisnika. Filtriranje radi lokalno,
+          ali kada korisnik unese tekst — stranica se zamrzava na 200ms. Profajler pokazuje
+          da je problem u filter() koji se poziva na svakom pritisku tastera na nizu od 50k elemenata.
+        </div>
+        <div class="pt-ai">
+          Problem je jasno definisan: filter na 50k elemenata na svakom keystroke-u bez debounce-a i bez memoizacije. Resenje u tri koraka:
+          1. useMemo za filtrirani niz (re-racuna samo kad se searchTerm promeni)
+          2. useCallback za handler (stabilan referenca)
+          3. 300ms debounce na input (opciono, za jos bolji UX)
+          [generise kod...]
+        </div>
+        <div class="pt-comment">// Zasto je ovaj prompt dobar: imenuje simptom, daje merenje (200ms),
+        // imenuje uzrok (filter na 50k), zna gde je problem. AI odmah ide na resenje.</div>
+
+        <div class="pt-user">
+          Ista komponenta, ali ne znam zasto je spora.
+        </div>
+        <div class="pt-ai" style="border-left-color:var(--amber);color:var(--amber);">
+          Moze biti mnogo razloga... Da li si proverio React DevTools Profiler? Da li imas
+          useEffect sa zavisnostima? Da li koristis Context koji se cesto menja? Treba mi vise konteksta.
+        </div>
+        <div class="pt-comment">// Zasto je ovaj prompt los: nema merenja, nema simptoma, nema konteksta.
+        // AI mora da pogadja. Iteracija traje 10x duze.</div>
+      </div>
+    </div>
+  </section>
+
+  </section>
+
+  <!-- ZIVI PRIMERI -->
+  <section style="margin-bottom:60px;">
+    <div class="section-label">// zivi primeri</div>
+    <h2>Nova era interfejsa — forme su mrtve, živeo chat</h2>
+    <p class="section-desc">
+      Dva projekta koja pokazuju gde smo stigli. Jedan AI-generisan sajt, jedan AI-generisan onboarding flow.
+      I lekcija: LLM teži sablonskima rešenjima — vrednost je u tome kako njime upravljaš.
+    </p>
+
+    <!-- DVA PRIMERA -->
+    <div class="grid2" style="margin-bottom:24px;">
+
+      <!-- Ravanelius -->
+      <div class="card" style="border-color:rgba(167,139,250,0.3);position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;right:0;font-family:var(--mono);font-size:9px;background:rgba(167,139,250,0.15);color:var(--purple);padding:3px 10px;border-radius:0 10px 0 6px;letter-spacing:1px;">LIVE DEMO</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--purple);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Primer 01 — Chat kao forma</div>
+        <h4 style="font-size:15px;font-weight:500;color:#fff;margin-bottom:8px;font-family:var(--mono);">Ravanelius Stradivari<br>Competition</h4>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px;">
+          Prijava na violinsko takmičenje kroz AI chat umesto forme.
+          Umesto 20 polja — razgovor. LLM prikuplja podatke prirodno,
+          validira u realnom vremenu, prevodi između srpskog, engleskog i slovačkog.
+          <strong style="color:var(--text);">Forma je mrtva. Chat je nova forma.</strong>
+        </p>
+        <a href="https://ravanelius-ai-production.up.railway.app/"
+           target="_blank"
+           class="btn-glow"
+           style="display:inline-flex;align-items:center;gap:8px;font-size:13px;padding:9px 18px;text-decoration:none;">
+          Otvori live demo
+          <span style="font-size:16px;">→</span>
+        </a>
+      </div>
+
+      <!-- GymInGym -->
+      <div class="card" style="border-color:rgba(52,211,153,0.3);position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;right:0;font-family:var(--mono);font-size:9px;background:rgba(52,211,153,0.15);color:var(--green);padding:3px 10px;border-radius:0 10px 0 6px;letter-spacing:1px;">LIVE DEMO</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Primer 02 — AI-generisan sajt</div>
+        <h4 style="font-size:15px;font-weight:500;color:#fff;margin-bottom:8px;font-family:var(--mono);">GymInGym.com</h4>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px;">
+          Ceo sajt izrađen uz pomoć AI-a. Dizajn, kopija, struktura —
+          sve nastalo kroz promptove i iteracije.
+          Dobar primer i šta AI može sam, i gde bez
+          <strong style="color:var(--text);">znanja i kontrole</strong> počinje da liči na sve ostalo.
+        </p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="https://gymingym.com/"
+             target="_blank"
+             class="btn-glow"
+             style="display:inline-flex;align-items:center;gap:8px;font-size:13px;padding:9px 18px;text-decoration:none;background:var(--green);">
+            Otvori sajt
+            <span style="font-size:16px;">→</span>
+          </a>
+          <a href="https://oblik.sk"
+             target="_blank"
+             class="btn-ghost"
+             style="display:inline-flex;align-items:center;gap:8px;font-size:13px;padding:9px 18px;text-decoration:none;">
+            oblik.sk →
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LEKCIJA IZ PRIMERA -->
+    <div class="callout callout-warn" style="margin-bottom:24px;">
+      <span class="callout-icon">⚡</span>
+      <div class="callout-body">
+        <strong>Šta ova dva primera zajedno pokazuju:</strong>
+        LLM teži sablonskima rešenjima — ostavljeno samo sebi,
+        napravi sajt koji liči na sve ostale sajtove i onboarding koji liči na sve ostale onboardinge.
+        Vrednost nije u tome da AI radi umesto tebe —
+        vrednost je u tome kako ga <em>vodiš</em>: pomoćne datoteke, memorija, promptovi, sesije.
+      </div>
+    </div>
+
+    <!-- KNJIGA + CLANCI -->
+    <div class="grid2">
+
+      <!-- Knjiga -->
+      <div class="card" style="border-color:rgba(251,191,36,0.3);display:flex;gap:18px;align-items:flex-start;">
+        <img src="img/punk-guide.png"
+             alt="The Punk Guide to Real Programming — Sasha Jovanovic"
+             style="width:90px;border-radius:6px;flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,0.4);">
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Knjiga</div>
+          <h4 style="font-size:14px;font-weight:500;color:#fff;margin-bottom:6px;font-family:var(--mono);line-height:1.4;">The Punk Guide to<br>Real Programming</h4>
+          <p style="font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:10px;">
+            For Lazy, Brilliant, Rebellious Developers (and Other Misfits).
+            Oblik Books — Sasha Jovanovic.
+            Uključuje poglavlja o AI-assisted developmentu i tome kako koristiti AI
+            a ne biti njime korišćen.
+          </p>
+          <a href="https://medium.com/@bastijan/use-ai-dont-obey-it-b54c37dab224"
+             target="_blank"
+             style="font-family:var(--mono);font-size:11px;color:var(--amber);text-decoration:none;border-bottom:1px solid rgba(251,191,36,0.3);">
+            Čitaj: "Use AI, Don't Obey It" →
+          </a>
+        </div>
+      </div>
+
+      <!-- U pripremi: Copilot Won't Save You -->
+      <div class="card" style="border-color:rgba(248,113,113,0.25);background:rgba(248,113,113,0.03);display:flex;gap:18px;align-items:flex-start;">
+        <!-- Placeholder korica -->
+        <div style="width:90px;flex-shrink:0;border-radius:6px;background:var(--s3);border:1px solid rgba(248,113,113,0.3);aspect-ratio:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;text-align:center;gap:4px;box-shadow:0 4px 20px rgba(0,0,0,0.4);">
+          <div style="font-family:var(--mono);font-size:16px;font-weight:500;color:var(--red);line-height:1.1;">WON'T</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:1px;">SAVE YOU</div>
+          <div style="width:30px;height:1px;background:rgba(248,113,113,0.3);margin:4px 0;"></div>
+          <div style="font-family:var(--mono);font-size:7px;color:var(--dim);letter-spacing:0.5px;">COPILOT</div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:1.5px;">U pripremi</div>
+            <div style="font-family:var(--mono);font-size:9px;background:rgba(248,113,113,0.12);color:var(--red);border:1px solid rgba(248,113,113,0.2);padding:1px 7px;border-radius:3px;">~2026</div>
+          </div>
+          <h4 style="font-size:14px;font-weight:500;color:#fff;margin-bottom:6px;font-family:var(--mono);line-height:1.4;">Copilot Won't<br>Save You</h4>
+          <p style="font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:10px;">
+            How to Actually Work With GitHub Copilot &amp; Claude Code
+            (and Any LLM) Without Losing Your Mind.<br>
+            26 poglavlja · 7 playbooks · ~28.000 reči.<br>
+            Solo developer i mali tim · Python/JS stack.
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span style="font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(248,113,113,0.08);color:var(--red);border:1px solid rgba(248,113,113,0.2);">Disciplina</span>
+            <span style="font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(248,113,113,0.08);color:var(--red);border:1px solid rgba(248,113,113,0.2);">Multi-LLM workflow</span>
+            <span style="font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(248,113,113,0.08);color:var(--red);border:1px solid rgba(248,113,113,0.2);">Token ekonomija</span>
+            <span style="font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(248,113,113,0.08);color:var(--red);border:1px solid rgba(248,113,134,0.2);">Oblik Books</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Članci serija -->
+      <div class="card" style="border-color:rgba(56,189,248,0.3);">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--blue);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Medium serija — 4/10 objavljeno</div>
+        <h4 style="font-size:14px;font-weight:500;color:#fff;margin-bottom:12px;font-family:var(--mono);">AI i veb razvoj — serija članaka</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="https://medium.com/@bastijan/ai-remembers-nothing-and-you-need-to-make-peace-with-that-deb1ef374703"
+             target="_blank"
+             style="display:flex;gap:10px;align-items:flex-start;text-decoration:none;padding:8px;background:var(--s2);border-radius:6px;border:1px solid var(--border);transition:border-color 0.15s;"
+             onmouseover="this.style.borderColor='rgba(56,189,248,0.4)'"
+             onmouseout="this.style.borderColor='rgba(148,163,184,0.1)'">
+            <span style="font-family:var(--mono);font-size:10px;color:var(--blue);flex-shrink:0;margin-top:2px;">01</span>
+            <span style="font-size:12px;color:var(--text);line-height:1.5;">
+              AI Remembers Nothing and You Need to Make Peace With That
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:2px;">Memorija, kontekst, sesije</span>
+            </span>
+          </a>
+          <a href="https://medium.com/@bastijan/use-ai-dont-obey-it-b54c37dab224"
+             target="_blank"
+             style="display:flex;gap:10px;align-items:flex-start;text-decoration:none;padding:8px;background:var(--s2);border-radius:6px;border:1px solid var(--border);transition:border-color 0.15s;"
+             onmouseover="this.style.borderColor='rgba(56,189,248,0.4)'"
+             onmouseout="this.style.borderColor='rgba(148,163,184,0.1)'">
+            <span style="font-family:var(--mono);font-size:10px;color:var(--blue);flex-shrink:0;margin-top:2px;">02</span>
+            <span style="font-size:12px;color:var(--text);line-height:1.5;">
+              Use AI, Don't Obey It
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:2px;">Iz knjige The Punk Guide</span>
+            </span>
+          </a>
+          <div style="padding:8px;background:rgba(255,255,255,0.02);border-radius:6px;border:1px dashed var(--border);">
+            <span style="font-family:var(--mono);font-size:10px;color:var(--dim);">03–10 dolaze uskoro</span>
+          </div>
+        </div>
+        <a href="https://medium.com/@bastijan"
+           target="_blank"
+           style="display:block;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--blue);text-decoration:none;">
+          Prati seriju na Medium @bastijan →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PUN KRUG ZATVOREN -->
+  <div class="outro">
+    <div style="font-size:36px;margin-bottom:16px;">⏱</div>
+    <h2>30 godina — pun krug</h2>
+    <p>
+      Od "kako instalirati Yahoo" do "kako da pitam AI da napravi sajt".
+      Isti covek, ista radoznalost, drugacija pitanja.<br><br>
+      Web je ostao ono sto je uvek bio: alat za ljude koji imaju nesto da kazu.
+      Samo je prepreka za ulazak svake decenije niza.
+      A paradoks ostaje: da bi efikasno koristio AI koji pise kod,
+      moras razumeti dovoljno koda da znas sta AI radi.
+    </p>
+    <div class="outro-links">
+      <a href="era1-1994.html" class="btn-ai">← Pocni od pocetka</a>
+      <a href="index.html" class="btn-ghost">Pregled svih era</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>Frontend Vremenska Masina &nbsp;·&nbsp; Era 6: 2025+ &nbsp;·&nbsp; <a href="index.html">← Sve ere</a></span>
+  <span style="color:var(--dim);">Syne + IBM Plex Mono &nbsp;·&nbsp; CSS Grid &nbsp;·&nbsp; Vanilla JS &nbsp;·&nbsp; Nema frameworka</span>
+</footer>
+
+</body>
+</html>

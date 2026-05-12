@@ -1,0 +1,776 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="bs">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="description" content="Frontend Vremenska Masina - Era 2000-2006" />
+  <title>Frontend Vremenska Masina :: 2000-2006 :: CSS Float Era</title>
+
+  <!-- CSS u eksternom fajlu — revolucija! Kraj inline stilova. -->
+  <style type="text/css">
+
+    /* CSS Reset — nova praksa 2000ih */
+    * { margin: 0; padding: 0; }
+    body {
+      font-family: Verdana, Geneva, Arial, sans-serif;
+      font-size: 13px;
+      background-color: #e8e8e8;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23e0e0e0'/%3E%3Crect width='2' height='2' fill='%23e8e8e8'/%3E%3Crect x='2' y='2' width='2' height='2' fill='%23e8e8e8'/%3E%3C/svg%3E");
+      color: #333333;
+      line-height: 1.5;
+    }
+
+    /* Wrapper — fiksna sirina, centriran. Standard 2003. */
+    #wrapper {
+      width: 900px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-left: 1px solid #cccccc;
+      border-right: 1px solid #cccccc;
+    }
+
+    /* HEADER */
+    #header {
+      background-color: #1a3a5c;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='80'%3E%3Crect width='900' height='80' fill='%231a3a5c'/%3E%3Crect width='900' height='40' fill='%23234d7a'/%3E%3C/svg%3E");
+      padding: 0;
+      border-bottom: 3px solid #f90;
+    }
+    #header-inner {
+      padding: 15px 20px 10px 20px;
+    }
+    #header h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 28px;
+      color: #ffffff;
+      font-weight: bold;
+      letter-spacing: -1px;
+    }
+    #header h1 span {
+      color: #ff9900;
+    }
+    #header p.tagline {
+      color: #aaccee;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    /* NAVIGACIJA — horizontal tabs, CSS hovery */
+    #navigation {
+      background-color: #234d7a;
+      padding: 0;
+      border-bottom: 2px solid #ff9900;
+      overflow: hidden; /* clearfix pre clearfix era */
+    }
+    #navigation ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    #navigation ul li {
+      display: inline; /* ne float! inline za nav bio standard */
+    }
+    #navigation ul li a {
+      display: inline-block;
+      padding: 8px 16px;
+      color: #ccddee;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+      border-right: 1px solid #1a3a5c;
+    }
+    #navigation ul li a:hover {
+      background-color: #ff9900;
+      color: #ffffff;
+    }
+    #navigation ul li a.current {
+      background-color: #ff9900;
+      color: #ffffff;
+    }
+
+    /* BREADCRUMB — nova stvar 2002. */
+    #breadcrumb {
+      background-color: #f5f5f5;
+      border-bottom: 1px solid #dddddd;
+      padding: 5px 20px;
+      font-size: 11px;
+      color: #888888;
+    }
+    #breadcrumb a { color: #1a3a5c; text-decoration: none; }
+    #breadcrumb a:hover { text-decoration: underline; }
+
+    /* FLOAT LAYOUT — glavna inovacija ere! */
+    /* Clearfix hack — Nicolas Gallagher, 2002. */
+    #content-area:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden;
+    }
+    #content-area { zoom: 1; } /* IE6 fix */
+
+    #content-area {
+      padding: 0 20px;
+    }
+
+    /* Sidebar — float left */
+    #sidebar {
+      float: left;
+      width: 200px;
+      margin-top: 20px;
+      margin-right: 20px;
+    }
+
+    /* Main content — float left, ostatak sirine */
+    #main-content {
+      float: left;
+      width: 640px;
+      margin-top: 20px;
+    }
+
+    /* SIDEBAR stilovi */
+    .sidebar-box {
+      background-color: #f0f4f8;
+      border: 1px solid #c0d0e0;
+      margin-bottom: 15px;
+    }
+    .sidebar-box h3 {
+      background-color: #1a3a5c;
+      color: #ffffff;
+      font-size: 11px;
+      padding: 5px 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .sidebar-box ul {
+      list-style: none;
+      padding: 8px;
+    }
+    .sidebar-box ul li {
+      border-bottom: 1px dotted #cccccc;
+      padding: 4px 0;
+    }
+    .sidebar-box ul li a {
+      color: #1a3a5c;
+      text-decoration: none;
+      font-size: 12px;
+    }
+    .sidebar-box ul li a:hover {
+      color: #ff9900;
+      text-decoration: underline;
+    }
+    .sidebar-box p {
+      padding: 8px;
+      font-size: 11px;
+      color: #666666;
+      line-height: 1.6;
+    }
+
+    /* ERA BADGE u sidebaru */
+    .era-badge {
+      background-color: #1a3a5c;
+      color: #ffffff;
+      text-align: center;
+      padding: 12px 8px;
+      font-size: 11px;
+      line-height: 1.8;
+    }
+    .era-badge strong {
+      font-size: 18px;
+      display: block;
+      color: #ff9900;
+    }
+
+    /* MAIN CONTENT stilovi */
+    #main-content h2 {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      color: #1a3a5c;
+      border-bottom: 2px solid #ff9900;
+      padding-bottom: 6px;
+      margin-bottom: 15px;
+    }
+    #main-content h3 {
+      font-size: 14px;
+      color: #1a3a5c;
+      margin: 20px 0 8px 0;
+      padding-left: 10px;
+      border-left: 3px solid #ff9900;
+    }
+    #main-content p {
+      margin-bottom: 12px;
+      color: #333333;
+      line-height: 1.7;
+    }
+
+    /* Quote box — popularan 2003-2006 */
+    .quote-box {
+      background-color: #fffbf0;
+      border-left: 4px solid #ff9900;
+      border: 1px solid #ffe0a0;
+      padding: 12px 15px;
+      margin: 15px 0;
+      font-style: italic;
+      color: #555;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .quote-box cite {
+      display: block;
+      margin-top: 6px;
+      font-style: normal;
+      font-weight: bold;
+      color: #1a3a5c;
+      font-size: 12px;
+    }
+
+    /* Info box */
+    .info-box {
+      background-color: #f0f8ff;
+      border: 1px solid #a0c8e8;
+      padding: 12px 15px;
+      margin: 15px 0;
+    }
+    .info-box h4 {
+      color: #1a3a5c;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .info-box ul {
+      padding-left: 18px;
+      font-size: 12px;
+      color: #444;
+      line-height: 1.8;
+    }
+
+    /* Code block */
+    .code-block {
+      background-color: #1e1e2e;
+      border: 1px solid #444466;
+      padding: 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      color: #a0d0a0;
+      margin: 12px 0;
+      overflow: auto;
+      line-height: 1.6;
+    }
+    .code-block .tag    { color: #7ec8e3; }
+    .code-block .prop   { color: #ffd700; }
+    .code-block .val    { color: #98d982; }
+    .code-block .cmt    { color: #777799; font-style: italic; }
+    .code-block .new    { color: #ff9900; font-weight: bold; }
+
+    /* Two column layout UNUTAR main (float u floatu) */
+    .two-col { overflow: hidden; margin: 15px 0; }
+    .col-left { float: left; width: 48%; }
+    .col-right { float: right; width: 48%; }
+
+    /* Tabela — samo za podatke, ne layout */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin: 15px 0;
+    }
+    .data-table th {
+      background-color: #1a3a5c;
+      color: #ffffff;
+      padding: 6px 10px;
+      text-align: left;
+    }
+    .data-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #eeeeee;
+    }
+    .data-table tr:hover td {
+      background-color: #f5f8ff;
+    }
+    .data-table tr:nth-child(even) td { /* ne radi u IE6 ali CSS filozofija */
+      background-color: #fafafa;
+    }
+    .status-ok  { color: #228822; font-weight: bold; }
+    .status-new { color: #ff6600; font-weight: bold; }
+    .status-no  { color: #cc2222; }
+
+    /* AJAX demo box */
+    .ajax-demo {
+      background-color: #f0fff0;
+      border: 2px solid #44aa44;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    .ajax-demo h4 { color: #226622; margin-bottom: 8px; }
+    #ajax-result {
+      min-height: 40px;
+      background-color: #ffffff;
+      border: 1px solid #aaddaa;
+      padding: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #226622;
+      margin-top: 8px;
+    }
+    button {
+      background-color: #1a3a5c;
+      color: #ffffff;
+      border: none;
+      padding: 6px 14px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: Verdana, sans-serif;
+    }
+    button:hover { background-color: #ff9900; }
+
+    /* FOOTER */
+    #footer {
+      clear: both;
+      background-color: #1a3a5c;
+      color: #aaaaaa;
+      font-size: 11px;
+      text-align: center;
+      padding: 12px 20px;
+      border-top: 3px solid #ff9900;
+      margin-top: 20px;
+    }
+    #footer a { color: #ccddee; text-decoration: none; }
+    #footer a:hover { color: #ff9900; }
+
+    /* Sljedeca era link */
+    .next-era {
+      background-color: #1a3a5c;
+      color: #ffffff;
+      text-align: center;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .next-era a {
+      color: #ff9900;
+      font-size: 16px;
+      font-family: Georgia, serif;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .next-era a:hover { text-decoration: underline; }
+    .next-era p { color: #aaaaaa; font-size: 11px; margin-top: 5px; }
+
+  </style>
+
+</head>
+<body>
+
+<div id="wrapper">
+
+  <!-- HEADER -->
+  <div id="header">
+    <div id="header-inner">
+      <h1>Frontend <span>Vremenska Masina</span></h1>
+      <p class="tagline">Istrazite evoluciju weba kroz autenticne tehnologije &mdash; od tabela do React-a</p>
+    </div>
+  </div>
+
+  <!-- NAVIGACIJA -->
+  <div id="navigation">
+    <ul>
+      <li><a href="buducnost.html">Buducnost</a></li>
+          <li><a href="hvala.html">Hvala</a></li>
+          <li><a href="era1-1994.html">&laquo; 1994-1999</a></li>
+      <li><a href="era2-2000.html" class="current">2000-2006</a></li>
+      <li><a href="era3-2005.html">2005-2010 &raquo;</a></li>
+      <li><a href="era4-2010.html">2010-2018 &raquo;</a></li>
+      <li><a href="era5-2020.html">2020s &raquo;</a></li><li><a href="era6-2025.html">2025+ &raquo;</a></li><li><a href="teme.html">Teme</a></li>
+    </ul>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div id="breadcrumb">
+    <a href="era1-1994.html">Pocetna</a> &rsaquo;
+    <a href="#">Timeline</a> &rsaquo;
+    Era 2000&ndash;2006
+  </div>
+
+  <!-- FLOAT LAYOUT: SIDEBAR + MAIN -->
+  <div id="content-area">
+
+    <!-- SIDEBAR: float left -->
+    <div id="sidebar">
+
+      <div class="era-badge">
+        <strong>2000&ndash;2006</strong>
+        CSS Float Era<br/>
+        <small>Ajax &amp; jQuery dolaze</small>
+      </div>
+
+      <div class="sidebar-box">
+        <h3>Navigacija</h3>
+        <ul>
+          <li><a href="#css-revolucija">CSS revolucija</a></li>
+          <li><a href="#float-layout">Float layout</a></li>
+          <li><a href="#photoshop-slice">Photoshop Slice</a></li>
+          <li><a href="#ajax">Ajax (2005)</a></li>
+          <li><a href="#jquery">jQuery (2006)</a></li>
+          <li><a href="#kafana">Kafana na zici</a></li>
+          <li><a href="#zen-garden">CSS Zen Garden</a></li>
+          <li><a href="#tehnologije">Tehnologije</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-box">
+        <h3>Layout tehnologija</h3>
+        <p>
+          <strong>CSS float</strong><br/>
+          Tabele samo za podatke.<br/>
+          Clearfix hack obavezan.<br/>
+          960px grid standard.
+        </p>
+      </div>
+
+      <div class="sidebar-box">
+        <h3>Brauzer podrška</h3>
+        <ul>
+          <li>IE 6/7 &#9888; (bugovi)</li>
+          <li>Firefox 1.0+ &#10003;</li>
+          <li>Opera 8+ &#10003;</li>
+          <li>Safari 1.0+ &#10003;</li>
+        </ul>
+      </div>
+
+    </div><!-- /sidebar -->
+
+    <!-- MAIN CONTENT: float left -->
+    <div id="main-content">
+
+      <h2>ERA DRUGA: 2000&ndash;2006</h2>
+      <p><em>CSS preuzima layout. Ajax menja sve. jQuery uklanja bol brauzer kompatibilnosti.</em></p>
+
+      <!-- LICNA PRICA -->
+      <div class="quote-box">
+        &#8220;2000. godine kupio sam domen <strong>kafana-na-zici.com</strong>.
+        Ideja je bila da napravim mjesto koje je online ekvivalent kafane sa stolovima
+        za kojima sljudi razgovaraju, ali mogu oslusnuti i tudje razgovore...
+        poslije je nastala poplava foruma.&#8221;
+        <cite>&mdash; Osobno iskustvo, 2000.</cite>
+      </div>
+
+      <!-- CSS REVOLUCIJA -->
+      <h3 id="css-revolucija">CSS Revolucija: Kraj Table Layouta</h3>
+      <p>
+        CSS je formalno postojao od 1996., ali do 2002&ndash;2003. brauzeri su ga implementirali
+        prekratko i nekonzistentno. Sa dolaskom Firefoxa i popravljenim IE6,
+        <strong>Web Standards Movement</strong> (Jeffrey Zeldman, Eric Meyer)
+        napokon dobiva argumente: HTML za strukturu, CSS za izgled.
+      </p>
+
+      <div class="two-col">
+        <div class="col-left">
+          <div class="info-box">
+            <h4>&#10007; Staro (tabele za layout)</h4>
+            <ul>
+              <li>Semantika unistena</li>
+              <li>Screen readeri necitljivi</li>
+              <li>5&ndash;7 nivoa gnijezdjenja</li>
+              <li>Sporo renderiranje</li>
+              <li>Redesign = rewrite svega</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-right">
+          <div class="info-box">
+            <h4>&#10003; Novo (CSS float)</h4>
+            <ul>
+              <li>Semanticki HTML</li>
+              <li>Dostupnost poboljsana</li>
+              <li>Dizajn u CSS fajlu</li>
+              <li>Brzo renderiranje</li>
+              <li>Redesign = novi CSS</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSS ZEN GARDEN -->
+      <h3 id="zen-garden">CSS Zen Garden (2003.) &mdash; Dokaz Koncepta</h3>
+      <p>
+        Dave Shea lansira <strong>csszengarden.com</strong>: jedan HTML fajl,
+        200+ potpuno razlicitih dizajna samo menjanjem CSS-a.
+        Svaki skeptik koji je tvrdio &ldquo;CSS ne moze to sto tabele mogu&rdquo;
+        ostaje bez argumenata.
+      </p>
+
+      <!-- FLOAT LAYOUT KOD -->
+      <h3 id="float-layout">Float Layout &mdash; Kako Je Izgledalo</h3>
+      <p>
+        Umjesto tabela, sada koristimo <code>float: left</code> za kolone.
+        Zvuci jednostavno. Nije bilo. Clearfix je bio obavezan hack koji je
+        sprecavao kolapiranje parent elementa.
+      </p>
+
+      <div class="code-block">
+<span class="cmt">/* 2-kolumni float layout — standard 2003-2010 */</span>
+
+<span class="tag">#wrapper</span> { <span class="prop">width</span>: <span class="val">900px</span>; <span class="prop">margin</span>: <span class="val">0 auto</span>; }
+
+<span class="tag">#sidebar</span>      { <span class="new">float: left</span>; <span class="prop">width</span>: <span class="val">200px</span>; }
+<span class="tag">#main-content</span> { <span class="new">float: left</span>; <span class="prop">width</span>: <span class="val">680px</span>; }
+
+<span class="cmt">/* Clearfix — OBAVEZAN ili parent ima height: 0 */</span>
+<span class="tag">#wrapper:after</span> {
+  <span class="prop">content</span>: <span class="val">"."</span>;
+  <span class="prop">display</span>: <span class="val">block</span>;
+  <span class="prop">clear</span>: <span class="val">both</span>;
+  <span class="prop">visibility</span>: <span class="val">hidden</span>;
+  <span class="prop">height</span>: <span class="val">0</span>;
+}
+<span class="tag">#wrapper</span> { <span class="new">zoom: 1</span>; } <span class="cmt">/* IE6 fix */</span>
+      </div>
+
+      <!-- BOX MODEL BUG -->
+      <div class="info-box">
+        <h4>&#9888; IE6 Box Model Bug &mdash; Nocna Mora</h4>
+        <ul>
+          <li>W3C: <code>width</code> = samo sadrzaj, padding se dodaje</li>
+          <li>IE6: <code>width</code> = sadrzaj + padding + border (intuitivnije!)</li>
+          <li>Resenje: <code>box-sizing: border-box</code> (CSS3, 2010.)</li>
+          <li>Ironija: danas <em>svi</em> koriste IE6-ov model kao standard</li>
+        </ul>
+      </div>
+
+
+      <!-- PHOTOSHOP SLICE — RODJENA NOVA PROFESIJA -->
+      <h3 id="photoshop-slice">Photoshop "Save for Web" &mdash; Rodjen Web Dizajner</h3>
+      <p>
+        Dok je CSS tek pokusavao da se izbori sa browserima,
+        Adobe je 1999. u Photoshop 5.5 dodao <strong>"Save for Web"</strong>,
+        a 2000. u Photoshop 6.0 <strong>Slice tool</strong>.
+        Odjednom &mdash; dizajner moze da napravi sajt bez ijedne linije HTML-a.
+      </p>
+
+      <div style="display:flex;gap:16px;margin:15px 0;">
+
+        <div style="flex:1;">
+          <p>
+            Dizajner napravi celu stranicu kao jednu sliku u Photoshopu.
+            Isece je Slice tool-om na komadicima.
+            Klikne "Save for Web" &mdash; Photoshop sam generise
+            <strong>HTML fajl sa tabelom</strong> i folder pun GIF/JPEG slicica.
+            Gotova veb stranica.
+          </p>
+          <br>
+          <p style="color:#cc7700;"><strong>Bez ijedne linije rucno pisanog HTML-a.<br>
+          Bez znanja o tabelama, colspan, rowspan.<br>
+          Bez razumevanja sta je browser uopste.</strong></p>
+          <br>
+          <p style="color:#888;font-size:12px;">
+            Isti princip radio je i Macromedia Fireworks (1998.)
+            i ImageReady koji je dosao uz Photoshop.
+            Dreamweaver je takodje imao sopstveni slice alat.
+          </p>
+        </div>
+
+        <!-- Vizualizacija slice dizajna u CSS stilu ere 2000 -->
+        <div style="flex:0 0 260px;border:2px solid #ff9900;font-size:11px;font-family:Arial,sans-serif;">
+          <div style="background:#ff9900;color:#000;text-align:center;padding:3px;font-weight:bold;">
+            dizajn.psd &rarr; slice &rarr; HTML
+          </div>
+          <div style="background:#000066;color:#ffff00;text-align:center;padding:8px;">header_bg.gif</div>
+          <div style="display:flex;">
+            <div style="flex:1;background:#003300;color:#00ff00;text-align:center;padding:12px 4px;">nav_<br>left.gif</div>
+            <div style="flex:1.5;background:#f5f5f5;color:#888;text-align:center;padding:12px 4px;">content_<br>bg.gif</div>
+            <div style="flex:1;background:#fff0e0;color:#cc6600;text-align:center;padding:12px 4px;">side_<br>bar.gif</div>
+          </div>
+          <div style="background:#222;color:#888;text-align:center;padding:5px;">footer.gif</div>
+          <div style="background:#f0f0f0;color:#333;padding:6px;font-family:monospace;font-size:10px;border-top:1px solid #ccc;">
+            &darr; Photoshop generise &darr;<br>
+            &lt;TABLE&gt;&lt;TR&gt;<br>
+            &lt;TD&gt;&lt;IMG src="nav_left.gif"&gt;&lt;/TD&gt;<br>
+            &lt;/TR&gt;&lt;/TABLE&gt;
+          </div>
+        </div>
+
+      </div>
+
+      <div class="info-box">
+        <h4>&#9658; Rodjena nova profesija: Web Dizajner</h4>
+        <div style="display:flex;gap:20px;">
+          <div style="flex:1;">
+            <strong style="color:#cc2200;">Pre (1994&ndash;1998):</strong><br>
+            &#10007; Web pravio programer<br>
+            &#10007; Morao znati HTML/CGI<br>
+            &#10007; Graficki dizajner = stampani mediji
+          </div>
+          <div style="flex:1;">
+            <strong style="color:#228800;">Posle (1999&ndash;2005):</strong><br>
+            &#10003; Web pravi <strong>dizajner</strong> u Photoshopu<br>
+            &#10003; HTML generise alat automatski<br>
+            &#10007; Generisani kod &mdash; neodrziv haos
+          </div>
+        </div>
+        <p style="margin-top:10px;font-style:italic;color:#555;font-size:13px;">
+          "Odjednom su mnogi postali web dizajneri. Photoshop i Dreamweaver su
+          demokratizovali izradu sajtova &mdash; kao sto ce WordPress to ponoviti 2003.,
+          Wix/Squarespace 2010., i AI 2023. Svaka generacija alata siri krug onih koji
+          mogu da naprave sajt. I svaka generacija otvara pitanje:
+          da li razumes sta si napravio?"
+        </p>
+      </div>
+
+      <!-- AJAX -->
+      <h3 id="ajax">Ajax &mdash; Stranica Bez Reload-a (2005.)</h3>
+      <p>
+        Jesse James Garrett imenuje tehniku 2005.: <strong>Asynchronous JavaScript and XML</strong>.
+        Gmail (2004.) vec je dokazao koncept &mdash; email klijent u brauzeru, bez refresh-a.
+        XMLHttpRequest je bio dio IE5 od 1999., ali niko ga nije koristio mainstream.
+      </p>
+
+      <!-- AJAX SIMULACIJA -->
+      <div class="ajax-demo">
+        <h4>&#128161; Simulacija Ajax requesta &mdash; Revolucija 2005.</h4>
+        <p style="font-size:12px;color:#446644;margin-bottom:8px;">
+          Klikni &mdash; podatak se ucitava <strong>bez reload-a stranice</strong>.
+          1999. ovo je bio mind-blow.
+        </p>
+        <button onclick="simulirajAjax()">&#8635; Posalji Ajax Request</button>
+        <div id="ajax-result">Spreman za zahtjev...</div>
+      </div>
+
+      <!-- JQUERY -->
+      <h3 id="jquery">jQuery (2006.) &mdash; &quot;Write Less, Do More&quot;</h3>
+      <p>
+        John Resig objavljuje jQuery 1.0. Cilj: eliminisati bolnu brauzer-kompatibilnost.
+        Isti kod radi u IE6, Firefoxu, Operi, Safariju. Onda je to bio
+        <em>gotovo</em> cudo.
+      </p>
+
+      <div class="code-block">
+<span class="cmt">/* Bez jQuery — 2003. */</span>
+<span class="tag">var</span> el;
+<span class="prop">if</span> (document.getElementById) {
+  el = document.getElementById(<span class="val">'box'</span>);
+} <span class="prop">else if</span> (document.all) {
+  el = document.all[<span class="val">'box'</span>]; <span class="cmt">// IE4</span>
+} <span class="prop">else if</span> (document.layers) {
+  el = document.layers[<span class="val">'box'</span>]; <span class="cmt">// Netscape 4</span>
+}
+el.style.display = <span class="val">'none'</span>;
+
+<span class="cmt">/* Sa jQuery — 2006. */</span>
+<span class="new">$(<span class="val">'#box'</span>).hide();</span>
+      </div>
+
+      <!-- KAFANA NA ZICI DETALJ -->
+      <h3 id="kafana">Kafana Na Zici &mdash; Ispred Svog Vremena</h3>
+      <p>
+        Domen <strong>kafana-na-zici.com</strong> kupljen 2000. Vizija:
+        digitalni ekvivalent kafane &mdash; stolovi, razgovori, mogucnost
+        da oslusanes tudje. To je bila ideja Web 2.0 <em>prije nego je Web 2.0
+        dobio ime</em>.
+      </p>
+      <p>
+        Forumi koji su uslijedili (phpBB, vBulletin) implementirali su
+        slicnu ideju tehnicki, ali su izgubili metaforu kafane &mdash;
+        anonimni thread-ovi nisu isto sto i stolovi gdje znas ko sedi.
+      </p>
+
+      <!-- TEHNOLOGIJE TABELA -->
+      <h3 id="tehnologije">Tehnologije 2000&ndash;2006</h3>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tehnologija</th>
+            <th>Status</th>
+            <th>Promjena od 90-ih</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>CSS 2.0 float layout</td>
+            <td class="status-new">NOVO &#9733;</td>
+            <td>Zamjena za table layout</td>
+          </tr>
+          <tr>
+            <td>XHTML 1.0</td>
+            <td class="status-new">NOVO</td>
+            <td>Stroži HTML, XML pravila</td>
+          </tr>
+          <tr>
+            <td>XMLHttpRequest / Ajax</td>
+            <td class="status-new">REVOLUCIJA &#9733;</td>
+            <td>Stranice bez reload-a</td>
+          </tr>
+          <tr>
+            <td>jQuery 1.0</td>
+            <td class="status-new">NOVO &#9733;</td>
+            <td>Cross-brauzer JS unifikacija</td>
+          </tr>
+          <tr>
+            <td>Flash 6-9</td>
+            <td class="status-ok">DOMINANTAN</td>
+            <td>Video, igre, intro stranice</td>
+          </tr>
+          <tr>
+            <td>Table layout</td>
+            <td class="status-no">LEGACY</td>
+            <td>Postaje "losa praksa"</td>
+          </tr>
+          <tr>
+            <td>PHP + MySQL</td>
+            <td class="status-ok">STANDARD</td>
+            <td>Zamjena za CGI/Perl</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- SLJEDECA ERA -->
+      <div class="next-era">
+        <a href="era3-2005.html">&#9658; 2005&ndash;2012: jQuery, Mobile i CSS3 &rarr;</a>
+        <p>Bootstrap, 960 grid, mobile-first, CSS3 animacije</p>
+      </div>
+
+    </div><!-- /main-content -->
+
+  </div><!-- /content-area -->
+
+  <!-- FOOTER -->
+  <div id="footer">
+    <p>
+      &copy; 2005 Frontend Vremenska Masina &nbsp;|&nbsp;
+      Valid <a href="#">XHTML 1.0</a> &nbsp;|&nbsp;
+      Valid <a href="#">CSS 2.1</a> &nbsp;|&nbsp;
+      <a href="#">Accessibility</a> &nbsp;|&nbsp;
+      Layout: CSS Float (bez tabela!)
+    </p>
+    <p style="margin-top:4px;">
+      Ova stranica koristi CSS float layout, XHTML 1.0 Transitional i
+      autenticne tehnike 2000&ndash;2006. perioda.
+    </p>
+  </div>
+
+</div><!-- /wrapper -->
+
+<!-- jQuery simulacija — inline script, kao sto je bio standard -->
+<script type="text/javascript">
+  // Bez jQuery za ovaj demo — vanilla JS 2005 stil
+  function simulirajAjax() {
+    var el = document.getElementById('ajax-result');
+    el.innerHTML = '<em style="color:#888;">Slanje XMLHttpRequest... &#8635;</em>';
+
+    // Simuliramo async delay
+    setTimeout(function() {
+      el.innerHTML =
+        'HTTP/1.1 200 OK\n' +
+        'Content-Type: text/xml\n\n' +
+        '&lt;response&gt;\n' +
+        '  &lt;status&gt;success&lt;/status&gt;\n' +
+        '  &lt;message&gt;Podaci primljeni!&lt;/message&gt;\n' +
+        '  &lt;timestamp&gt;' + new Date().toLocaleTimeString() + '&lt;/timestamp&gt;\n' +
+        '&lt;/response&gt;\n\n' +
+        '&#10003; Stranica se NIJE reload-ala. To je Ajax.';
+      el.style.color = '#226622';
+    }, 1400);
+  }
+</script>
+
+</body>
+</html>
