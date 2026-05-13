@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: CSS Evolucija</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@300;400;500&family=Syne+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/css-evolucija.css">
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">// vremenska.masina</a>
+  <div class="nav-links">
+    <a href="era0-rodjenje.html">ERA-0</a>
+    <a href="monitori.html">Monitori</a>
+    <a href="era1-1994.html">1994</a>
+    <a href="era2-2000.html">2000s</a>
+    <a href="era3-2005.html">2010s</a>
+    <a href="era4-2013.html">2015s</a>
+    <a href="era5-2020.html">2020s</a>
+    <a href="era6-2025.html">2025+</a>
+    <a href="teme.html">Teme</a>
+    <a href="css-evolucija.html" class="active">CSS</a>
+    <a href="js-evolucija.html">JS</a>
+    <a href="responsive.html">Responsive</a>
+    <a href="napredak.html">Napredak</a>
+    <a href="buducnost.html">Buducnost</a>
+    <a href="pristupacnost.html">A11y</a>
+    <a href="hvala.html">Hvala</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">// od jedne linije do arhitekture</div>
+  <h1>Evolucija<br><em>CSS-a</em></h1>
+  <p class="hero-sub">
+    CSS je počeo kao jednostavan jezik za boje i fontove.
+    Za 30 godina postao je arhitekturalni problem koji je rodio
+    preprocesore, metodologije, CSS-in-JS i na kraju — utiliti klase.
+  </p>
+</div>
+
+<main>
+
+  <!-- HRONOLOGIJA -->
+  <div class="sec-label">// hronologija — od CSS1 do danas</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-year">1994</div>
+      <div class="tl-content">
+        <div class="tl-tag" style="color:var(--muted);">Predlog</div>
+        <div class="tl-title">Håkon Wium Lie predlaže CSS</div>
+        <div class="tl-body">
+          Dok radi sa Berners-Lijem u CERN-u, Håkon šalje predlog za
+          "Cascading HTML style sheets". HTML 1.0 nema nikakvo stilizovanje —
+          Berners-Li je namerno tako napravio. Lie je smatrao da je vizuelna
+          prezentacija ipak važna.
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">1996</div>
+      <div class="tl-content" style="border-color:rgba(251,191,36,0.2);">
+        <div class="tl-tag" style="color:var(--amber);">★ CSS 1</div>
+        <div class="tl-title">CSS Level 1 — W3C Recommendation</div>
+        <div class="tl-body">
+          <strong>Font, boja, margine, padding, border.</strong>
+          92 propertija. Browseri ga podržavaju tek parcijalno.
+          IE3 uvodi parcijalu podršku. Netscape se opire — ima sopstvene HTML atribute.
+          <div class="code-blk" style="margin-top:10px;">
+            <div class="code-head"><span>CSS 1 — 1996</span></div>
+            <div class="code-body">
+              <span class="ck">body</span> {<br>
+              &nbsp;&nbsp;<span class="cp">font-family</span>: <span class="cv">Times New Roman</span>;<br>
+              &nbsp;&nbsp;<span class="cp">color</span>: <span class="cv">black</span>;<br>
+              &nbsp;&nbsp;<span class="cp">background</span>: <span class="cv">white</span>;<br>
+              }<br>
+              <span class="ck">h1</span> { <span class="cp">font-size</span>: <span class="cv">24pt</span>; }<br>
+              <span class="ck">a</span> { <span class="cp">color</span>: <span class="cv">blue</span>; }
+            </div>
+          </div>
+        </div>
+        <div class="pills">
+          <span class="pill pa">92 propertija</span>
+          <span class="pill pa">Font, boja, margine</span>
+          <span class="pill pr">Browseri ne podržavaju sve</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">1998</div>
+      <div class="tl-content">
+        <div class="tl-tag" style="color:var(--muted);">CSS 2</div>
+        <div class="tl-title">CSS 2 — pozicioniranje, z-index, media types</div>
+        <div class="tl-body">
+          <code>position: absolute/relative/fixed</code>, <code>z-index</code>,
+          <code>@media print</code>. Ali IE implementacija je <strong>haotična</strong> —
+          box model bug koji muči web do 2010. (IE računa padding unutar width, ostali van).
+        </div>
+        <div class="pills">
+          <span class="pill pb">position: absolute</span>
+          <span class="pill pb">z-index</span>
+          <span class="pill pr">IE Box Model Bug</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2006</div>
+      <div class="tl-content" style="border-color:rgba(167,139,250,0.2);">
+        <div class="tl-tag" style="color:var(--purple);">★ Sass rođen</div>
+        <div class="tl-title">Sass — Hampton Catlin, Nathan Weizenbaum</div>
+        <div class="tl-body">
+          <strong>Revolucija.</strong> Ruby on Rails projekat. Indented sintaksa (bez vitičastih zagrada).
+          Varijable, nesting, mixini. CSS konačno dobija programske koncepte.
+          2009. dolazi <strong>SCSS</strong> — "Sassy CSS" sa vitičastim zagradama,
+          kompatibilan sa postojećim CSS-om.
+          <div class="code-blk" style="margin-top:10px;">
+            <div class="code-head"><span>SCSS — 2009</span><span style="color:var(--purple);">SCSS</span></div>
+            <div class="code-body">
+              <span class="cc">// Varijable</span><br>
+              <span class="cn">$primary</span>: <span class="cv">#3498db</span>;<br>
+              <span class="cn">$radius</span>: <span class="cv">4px</span>;<br><br>
+              <span class="cc">// Mixin</span><br>
+              <span class="ck">@mixin</span> <span class="ca">flex-center</span> {<br>
+              &nbsp;&nbsp;<span class="cp">display</span>: <span class="cv">flex</span>;<br>
+              &nbsp;&nbsp;<span class="cp">align-items</span>: <span class="cv">center</span>;<br>
+              &nbsp;&nbsp;<span class="cp">justify-content</span>: <span class="cv">center</span>;<br>
+              }<br><br>
+              <span class="cc">// Nesting</span><br>
+              <span class="ck">.btn</span> {<br>
+              &nbsp;&nbsp;<span class="cp">background</span>: <span class="cn">$primary</span>;<br>
+              &nbsp;&nbsp;<span class="cp">border-radius</span>: <span class="cn">$radius</span>;<br>
+              &nbsp;&nbsp;<span class="ck">&:hover</span> {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="cp">opacity</span>: <span class="cv">0.8</span>;<br>
+              &nbsp;&nbsp;}<br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="pills">
+          <span class="pill pp">$varijable</span>
+          <span class="pill pp">Nesting</span>
+          <span class="pill pp">@mixin</span>
+          <span class="pill pp">@extend</span>
+          <span class="pill pp">@import</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2009</div>
+      <div class="tl-content" style="border-color:rgba(56,189,248,0.2);">
+        <div class="tl-tag" style="color:var(--blue);">★ Less + CSS3</div>
+        <div class="tl-title">Less & CSS3 animacije — Bootstrap era počinje</div>
+        <div class="tl-body">
+          <strong>Less</strong> (Alexis Sellier) — sličan Sass-u ali u JavaScriptu.
+          Bootstrap 3 (2013) koristi Less — zato su ga svi koristili.
+          <br><br>
+          <strong>CSS3</strong> — ne jedna spec nego moduli:
+          <code>border-radius</code>, <code>box-shadow</code>, <code>transition</code>,
+          <code>animation</code>, <code>@keyframes</code>, <code>gradient</code>.
+          Kraj slike za svaki zaobljeni ugao.
+          <div class="code-blk" style="margin-top:10px;">
+            <div class="code-head"><span>Less varijable — Bootstrap stil</span><span style="color:var(--blue);">LESS</span></div>
+            <div class="code-body">
+              <span class="cc">// Less varijable sa @</span><br>
+              <span class="cn">@primary-color</span>: <span class="cv">#428bca</span>;<br>
+              <span class="cn">@border-radius</span>: <span class="cv">4px</span>;<br>
+              <span class="cn">@font-size-base</span>: <span class="cv">14px</span>;<br><br>
+              <span class="ck">.btn-primary</span> {<br>
+              &nbsp;&nbsp;<span class="cp">background-color</span>: <span class="cn">@primary-color</span>;<br>
+              &nbsp;&nbsp;<span class="cp">border-radius</span>: <span class="cn">@border-radius</span>;<br>
+              &nbsp;&nbsp;<span class="ck">&:hover</span> { <span class="cp">opacity</span>: <span class="cv">.9</span>; }<br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="pills">
+          <span class="pill pb">@varijable (Less)</span>
+          <span class="pill pb">Bootstrap 3 = Less</span>
+          <span class="pill pg">border-radius nativni</span>
+          <span class="pill pg">transition, animation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">2013</div>
+      <div class="tl-content">
+        <div class="tl-tag" style="color:var(--muted);">PostCSS & BEM</div>
+        <div class="tl-title">PostCSS — procesor, ne preprocesor</div>
+        <div class="tl-body">
+          PostCSS nije preprocesor — <strong>procesor</strong>.
+          Transformiše CSS kroz pluginove: <code>Autoprefixer</code>
+          automatski dodaje <code>-webkit-</code>, <code>-moz-</code> prefikse.
+          <code>CSS Modules</code> — scoped CSS u React projektima.
+          <br><br>
+          <strong>BEM metodologija</strong> (Block Element Modifier) —
+          <code>.block__element--modifier</code> naming konvencija.
+          Pokušaj da se organizuje CSS bez preprocesora.
+        </div>
+        <div class="pills">
+          <span class="pill pg">Autoprefixer</span>
+          <span class="pill pg">CSS Modules</span>
+          <span class="pill pa">BEM konvencija</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2015</div>
+      <div class="tl-content" style="border-color:rgba(244,114,182,0.2);">
+        <div class="tl-tag" style="color:var(--pink);">★ CSS-in-JS era</div>
+        <div class="tl-title">CSS Modules + Styled Components — CSS ulazi u JS</div>
+        <div class="tl-body">
+          React komponente dovode do pitanja: <strong>kako scopovati CSS?</strong>
+          Globalni CSS je problem u SPA aplikacijama.
+          <br><br>
+          <strong>CSS Modules</strong> (2015) — klase postaju lokalne po defaultu,
+          kompajler generiše unikalne nazive.
+          <strong>Styled Components</strong> (2016) — CSS direktno u JavaScript stringu,
+          uz punu JavaScript logiku.
+          <div class="code-blk" style="margin-top:10px;">
+            <div class="code-head"><span>Styled Components — 2016</span><span style="color:var(--pink);">JS/CSS</span></div>
+            <div class="code-body">
+              <span class="ck">import</span> styled <span class="ck">from</span> <span class="cv">'styled-components'</span>;<br><br>
+              <span class="ck">const</span> <span class="cn">Button</span> = styled.<span class="ca">button</span><span class="cv">`</span><br>
+              &nbsp;&nbsp;<span class="cp">background</span>: <span class="cv">${'${'}props => props.primary ? '#3498db' : 'white'${'}'}</span>;<br>
+              &nbsp;&nbsp;<span class="cp">color</span>: <span class="cv">${'${'}props => props.primary ? 'white' : '#333'${'}'}</span>;<br>
+              &nbsp;&nbsp;<span class="cp">border-radius</span>: <span class="cv">4px</span>;<br>
+              &nbsp;&nbsp;<span class="cp">padding</span>: <span class="cv">8px 16px</span>;<br>
+              <span class="cv">`</span>;<br><br>
+              <span class="cc">// Upotreba:</span><br>
+              &lt;<span class="cn">Button</span> primary&gt;Klikni&lt;/<span class="cn">Button</span>&gt;
+            </div>
+          </div>
+        </div>
+        <div class="pills">
+          <span class="pill pk">CSS Modules</span>
+          <span class="pill pk">Styled Components</span>
+          <span class="pill pk">Emotion</span>
+          <span class="pill pr">Kontroverza traje</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2017</div>
+      <div class="tl-content" style="border-color:rgba(52,211,153,0.2);">
+        <div class="tl-tag" style="color:var(--green);">★ CSS Custom Properties + Grid</div>
+        <div class="tl-title">Nativne CSS varijable — Sass više nije jedini</div>
+        <div class="tl-body">
+          <strong>CSS Custom Properties</strong> — nativne varijable u browseru.
+          Za razliku od Sass-a — mogu se menjati JavaScript-om u realnom vremenu,
+          nasleđuju se kroz DOM, rade u media queryjima.
+          <br><br>
+          <strong>CSS Grid</strong> — Jen Simmons, Rachel Andrew.
+          Kraj float hakova zauvek. Pravi 2D layout sistem.
+          <div class="code-blk" style="margin-top:10px;">
+            <div class="code-head"><span>CSS Custom Properties — 2017</span><span style="color:var(--green);">CSS</span></div>
+            <div class="code-body">
+              <span class="ck">:root</span> {<br>
+              &nbsp;&nbsp;<span class="cp">--primary</span>: <span class="cv">#3498db</span>;<br>
+              &nbsp;&nbsp;<span class="cp">--radius</span>: <span class="cv">4px</span>;<br>
+              }<br><br>
+              <span class="ck">.btn</span> {<br>
+              &nbsp;&nbsp;<span class="cp">background</span>: <span class="cv">var(--primary)</span>;<br>
+              &nbsp;&nbsp;<span class="cp">border-radius</span>: <span class="cv">var(--radius)</span>;<br>
+              }<br><br>
+              <span class="cc">/* JS može menjati u realnom vremenu: */</span><br>
+              <span class="cc">/* el.style.setProperty('--primary', '#e74c3c') */</span>
+            </div>
+          </div>
+        </div>
+        <div class="pills">
+          <span class="pill pg">--custom-properties</span>
+          <span class="pill pg">CSS Grid</span>
+          <span class="pill pg">JS može menjati</span>
+          <span class="pill pg">Nasledjivanje kroz DOM</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2017</div>
+      <div class="tl-content" style="border-color:rgba(56,189,248,0.2);">
+        <div class="tl-tag" style="color:var(--blue);">★ Tailwind CSS</div>
+        <div class="tl-title">Tailwind — utility-first, kraj semantičnih klasa</div>
+        <div class="tl-body">
+          Adam Wathan objavljuje Tailwind. <strong>Kontroverzno odmah.</strong>
+          Umesto <code>.btn-primary</code> — pišeš direktno
+          <code>bg-blue-500 text-white rounded px-4 py-2 hover:opacity-90</code>.
+          <br><br>
+          Kritika: HTML postaje nečitljiv.
+          Odbrana: nema naming problema, nema nekorišćenog CSS-a, dizajn sistem ugrađen.
+          <div class="code-blk" style="margin-top:10px;">
+            <div class="code-head"><span>Tailwind vs klasični CSS</span></div>
+            <div class="code-body">
+              <span class="cc">&lt;!-- Klasični CSS --&gt;</span><br>
+              &lt;<span class="ck">button</span> <span class="ca">class</span>=<span class="cv">"btn btn-primary"</span>&gt;Klikni&lt;/<span class="ck">button</span>&gt;<br><br>
+              <span class="cc">&lt;!-- Tailwind --&gt;</span><br>
+              &lt;<span class="ck">button</span> <span class="ca">class</span>=<span class="cv">"bg-blue-500 text-white</span><br>
+              &nbsp;&nbsp;<span class="cv">rounded px-4 py-2 font-medium</span><br>
+              &nbsp;&nbsp;<span class="cv">hover:bg-blue-600 transition"</span>&gt;<br>
+              &nbsp;&nbsp;Klikni<br>
+              &lt;/<span class="ck">button</span>&gt;
+            </div>
+          </div>
+        </div>
+        <div class="pills">
+          <span class="pill pb">Utility-first</span>
+          <span class="pill pb">JIT compiler</span>
+          <span class="pill pb">Design tokens</span>
+          <span class="pill pr">Kontroverzno</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">2023+</div>
+      <div class="tl-content">
+        <div class="tl-tag" style="color:var(--muted);">Moderni CSS</div>
+        <div class="tl-title">CSS Nesting, :has(), container queries — CSS postaje moćan</div>
+        <div class="tl-body">
+          CSS dobija nativni nesting (kao Sass), <code>:has()</code> selektor
+          (parent selector koji su tražili 20 godina),
+          <strong>container queries</strong> — komponenta reaguje na svog roditelja,
+          ne na viewport. <code>@layer</code> — cascade layers za kontrolu specifičnosti.
+          <br><br>
+          <strong>Sass polako gubi razlog za postojanje</strong> —
+          sve što je nudilo, CSS nativno implementira.
+        </div>
+        <div class="pills">
+          <span class="pill pg">CSS Nesting nativni</span>
+          <span class="pill pg">:has() selektor</span>
+          <span class="pill pg">Container Queries</span>
+          <span class="pill pg">@layer</span>
+          <span class="pill pa">Sass — manje potreban</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- POREĐENJE PREPROCESORA -->
+  <div class="sec-label" style="margin-top:40px;">// preprocesor poređenje</div>
+  <div class="g3">
+    <div class="card" style="border-color:rgba(244,114,182,0.2);">
+      <div class="card-label" style="color:var(--pink);">Sass / SCSS</div>
+      <h3>Sass — pionir</h3>
+      <p>2006. Ruby, 2010. LibSass (C++), 2020. Dart Sass.
+      <strong>$varijable</strong>, <code>@mixin</code>, <code>@extend</code>,
+      <code>&amp;</code> nesting, <code>@function</code>.
+      Standard u dizajn sistemima. Bootstrap 4+ prešao na SCSS.</p>
+      <div class="pills" style="margin-top:8px;">
+        <span class="pill pk">$varijable</span>
+        <span class="pill pk">@mixin</span>
+        <span class="pill pk">Bootstrap 4+</span>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(56,189,248,0.2);">
+      <div class="card-label" style="color:var(--blue);">Less</div>
+      <h3>Less — Bootstrap 3 era</h3>
+      <p>2009. JavaScript, radi u browseru i na serveru.
+      <strong>@varijable</strong>, mixini, nesting.
+      Dominantan dok je Bootstrap 3 bio standard.
+      Bootstrap 4 prešao na SCSS — Less gubi momentum.</p>
+      <div class="pills" style="margin-top:8px;">
+        <span class="pill pb">@varijable</span>
+        <span class="pill pb">Bootstrap 3</span>
+        <span class="pill pr">Manji momentum</span>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(52,211,153,0.2);">
+      <div class="card-label" style="color:var(--green);">Stylus</div>
+      <h3>Stylus — maksimalna fleksibilnost</h3>
+      <p>2010. Node.js, najpermisivnija sintaksa —
+      možeš pisati sa ili bez vitičastih zagrada, sa ili bez dvotačke.
+      Nikad nije uhvatio masu ali ima lojalne korisnike.
+      Popularan u Vue.js ekosistemu.</p>
+      <div class="pills" style="margin-top:8px;">
+        <span class="pill pg">Fleksibilna sintaksa</span>
+        <span class="pill pg">Vue ekosistem</span>
+        <span class="pill pa">Manja zajednica</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SASS VS CSS CUSTOM PROPERTIES -->
+  <div class="sec-label" style="margin-top:32px;">// sass varijable vs css custom properties</div>
+  <div class="compare">
+    <div class="cmp-cell">
+      <div class="cmp-label" style="color:var(--pink);">Sass $varijable</div>
+      <div class="code-blk">
+        <div class="code-body">
+          <span class="cn">$color</span>: <span class="cv">#3498db</span>;<br><br>
+          <span class="ck">.btn</span> {<br>
+          &nbsp;&nbsp;<span class="cp">background</span>: <span class="cn">$color</span>;<br>
+          }<br><br>
+          <span class="cc">// Kompajlira se:</span><br>
+          <span class="ck">.btn</span> {<br>
+          &nbsp;&nbsp;<span class="cp">background</span>: <span class="cv">#3498db</span>;<br>
+          }
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:6px;">
+        ✗ Ne može se menjati JS-om<br>
+        ✗ Ne nasljeđuje se kroz DOM<br>
+        ✗ Ne radi u media queryjima<br>
+        ✓ Kompajlira se, nema runtime overhead
+      </p>
+    </div>
+    <div class="cmp-cell" style="background:rgba(52,211,153,0.03);">
+      <div class="cmp-label" style="color:var(--green);">CSS Custom Properties</div>
+      <div class="code-blk">
+        <div class="code-body">
+          <span class="ck">:root</span> {<br>
+          &nbsp;&nbsp;<span class="cp">--color</span>: <span class="cv">#3498db</span>;<br>
+          }<br><br>
+          <span class="ck">.btn</span> {<br>
+          &nbsp;&nbsp;<span class="cp">background</span>: <span class="cv">var(--color)</span>;<br>
+          }<br><br>
+          <span class="cc">/* Mijenja se JS-om: */</span><br>
+          <span class="cc">/* el.style.setProperty(</span><br>
+          <span class="cc">&nbsp;&nbsp;'--color', '#e74c3c') */</span>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:6px;">
+        ✓ Mijenja se JS-om u realnom vremenu<br>
+        ✓ Nasljeđuje se kroz DOM<br>
+        ✓ Radi u @media queryjima<br>
+        ✓ Dark mode trivijalan
+      </p>
+    </div>
+  </div>
+
+  <div class="callout pink">
+    <span style="font-size:20px;flex-shrink:0;">💡</span>
+    <div>
+      <strong>Zašto Sass i CSS Custom Properties koegzistiraju?</strong>
+      Sass varijable su compile-time — idealne za design tokens koji se ne mijenjaju
+      (spacing skala, breakpointi, font families).
+      CSS Custom Properties su runtime — idealne za teme, dark mode,
+      dinamičke boje koje JavaScript treba da mijenja.
+      Moderni projekti koriste <strong>oboje</strong>.
+    </div>
+  </div>
+
+  <!-- METODOLOGIJE -->
+  <div class="sec-label" style="margin-top:32px;">// CSS metodologije — kako organizovati haos</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-label" style="color:var(--amber);">BEM — 2009, Yandex</div>
+      <h3>Block Element Modifier</h3>
+      <p>Naming konvencija: <code>.block__element--modifier</code>.
+      <code>.card__title--featured</code>.
+      Cilj: predvidljivi CSS selektori, bez konflikata.
+      Verbose ali eksplicitan. I danas popularan.</p>
+      <div class="code-blk" style="margin-top:8px;">
+        <div class="code-body" style="font-size:11px;">
+          <span class="cc">/* BEM */</span><br>
+          <span class="ck">.nav__item--active</span> { <span class="cp">color</span>: <span class="cv">blue</span>; }
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--blue);">SMACSS, OOCSS, ITCSS</div>
+      <h3>Arhitekturalne metodologije</h3>
+      <p><strong>SMACSS</strong> — kategorije: Base, Layout, Module, State, Theme.
+      <strong>OOCSS</strong> — odvoji strukturu od vizuela.
+      <strong>ITCSS</strong> — inverted triangle, od generičnog ka specifičnom.
+      Sve pokušavaju da reše isti problem: CSS raste i postaje neodrivo.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--pink);">CSS Modules — 2015</div>
+      <h3>Lokalni scope po defaultu</h3>
+      <p>U React/Webpack projektima. Pišeš <code>.btn</code>,
+      kompajler generiše <code>.btn_a7f3k</code> — unikalan za svaku komponentu.
+      Bez konflikata, bez globalnog zagađenja. Standard u React ekosistemu.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--green);">Tailwind — 2017</div>
+      <h3>Utility-first — kraj metodologija?</h3>
+      <p>Tailwind eliminiše potrebu za BEM, SMACSS i ostalima.
+      Nema custom klasa — sve su utiliti klase.
+      <code>.flex .items-center .gap-4 .p-4</code>.
+      Design system je ugrađen u konfiguraciju. Kontroverzno ali dominantno.</p>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <span style="font-size:20px;flex-shrink:0;">🔄</span>
+    <div>
+      <strong>Paradoks napretka u CSS-u:</strong>
+      Sass je nastao jer CSS nije imao varijable — CSS ih je dobio 2017.
+      Less je nastao jer nije bilo modularne organizacije — CSS Modules to rešavaju.
+      Styled Components su nastali jer scoping nije postojao — Shadow DOM i CSS Modules to rešavaju.
+      Svaki preprocesor je rešio problem koji je CSS na kraju nativno implementirao.
+      <a href="napredak.html" style="color:var(--amber);">→ Isti obrazac kao u istoriji tehnologije</a>
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <a href="teme.html" class="nf-link">← Teme</a>
+    <a href="responsive.html" class="nf-link" style="color:var(--pink);">Responsive Design →</a>
+  </div>
+
+</main>
+
+<footer>
+  <span>Frontend Vremenska Masina &nbsp;·&nbsp; CSS Evolucija</span>
+  <a href="teme.html">← Teme</a>
+</footer>
+
+</body>
+</html>

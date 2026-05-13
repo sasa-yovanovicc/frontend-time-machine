@@ -5,37 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Frontend Vremenska Masina — Pregled</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:#06070f;color:#e2e4ed;min-height:100vh;padding:48px 32px}
-.title{font-family:'Space Mono',monospace;font-size:13px;color:#5a5f7a;text-transform:uppercase;letter-spacing:2px;text-align:center;margin-bottom:16px}
-h1{font-size:clamp(28px,5vw,52px);font-weight:700;text-align:center;letter-spacing:-2px;color:#fff;margin-bottom:12px}
-.sub{text-align:center;color:#5a5f7a;font-size:15px;margin-bottom:56px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.7}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;max-width:1100px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)}
-.era-link{display:block;text-decoration:none;padding:28px 24px;background:#0d0f1e;border-right:1px solid rgba(255,255,255,0.06);transition:background 0.15s,transform 0.15s;position:relative;overflow:hidden}
-.era-link:hover{background:#12152a;transform:scale(1.01)}
-.era-link::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.15s}
-.era-link:hover::before{opacity:1}
-.e1::before{background:linear-gradient(135deg,rgba(255,255,0,0.04) 0%,transparent 60%)}
-.e2::before{background:linear-gradient(135deg,rgba(255,153,0,0.04) 0%,transparent 60%)}
-.e3::before{background:linear-gradient(135deg,rgba(52,152,219,0.06) 0%,transparent 60%)}
-.e4::before{background:linear-gradient(135deg,rgba(97,218,251,0.06) 0%,transparent 60%)}
-.e5::before{background:linear-gradient(135deg,rgba(129,140,248,0.08) 0%,transparent 60%)}
-.era-yr{font-family:'Space Mono',monospace;font-size:11px;margin-bottom:10px;font-weight:700;letter-spacing:1px}
-.e1 .era-yr{color:#888800}
-.e2 .era-yr{color:#cc7700}
-.e3 .era-yr{color:#3498db}
-.e4 .era-yr{color:#61dafb}
-.e5 .era-yr{color:#818cf8}
-.era-name{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-0.5px}
-.era-desc{font-size:13px;color:#5a5f7a;line-height:1.6;margin-bottom:14px}
-.era-tech{display:flex;flex-wrap:wrap;gap:4px}
-.tech-pill{font-family:'Space Mono',monospace;font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid rgba(255,255,255,0.1);color:#6a708a}
-.arrow{font-size:18px;position:absolute;right:20px;top:50%;transform:translateY(-50%);opacity:0;transition:opacity 0.15s,right 0.15s;color:#818cf8}
-.era-link:hover .arrow{opacity:1;right:16px}
-.footer{text-align:center;margin-top:40px;font-size:12px;color:#3a3f55;font-family:'Space Mono',monospace}
-.tech-note{text-align:center;margin-top:20px;font-size:12px;color:#3a3f55;line-height:1.8;max-width:600px;margin-left:auto;margin-right:auto}
-</style>
+<link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 <!-- ACCESSIBILITY TOOLBAR -->
@@ -201,6 +171,31 @@ body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!i
     <div class="era-name" style="color:#34d399">GitHub & Kraj</div>
     <div class="era-desc">Preuzmi prezentaciju. Knjige. Kontakt. 30 godina u jednom repo-u.</div>
     <div class="era-tech"><span class="tech-pill">GitHub</span><span class="tech-pill">Punk Guide</span><span class="tech-pill">Copilot Won't Save You</span></div>
+    <span class="arrow">→</span>
+  </a>
+
+
+  <a href="js-evolucija.html" class="era-link" style="background:linear-gradient(135deg,rgba(250,204,21,0.05),rgba(251,191,36,0.03));border-color:rgba(250,204,21,0.15);">
+    <div class="era-yr" style="color:#facc15;">JavaScript Evolucija</div>
+    <div class="era-name" style="color:#facc15;">10 dana → vodeći jezik</div>
+    <div class="era-desc">Od Brendan Eich-ovih 10 dana do Node.js, MongoDB, Electron. Vanilla JS, TypeScript, Atwood-ov zakon. left-pad incident.</div>
+    <div class="era-tech"><span class="tech-pill">ES6+</span><span class="tech-pill">Node.js</span><span class="tech-pill">TypeScript</span><span class="tech-pill">Vanilla JS</span></div>
+    <span class="arrow">→</span>
+  </a>
+
+  <a href="css-evolucija.html" class="era-link" style="background:linear-gradient(135deg,rgba(244,114,182,0.05),rgba(167,139,250,0.05));border-color:rgba(244,114,182,0.15);">
+    <div class="era-yr" style="color:#f472b6;">CSS Evolucija</div>
+    <div class="era-name" style="color:#f472b6;">Sass, Less, PostCSS, Tailwind</div>
+    <div class="era-desc">Od CSS1 1996. do Tailwind i CSS-in-JS. Preprocesori, metodologije, custom properties. Paradoks napretka.</div>
+    <div class="era-tech"><span class="tech-pill">Sass/SCSS</span><span class="tech-pill">Less</span><span class="tech-pill">PostCSS</span><span class="tech-pill">Tailwind</span></div>
+    <span class="arrow">→</span>
+  </a>
+
+  <a href="responsive.html" class="era-link" style="background:linear-gradient(135deg,rgba(103,232,249,0.05),rgba(56,189,248,0.05));border-color:rgba(103,232,249,0.15);">
+    <div class="era-yr" style="color:#67e8f9;">Responsive Design</div>
+    <div class="era-name" style="color:#67e8f9;">Media Queries &amp; Fluid</div>
+    <div class="era-desc">Od fiksnih 960px do fluid dizajna. Mobile First filozofija, breakpointi, clamp(), Container Queries.</div>
+    <div class="era-tech"><span class="tech-pill">Media Queries</span><span class="tech-pill">Mobile First</span><span class="tech-pill">clamp()</span><span class="tech-pill">Container Q</span></div>
     <span class="arrow">→</span>
   </a>
 

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: Responsive Design</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@300;400;500&family=Syne+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">// vremenska.masina</a>
+  <div class="nav-links">
+    <a href="era0-rodjenje.html">ERA-0</a>
+    <a href="monitori.html">Monitori</a>
+    <a href="era1-1994.html">1994</a>
+    <a href="era2-2000.html">2000s</a>
+    <a href="era3-2005.html">2010s</a>
+    <a href="era4-2013.html">2015s</a>
+    <a href="era5-2020.html">2020s</a>
+    <a href="era6-2025.html">2025+</a>
+    <a href="teme.html">Teme</a>
+    <a href="css-evolucija.html">CSS</a>
+    <a href="js-evolucija.html">JS</a>
+    <a href="responsive.html" class="active">Responsive</a>
+    <a href="napredak.html">Napredak</a>
+    <a href="buducnost.html">Buducnost</a>
+    <a href="pristupacnost.html">A11y</a>
+    <a href="hvala.html">Hvala</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">// jedan sajt, svi ekrani</div>
+  <h1>Responsive<br><em>Design</em></h1>
+  <p class="hero-sub">
+    Od fiksnih 640px layout-a do fluid dizajna koji radi na
+    svemu od 280px smartwatch-a do 7680px 8K monitora.
+    Media queries su bila revolucija. Fluid CSS je evolucija.
+  </p>
+</div>
+
+<main>
+
+  <!-- PROBLEM KOJI JE TREBALO REŠITI -->
+  <div class="sec-label">// problem — web za jedan ekran</div>
+  <h2>Pre responsive-a — fiksni layout</h2>
+  <p>
+    Web je 1993-2007. bio dizajniran za <strong>jedan ekran</strong>.
+    Najpre 640px (VGA), zatim 800px, zatim 1024px.
+    Dizajneri su pisali <code>width: 960px; margin: 0 auto;</code>
+    i smatrali posao završenim.
+  </p>
+
+  <div class="g2">
+    <div class="card" style="border-color:rgba(248,113,113,0.2);">
+      <div class="card-label" style="color:var(--red);">Problem 2007.</div>
+      <h3>iPhone — ekran od 320px</h3>
+      <p>Apple objavljuje iPhone. Ekran 320×480px.
+      Svi web sajtovi dizajnirani za 960px+ izgledaju miniaturno.
+      Safari na iPhoneu automatski zumira stranicu da stane.
+      Ovo nije rešenje — to je zaobilaznica.</p>
+      <div class="pills">
+        <span class="pill pr">960px sajt na 320px ekranu</span>
+        <span class="pill pr">Automatski zoom = loše UX</span>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(52,211,153,0.2);">
+      <div class="card-label" style="color:var(--green);">Rešenje 2010.</div>
+      <h3>Ethan Marcotte — "Responsive Web Design"</h3>
+      <p>Maj 2010, A List Apart članak.
+      Termin "responsive web design" kuje Ethan Marcotte.
+      Tri ingredijenta: fluid grids, flexible images, media queries.
+      Isto URL, isti HTML, drugačiji CSS za svaki ekran.</p>
+      <div class="pills">
+        <span class="pill pg">Fluid grid</span>
+        <span class="pill pg">Flexible images</span>
+        <span class="pill pg">Media queries</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEDIA QUERIES -->
+  <div class="sec-label">// media queries — sintaksa</div>
+  <h2>Media Queries — CSS 2 (1998) → CSS 3 (2012)</h2>
+  <p>
+    Media queries postoje od <strong>CSS 2 (1998)</strong> — ali samo za
+    <code>@media print</code> i <code>@media screen</code>.
+    <strong>CSS3 Media Queries</strong> (W3C Recommendation 2012)
+    dodaju <code>min-width</code>, <code>max-width</code>, <code>orientation</code>,
+    <code>resolution</code> i ostalo što danas koristimo.
+  </p>
+
+  <div class="code-blk">
+    <div class="code-head"><span>Media Queries — evolucija sintakse</span><span style="color:var(--cyan);">CSS</span></div>
+    <div class="code-body">
+      <span class="cc">/* CSS 2 (1998) — samo tip medija */</span><br>
+      <span class="ck">@media</span> <span class="cv">print</span> { <span class="cp">body</span> { <span class="cp">font-size</span>: <span class="cv">12pt</span>; } }<br>
+      <span class="ck">@media</span> <span class="cv">screen</span> { <span class="cp">body</span> { <span class="cp">font-size</span>: <span class="cv">16px</span>; } }<br><br>
+      <span class="cc">/* CSS 3 (2012) — min/max width — responsive revolucija */</span><br>
+      <span class="ck">@media</span> (<span class="ca">max-width</span>: <span class="cv">768px</span>) {<br>
+      &nbsp;&nbsp;<span class="cp">.sidebar</span> { <span class="cp">display</span>: <span class="cv">none</span>; }<br>
+      }<br><br>
+      <span class="ck">@media</span> (<span class="ca">min-width</span>: <span class="cv">1024px</span>) {<br>
+      &nbsp;&nbsp;<span class="cp">.grid</span> { <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>; }<br>
+      }<br><br>
+      <span class="cc">/* Orientation */</span><br>
+      <span class="ck">@media</span> (<span class="ca">orientation</span>: <span class="cv">landscape</span>) { ... }<br><br>
+      <span class="cc">/* Retina / HiDPI (2012) */</span><br>
+      <span class="ck">@media</span> (<span class="ca">-webkit-min-device-pixel-ratio</span>: <span class="cv">2</span>),<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (<span class="ca">min-resolution</span>: <span class="cv">192dpi</span>) {<br>
+      &nbsp;&nbsp;<span class="cc">/* @2x slike */</span><br>
+      }<br><br>
+      <span class="cc">/* Moderni CSS (2022+) — prefers */</span><br>
+      <span class="ck">@media</span> (<span class="ca">prefers-color-scheme</span>: <span class="cv">dark</span>) { ... }<br>
+      <span class="ck">@media</span> (<span class="ca">prefers-reduced-motion</span>: <span class="cv">reduce</span>) { ... }<br>
+      <span class="ck">@media</span> (<span class="ca">prefers-contrast</span>: <span class="cv">high</span>) { ... }
+    </div>
+  </div>
+
+  <!-- BREAKPOINTI -->
+  <div class="sec-label">// breakpointi — kako smo ih definisali</div>
+  <h2>Breakpointi kroz ere</h2>
+
+  <div class="callout amber">
+    <span style="font-size:20px;flex-shrink:0;">💡</span>
+    <div>
+      <strong>Odakle dolaze Bootstrap breakpointi?</strong>
+      768px = iPad portret (2010). 992px = iPad landcape + mali desktop. 1200px = standard desktop.
+      Bootstrap 3 je kodifikovao ove vrednosti i cela industrija ih je prihvatila.
+      Nisu izmišljeni — nastali su iz popularnih uređaja tog vremena.
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="card-label" style="color:var(--blue);">Bootstrap 3 — 2013</div>
+      <h3>xs / sm / md / lg</h3>
+      <div class="code-blk" style="margin-top:8px;">
+        <div class="code-body" style="font-size:11px;">
+          <span class="cc">/* xs: &lt;768px (mobilni) */</span><br>
+          <span class="cc">/* sm: ≥768px (tablet) */</span><br>
+          <span class="cc">/* md: ≥992px (desktop) */</span><br>
+          <span class="cc">/* lg: ≥1200px (wide) */</span><br><br>
+          <span class="ck">@media</span> (<span class="ca">min-width</span>: <span class="cv">768px</span>) {}<br>
+          <span class="ck">@media</span> (<span class="ca">min-width</span>: <span class="cv">992px</span>) {}<br>
+          <span class="ck">@media</span> (<span class="ca">min-width</span>: <span class="cv">1200px</span>) {}
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--purple);">Bootstrap 4/5 + Tailwind</div>
+      <h3>sm / md / lg / xl / 2xl</h3>
+      <div class="code-blk" style="margin-top:8px;">
+        <div class="code-body" style="font-size:11px;">
+          <span class="cc">/* sm:  ≥640px  */</span><br>
+          <span class="cc">/* md:  ≥768px  */</span><br>
+          <span class="cc">/* lg:  ≥1024px */</span><br>
+          <span class="cc">/* xl:  ≥1280px */</span><br>
+          <span class="cc">/* 2xl: ≥1536px */</span><br><br>
+          <span class="cc">/* Tailwind: */</span><br>
+          <span class="cv">md:grid-cols-3 lg:grid-cols-4</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--green);">Moderni CSS</div>
+      <h3>Container Queries — 2023</h3>
+      <div class="code-blk" style="margin-top:8px;">
+        <div class="code-body" style="font-size:11px;">
+          <span class="cc">/* Komponenta reaguje na</span><br>
+          <span class="cc">&nbsp;&nbsp; svog roditelja, ne viewport */</span><br><br>
+          <span class="ck">.parent</span> {<br>
+          &nbsp;&nbsp;<span class="cp">container-type</span>: <span class="cv">inline-size</span>;<br>
+          }<br>
+          <span class="ck">@container</span> (<span class="ca">min-width</span>: <span class="cv">400px</span>) {<br>
+          &nbsp;&nbsp;<span class="cp">.card</span> { <span class="cp">flex-direction</span>: <span class="cv">row</span>; }<br>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE FIRST VS DESKTOP FIRST -->
+  <div class="sec-label">// filozofija — kako pisati media queries</div>
+  <h2>Mobile First vs Desktop First</h2>
+
+  <div class="g2">
+    <div class="card" style="border-color:rgba(248,113,113,0.2);">
+      <div class="card-label" style="color:var(--red);">Desktop First — stari pristup</div>
+      <h3>max-width — "skrni kad je malo"</h3>
+      <p>Dizajniraš za desktop (1280px+), zatim dodaješ
+      <code>max-width</code> media queries da "pokvariš" layout za mobilni.
+      Mobilni uvek dobija "ostatke" od desktop dizajna.</p>
+      <div class="code-blk" style="margin-top:8px;">
+        <div class="code-body" style="font-size:11px;">
+          <span class="cc">/* Desktop first */</span><br>
+          <span class="cp">.grid</span> { <span class="cp">display</span>: <span class="cv">grid</span>; <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3,1fr)</span>; }<br><br>
+          <span class="ck">@media</span> (<span class="ca">max-width</span>: <span class="cv">768px</span>) {<br>
+          &nbsp;&nbsp;<span class="cp">.grid</span> { <span class="cp">grid-template-columns</span>: <span class="cv">1fr</span>; }<br>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(52,211,153,0.2);">
+      <div class="card-label" style="color:var(--green);">Mobile First — Luke Wroblewski 2009</div>
+      <h3>min-width — "širi kad je veće"</h3>
+      <p>Dizajniraš za mobilni (320px) — samo ono što je <em>nužno</em>.
+      Zatim dodaješ <code>min-width</code> queries da <em>proširuješ</em> layout.
+      Desktop je unapređenje mobilnog, ne obrnuto.</p>
+      <div class="code-blk" style="margin-top:8px;">
+        <div class="code-body" style="font-size:11px;">
+          <span class="cc">/* Mobile first */</span><br>
+          <span class="cp">.grid</span> { <span class="cp">display</span>: <span class="cv">grid</span>; <span class="cp">grid-template-columns</span>: <span class="cv">1fr</span>; }<br><br>
+          <span class="ck">@media</span> (<span class="ca">min-width</span>: <span class="cv">768px</span>) {<br>
+          &nbsp;&nbsp;<span class="cp">.grid</span> { <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3,1fr)</span>; }<br>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLUID UNITS -->
+  <div class="sec-label">// fluid jedinice — kraj fiksnih piksela</div>
+  <h2>%, vw, vh, rem, em, clamp()</h2>
+
+  <div class="g2">
+    <div class="code-blk">
+      <div class="code-head"><span>Relativne jedinice</span></div>
+      <div class="code-body">
+        <span class="cc">/* % — relativno na roditelja */</span><br>
+        <span class="cp">width</span>: <span class="cv">50%</span>;<br><br>
+        <span class="cc">/* vw/vh — relativno na viewport */</span><br>
+        <span class="cp">width</span>: <span class="cv">100vw</span>; <span class="cc">/* puna širina */</span><br>
+        <span class="cp">height</span>: <span class="cv">100vh</span>; <span class="cc">/* puna visina */</span><br><br>
+        <span class="cc">/* rem — relativno na root font-size */</span><br>
+        <span class="cp">font-size</span>: <span class="cv">1.5rem</span>; <span class="cc">/* 24px ako je root 16px */</span><br><br>
+        <span class="cc">/* em — relativno na roditelja */</span><br>
+        <span class="cp">padding</span>: <span class="cv">1em</span>; <span class="cc">/* = trenutni font-size */</span>
+      </div>
+    </div>
+    <div class="code-blk">
+      <div class="code-head"><span>clamp() — fluid bez media querija</span><span style="color:var(--cyan);">CSS 2020+</span></div>
+      <div class="code-body">
+        <span class="cc">/* clamp(min, ideal, max) */</span><br>
+        <span class="cp">font-size</span>: <span class="cv">clamp(</span><span class="cn">16px</span>, <span class="cv">4vw</span>, <span class="cn">32px</span><span class="cv">)</span>;<br>
+        <span class="cc">/* 16px na mobilnom */</span><br>
+        <span class="cc">/* raste sa ekranom */</span><br>
+        <span class="cc">/* max 32px na desktopu */</span><br><br>
+        <span class="cp">width</span>: <span class="cv">clamp(</span><span class="cn">280px</span>, <span class="cv">90%</span>, <span class="cn">1200px</span><span class="cv">)</span>;<br><br>
+        <span class="cc">/* Nema media query potrebe! */</span><br>
+        <span class="cc">/* Fluid je podrazumevano. */</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIVE DEMO — resize -->
+  <div class="sec-label">// live demo — promeni veličinu</div>
+  <h2>Proba responsive-a — povuci ugao</h2>
+  <p>Ova kutija se može povući da bude šira ili uža. Sadržaj se automatski prilagođava.</p>
+
+  <div class="resize-demo" id="resizable">
+    <div class="resize-info">
+      <span>Širina: <span id="resize-width">---</span>px</span>
+      <span id="resize-bp" style="color:var(--amber);">sm</span>
+    </div>
+    <div class="resize-inner">
+      <div class="resize-content" id="resize-content">
+        <div class="resize-box" style="flex:1;min-width:120px;">📱 Mobilni blok</div>
+        <div class="resize-box" id="rb2" style="flex:1;min-width:120px;">💻 Tablet blok</div>
+        <div class="resize-box" id="rb3" style="flex:1;min-width:120px;">🖥 Desktop blok</div>
+      </div>
+      <div style="margin-top:10px;font-family:var(--mono);font-size:10px;color:var(--muted);">
+        ← Povuci desni ugao kutije da simuliraš promenu veličine ekrana →
+      </div>
+    </div>
+  </div>
+
+  <!-- HRONOLOGIJA RESPONSIVE-A -->
+  <div class="sec-label">// hronologija</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-label" style="color:var(--muted);">1998</div>
+      <h3>CSS2 @media — osnova</h3>
+      <p>Media types: screen, print, handheld. Handheld nikad nije zaživio. Ali osnova za sve što dolazi.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--muted);">2007</div>
+      <h3>iPhone — problem postaje realan</h3>
+      <p>Mobilni web eksplodira. Stari sajtovi izgledaju loše. Industrija traži rešenje.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--amber);">2009</div>
+      <h3>Mobile First — Luke Wroblewski</h3>
+      <p>Knjiga "Mobile First" mijenja filozofiju dizajna. min-width umesto max-width. <a href="teme.html#mobilni" style="color:var(--amber);">→ Opširnije u Teme</a></p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--amber);">2010</div>
+      <h3>Responsive Web Design — Marcotte</h3>
+      <p>Termin kuje Ethan Marcotte u A List Apart. Fluid grids + flexible images + media queries = responsive.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--cyan);">2013</div>
+      <h3>Bootstrap 3 — responsive by default</h3>
+      <p>Bootstrap 3 je prvi Bootstrap koji je Mobile First. col-xs-12, col-md-6 — responsive grid za mase. <a href="era3-2005.html" style="color:var(--cyan);">→ Era3</a></p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--cyan);">2015</div>
+      <h3>Google Mobilegeddon</h3>
+      <p>Google počinje kažnjavati non-responsive sajtove u rangiranju. Responsive postaje obaveza, ne izbor.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--purple);">2017</div>
+      <h3>CSS Grid — pravi responsive layout</h3>
+      <p><code>grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))</code> — responsive bez media querija. <a href="era4-2013.html" style="color:var(--purple);">→ Era4</a></p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--green);">2023</div>
+      <h3>Container Queries — budućnost</h3>
+      <p>Komponenta reaguje na svog roditelja, ne na viewport. Pravi komponentni responsive design.</p>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <span style="font-size:20px;flex-shrink:0;">🎯</span>
+    <div>
+      <strong>Danas: responsive nije feature — to je default.</strong>
+      Svaki framework, svaki starter template, svaki novi projekat je responsive od prvog dana.
+      Pitanje više nije "da li je responsive" nego "koliko dobro se prilagođava"
+      — od 280px smartwatch-a do 7680px 8K ekrana.
+      <a href="monitori.html" style="color:var(--green);">→ Evolucija monitora</a>
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <a href="css-evolucija.html" class="nf-link">← CSS Evolucija</a>
+    <a href="teme.html" class="nf-link" style="color:var(--cyan);">Teme →</a>
+  </div>
+
+</main>
+
+<footer>
+  <span>Frontend Vremenska Masina &nbsp;·&nbsp; Responsive Design</span>
+  <a href="teme.html">← Teme</a>
+</footer>
+
+<script>
+// Live resize demo
+var box = document.getElementById('resizable');
+var widthEl = document.getElementById('resize-width');
+var bpEl = document.getElementById('resize-bp');
+
+function updateWidth() {
+  var w = box.offsetWidth;
+  widthEl.textContent = w;
+  if (w < 480) { bpEl.textContent = 'xs < 480px'; bpEl.style.color = '#f87171'; }
+  else if (w < 640) { bpEl.textContent = 'sm ≥ 480px'; bpEl.style.color = '#fbbf24'; }
+  else if (w < 768) { bpEl.textContent = 'sm ≥ 640px'; bpEl.style.color = '#fbbf24'; }
+  else if (w < 1024) { bpEl.textContent = 'md ≥ 768px'; bpEl.style.color = '#38bdf8'; }
+  else { bpEl.textContent = 'lg ≥ 1024px'; bpEl.style.color = '#34d399'; }
+}
+
+var ro = new ResizeObserver(updateWidth);
+ro.observe(box);
+updateWidth();
+</script>
+
+</body>
+</html>

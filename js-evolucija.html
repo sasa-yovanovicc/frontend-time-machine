@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: JavaScript Evolucija</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@300;400;500&family=Syne+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#07080d;--s1:#0d0f18;--s2:#131520;--s3:#1c1f2e;
+      --border:rgba(148,163,184,0.1);--text:#e2e8f0;--muted:#64748b;--dim:#374151;
+      --blue:#38bdf8;--green:#34d399;--amber:#fbbf24;--pink:#f472b6;
+      --purple:#a78bfa;--red:#f87171;--yellow:#facc15;
+      --mono:'Syne Mono','Share Tech Mono',monospace;
+      --sans:'Fira Code','Share Tech Mono',monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--text);overflow-x:hidden;}
+
+    nav{position:sticky;top:0;z-index:100;height:52px;display:flex;align-items:center;
+      justify-content:space-between;padding:0 40px;
+      background:rgba(7,8,13,0.95);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);}
+    .logo{font-family:var(--mono);font-size:12px;color:var(--yellow);text-decoration:none;letter-spacing:0.08em;}
+    .nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+    .nav-links a{font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:4px;
+      color:var(--muted);text-decoration:none;transition:all .15s;
+      text-transform:uppercase;letter-spacing:.5px;}
+    .nav-links a:hover{color:var(--text);background:var(--s2);}
+    .nav-links a.active{color:var(--yellow);background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.2);}
+
+    .hero{position:relative;z-index:1;padding:64px 40px 48px;max-width:860px;margin:0 auto;text-align:center;}
+    .hero-eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:3px;
+      color:var(--yellow);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:10px;}
+    .hero-eyebrow::before,.hero-eyebrow::after{content:'';flex:1;max-width:60px;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(250,204,21,0.4));}
+    .hero-eyebrow::after{transform:scaleX(-1);}
+    h1{font-family:var(--mono);font-size:clamp(26px,5vw,52px);font-weight:400;color:#fff;
+      letter-spacing:0.03em;line-height:1.15;margin-bottom:16px;}
+    h1 em{color:var(--yellow);font-style:normal;}
+    .hero-sub{font-size:15px;color:var(--muted);max-width:580px;margin:0 auto;line-height:1.85;}
+
+    main{max-width:1060px;margin:0 auto;padding:0 40px 80px;position:relative;z-index:1;}
+    .sec-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;
+      color:var(--muted);margin-bottom:16px;margin-top:40px;}
+    h2{font-family:var(--mono);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px;letter-spacing:0.03em;}
+    p{font-size:13px;color:var(--muted);line-height:1.85;margin-bottom:10px;}
+    p strong{color:var(--text);}
+    code{font-family:var(--mono);font-size:11px;background:var(--s2);
+      border:1px solid var(--border);padding:1px 5px;border-radius:3px;color:var(--yellow);}
+    a{color:var(--yellow);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .code-blk{background:var(--s2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+    .code-head{background:var(--s3);padding:6px 14px;font-family:var(--mono);font-size:10px;
+      color:var(--muted);display:flex;justify-content:space-between;
+      text-transform:uppercase;letter-spacing:1px;}
+    .code-body{padding:12px 16px;font-family:var(--mono);font-size:12px;line-height:1.9;overflow-x:auto;}
+    .ck{color:var(--yellow);}  .cp{color:var(--purple);}
+    .cv{color:var(--green);}   .ca{color:var(--amber);}
+    .cc{color:var(--dim);}     .cn{color:var(--blue);}
+    .cs{color:var(--pink);}
+
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;}
+    .card{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:18px 20px;transition:border-color .2s;}
+    .card:hover{border-color:rgba(250,204,21,0.2);}
+    .card-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
+    .card h3{font-family:var(--mono);font-size:13px;font-weight:500;color:#fff;margin-bottom:8px;}
+    .card p{font-size:12px;color:var(--muted);line-height:1.7;margin:0;}
+
+    .callout{background:var(--s1);border-left:3px solid var(--yellow);
+      border-radius:0 8px 8px 0;padding:14px 18px;margin:16px 0;
+      display:flex;gap:12px;font-size:13px;color:var(--muted);line-height:1.75;}
+    .callout.green{border-left-color:var(--green);}
+    .callout.blue{border-left-color:var(--blue);}
+    .callout.red{border-left-color:var(--red);}
+    .callout strong{color:var(--text);}
+
+    .pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+    .pill{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid;}
+    .py{color:var(--yellow);border-color:rgba(250,204,21,0.25);}
+    .pg{color:var(--green);border-color:rgba(52,211,153,0.25);}
+    .pb{color:var(--blue);border-color:rgba(56,189,248,0.25);}
+    .pa{color:var(--amber);border-color:rgba(251,191,36,0.25);}
+    .pp{color:var(--purple);border-color:rgba(167,139,250,0.25);}
+    .pr{color:var(--red);border-color:rgba(248,113,113,0.25);}
+
+    /* TIMELINE */
+    .timeline{position:relative;margin:24px 0;}
+    .timeline::before{content:'';position:absolute;left:100px;top:0;bottom:0;
+      width:1px;background:var(--border);}
+    .tl-item{display:grid;grid-template-columns:100px 1fr;gap:0;margin-bottom:3px;}
+    .tl-year{padding:20px 16px 20px 0;text-align:right;font-family:var(--mono);
+      font-size:11px;color:var(--muted);position:relative;}
+    .tl-year::after{content:'';position:absolute;right:-5px;top:26px;
+      width:9px;height:9px;border-radius:50%;background:var(--yellow);
+      border:2px solid var(--bg);}
+    .tl-year.major::after{background:var(--amber);width:11px;height:11px;right:-6px;top:25px;
+      box-shadow:0 0 8px var(--amber);}
+    .tl-content{background:var(--s1);border:1px solid var(--border);
+      border-radius:0 10px 10px 0;padding:16px 20px;margin-left:20px;
+      transition:border-color .2s;}
+    .tl-content:hover{border-color:rgba(250,204,21,0.2);}
+    .tl-tag{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
+    .tl-title{font-family:var(--mono);font-size:13px;font-weight:500;color:#fff;margin-bottom:6px;}
+    .tl-body{font-size:12px;color:var(--muted);line-height:1.75;}
+    .tl-body strong{color:var(--text);}
+
+    /* VANILLA BOX */
+    .vanilla-box{
+      background:linear-gradient(135deg,rgba(250,204,21,0.05),rgba(251,191,36,0.03));
+      border:1px solid rgba(250,204,21,0.2);
+      border-radius:14px;padding:28px 32px;margin:24px 0;
+    }
+
+    .nav-footer{display:flex;justify-content:space-between;padding:28px 0 0;
+      border-top:1px solid var(--border);margin-top:48px;}
+    .nf-link{font-family:var(--mono);font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s;}
+    .nf-link:hover{color:var(--yellow);text-decoration:none;}
+
+    footer{border-top:1px solid var(--border);padding:20px 40px;
+      display:flex;align-items:center;justify-content:space-between;
+      font-family:var(--mono);font-size:11px;color:var(--dim);}
+    footer a{color:var(--yellow);text-decoration:none;}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">// vremenska.masina</a>
+  <div class="nav-links">
+    <a href="era0-rodjenje.html">ERA-0</a>
+    <a href="monitori.html">Monitori</a>
+    <a href="era1-1994.html">1994</a>
+    <a href="era2-2000.html">2000s</a>
+    <a href="era3-2005.html">2010s</a>
+    <a href="era4-2013.html">2015s</a>
+    <a href="era5-2020.html">2020s</a>
+    <a href="era6-2025.html">2025+</a>
+    <a href="teme.html">Teme</a>
+    <a href="css-evolucija.html">CSS</a>
+    <a href="js-evolucija.html" class="active">JS</a>
+    <a href="responsive.html">Responsive</a>
+    <a href="napredak.html">Napredak</a>
+    <a href="buducnost.html">Buducnost</a>
+    <a href="pristupacnost.html">A11y</a>
+    <a href="hvala.html">Hvala</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">// od 10 dana do vladara sveta</div>
+  <h1>JavaScript<br><em>Evolucija</em></h1>
+  <p class="hero-sub">
+    Jezik napisan za 10 dana, koji nije obećavao ništa posebno,
+    koji je godinama bio smatran "ne pravim programiranjem" —
+    danas jedini jezik koji radi u browseru, na serveru, u bazi,
+    u mobilnim aplikacijama i u AI toolingу.
+  </p>
+</div>
+
+<main>
+
+  <!-- POČETAK -->
+  <div class="sec-label">// kako je sve počelo</div>
+  <h2>10 dana — Brendan Eich, Netscape, 1995.</h2>
+
+  <div class="callout red">
+    <span style="font-size:20px;flex-shrink:0;">⚡</span>
+    <div>
+      <strong>Istorijska činjenica:</strong>
+      Brendan Eich je napisao prvi prototip JavaScript-a za
+      <strong>10 dana</strong> u maju 1995.
+      Netscape je hteo "Javu za web" — nešto jednostavno, za neprogramere.
+      Eich je dobio zadatak da napravi jezik koji <em>izgleda kao Java</em>
+      ali ima Scheme semantiku ispod.
+      Rezultat: jezik koji nije bio ni Scheme ni Java,
+      ali je radio i pokrenuo revoluciju.
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-label" style="color:var(--red);">Originalna imena</div>
+      <h3>Mocha → LiveScript → JavaScript</h3>
+      <p>Eich ga je nazvao <strong>Mocha</strong>. Netscape marketing ga preimenuje u
+      <strong>LiveScript</strong>. Zatim — u dogovoru sa Sun Microsystems —
+      postaje <strong>JavaScript</strong>. Čisto marketing: Java je bila popularna,
+      ime je trebalo da privuče pažnju. JavaScript i Java nemaju nikakve veze osim naziva.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--red);">Microsoft odgovara</div>
+      <h3>JScript — 1996</h3>
+      <p>Microsoft kopira JavaScript za IE — ali ne smije koristiti ime zbog licenci.
+      Zove ga <strong>JScript</strong>. Neznatno drugačija implementacija.
+      Ovo je početak <strong>browser ratova</strong> —
+      isti kod, različito ponašanje u Netscape-u i IE-u.
+      Web developeri pišu <code>if (document.all)</code> da detektuju IE.</p>
+    </div>
+  </div>
+
+  <!-- HRONOLOGIJA -->
+  <div class="sec-label" style="margin-top:32px;">// hronologija — 30 godina u 10 tačaka</div>
+
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-year major">1995</div>
+      <div class="tl-content" style="border-color:rgba(250,204,21,0.2);">
+        <div class="tl-tag" style="color:var(--yellow);">★ Rođenje</div>
+        <div class="tl-title">JavaScript 1.0 — Netscape Navigator 2.0</div>
+        <div class="tl-body">
+          Dinamički tipovi, prototypalna nasleđivanja, first-class funkcije.
+          Može menjati DOM, validirati forme, animirati elemente.
+          <strong>Kritika je bila žestoka</strong> — "to nije pravi jezik",
+          "toy language", "za neprogramere".
+          Istovremeno: svako ko je htio da stranica "radi nešto"
+          morao ga je koristiti.
+          <div class="pills" style="margin-top:8px;">
+            <span class="pill py">10 dana razvoja</span>
+            <span class="pill py">Dinamički tipovi</span>
+            <span class="pill py">DOM manipulacija</span>
+            <span class="pill pr">Kritikovan odmah</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">1997</div>
+      <div class="tl-content">
+        <div class="tl-tag" style="color:var(--muted);">Standard</div>
+        <div class="tl-title">ECMAScript 1 — ECMA-262</div>
+        <div class="tl-body">
+          Netscape predaje JavaScript ECMA standardizacionom tijelu.
+          Nastaje <strong>ECMAScript</strong> — zvanično ime standarda.
+          JavaScript je <em>implementacija</em> ECMAScript standarda.
+          (SpiderMonkey u Firefoxu, V8 u Chromeu, JavaScriptCore u Safáriju —
+          sve su implementacije istog standarda.)
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2005</div>
+      <div class="tl-content" style="border-color:rgba(56,189,248,0.2);">
+        <div class="tl-tag" style="color:var(--blue);">★ Ajax revolucija</div>
+        <div class="tl-title">Ajax — Jesse James Garrett imenuje tehniku</div>
+        <div class="tl-body">
+          <strong>XMLHttpRequest</strong> postoji od 1999. (Microsoft u IE).
+          Ali tek 2005. Jesse James Garrett piše članak i imenuje tehiku: Ajax.
+          Gmail (2004.) i Google Maps (2005.) dokazuju — web može biti
+          <em>aplikacija</em>, ne samo dokument.
+          JavaScript više nije "toy" — gradi Gmail.
+          <div class="pills" style="margin-top:8px;">
+            <span class="pill pb">XMLHttpRequest</span>
+            <span class="pill pb">Async bez reload-a</span>
+            <span class="pill pb">Gmail na JS-u</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2006</div>
+      <div class="tl-content" style="border-color:rgba(56,189,248,0.2);">
+        <div class="tl-tag" style="color:var(--blue);">★ jQuery</div>
+        <div class="tl-title">jQuery — "Write Less, Do More"</div>
+        <div class="tl-body">
+          John Resig objavljuje jQuery. <strong>Ubija cross-browser probleme.</strong>
+          <code>$(selector).action()</code> radi isto u IE i Firefoxu.
+          Polyfill za desetak godina browser haosa.
+          Na vrhuncu popularnosti — <strong>78% svih web sajtova</strong>
+          koristilo je jQuery. I danas živi na milionima sajtova.
+          <div class="pills" style="margin-top:8px;">
+            <span class="pill pb">Cross-browser fix</span>
+            <span class="pill pb">78% web sajtova</span>
+            <span class="pill pb">I danas živ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2009</div>
+      <div class="tl-content" style="border-color:rgba(52,211,153,0.2);">
+        <div class="tl-tag" style="color:var(--green);">★ Node.js — JS izlazi iz browsera</div>
+        <div class="tl-title">Ryan Dahl — JavaScript na serveru</div>
+        <div class="tl-body">
+          <strong>Prekretnica.</strong> Ryan Dahl uzima Chrome-ov V8 engine
+          i stavlja ga van browsera. JavaScript može čitati fajlove,
+          otvarati TCP konekcije, biti HTTP server.
+          <br><br>
+          Isti jezik — frontend i backend. <strong>Full-stack JavaScript</strong>
+          postaje stvarnost. npm nastaje 2010. —
+          danas najveći package registry na svetu, 2+ miliona paketa.
+          <div class="code-blk" style="margin-top:10px;">
+            <div class="code-head"><span>Node.js HTTP server — 2009</span><span style="color:var(--green);">Node.js</span></div>
+            <div class="code-body">
+              <span class="ck">const</span> http = <span class="ca">require</span>(<span class="cs">'http'</span>);<br><br>
+              <span class="ck">const</span> server = http.<span class="ca">createServer</span>((req, res) => {<br>
+              &nbsp;&nbsp;res.<span class="ca">writeHead</span>(<span class="cv">200</span>);<br>
+              &nbsp;&nbsp;res.<span class="ca">end</span>(<span class="cs">'Hello from Node.js!\n'</span>);<br>
+              });<br><br>
+              server.<span class="ca">listen</span>(<span class="cv">3000</span>);<br>
+              <span class="cc">// JavaScript na serveru. 2009. Niko nije verovao.</span>
+            </div>
+          </div>
+          <div class="pills" style="margin-top:8px;">
+            <span class="pill pg">JS na serveru</span>
+            <span class="pill pg">npm ecosystem</span>
+            <span class="pill pg">Full-stack JS</span>
+            <span class="pill pg">Non-blocking I/O</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2015</div>
+      <div class="tl-content" style="border-color:rgba(167,139,250,0.2);">
+        <div class="tl-tag" style="color:var(--purple);">★ ES6 / ES2015 — moderni JS</div>
+        <div class="tl-title">ECMAScript 2015 — jezik se transformiše</div>
+        <div class="tl-body">
+          Najveći skok od 1995. <code>let</code>, <code>const</code>,
+          arrow functions, classes, modules (<code>import/export</code>),
+          template literals, destructuring, spread operator,
+          Promise, Symbol, Map, Set, generators...
+          <br><br>
+          JS više ne izgleda kao krpež — izgleda kao ozbiljan jezik.
+          Babel kompajler omogućava korištenje ES6 na starim browserima odmah.
+          <div class="code-blk" style="margin-top:10px;">
+            <div class="code-head"><span>ES5 vs ES6</span></div>
+            <div class="code-body">
+              <span class="cc">// ES5 (staro)</span><br>
+              <span class="ck">var</span> <span class="cn">add</span> = <span class="ck">function</span>(a, b) { <span class="ck">return</span> a + b; };<br>
+              <span class="ck">var</span> <span class="cn">name</span> = user.name || <span class="cs">'Anonymous'</span>;<br><br>
+              <span class="cc">// ES6 (novo)</span><br>
+              <span class="ck">const</span> <span class="cn">add</span> = (a, b) => a + b;<br>
+              <span class="ck">const</span> { <span class="cn">name</span> = <span class="cs">'Anonymous'</span> } = user;<br>
+              <span class="ck">const</span> <span class="cn">msg</span> = <span class="cs">`Hello, ${name}!`</span>;
+            </div>
+          </div>
+          <div class="pills" style="margin-top:8px;">
+            <span class="pill pp">Arrow functions</span>
+            <span class="pill pp">import/export</span>
+            <span class="pill pp">Promise</span>
+            <span class="pill pp">Destructuring</span>
+            <span class="pill pp">Classes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2017</div>
+      <div class="tl-content">
+        <div class="tl-tag" style="color:var(--yellow);">async/await</div>
+        <div class="tl-title">ES2017 — asinhroni kod postaje čitljiv</div>
+        <div class="tl-body">
+          Callback hell → Promise → <strong>async/await</strong>.
+          Asinhroni kod koji izgleda kao sinhroni.
+          Jedna od najvažnijih ergonomskih poboljšanja jezika.
+          <div class="code-blk" style="margin-top:10px;">
+            <div class="code-head"><span>Callback hell → async/await</span></div>
+            <div class="code-body">
+              <span class="cc">// Callback hell (staro)</span><br>
+              <span class="ca">fetch</span>(url, <span class="ck">function</span>(err, data) {<br>
+              &nbsp;&nbsp;<span class="ca">parseJSON</span>(data, <span class="ck">function</span>(err, obj) {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="ca">saveDB</span>(obj, <span class="ck">function</span>(err) { <span class="cc">// ...</span> })<br>
+              &nbsp;&nbsp;})<br>
+              })<br><br>
+              <span class="cc">// async/await (novo)</span><br>
+              <span class="ck">const</span> <span class="cn">data</span> = <span class="ck">await</span> <span class="ca">fetch</span>(url);<br>
+              <span class="ck">const</span> <span class="cn">obj</span>  = <span class="ck">await</span> <span class="ca">parseJSON</span>(data);<br>
+              <span class="ck">await</span> <span class="ca">saveDB</span>(obj);
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year major">2012</div>
+      <div class="tl-content" style="border-color:rgba(56,189,248,0.2);">
+        <div class="tl-tag" style="color:var(--blue);">★ TypeScript</div>
+        <div class="tl-title">Microsoft TypeScript — JS sa tipovima</div>
+        <div class="tl-body">
+          Anders Hejlsberg (C# kreator) projektuje TypeScript.
+          JavaScript sa statičkim tipovima koji se kompajlira u čisti JS.
+          <strong>Angular 2 (2016) napisan u TypeScript-u</strong> —
+          industrija prihvata.
+          Danas: svaki ozbiljan projekat, svaki framework, svaki novi starter.
+          TypeScript nije zamena za JS — to je JS sa super moćima.
+          <div class="pills" style="margin-top:8px;">
+            <span class="pill pb">Statički tipovi</span>
+            <span class="pill pb">Kompajlira u JS</span>
+            <span class="pill pb">Anders Hejlsberg</span>
+            <span class="pill pb">2022+ de facto standard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JS U BAZI PODATAKA -->
+  <div class="sec-label">// javascript i baze podataka</div>
+  <h2>JS ulazi u bazu podataka</h2>
+  <p>
+    Node.js je JS odveo na server. Ali JS je otišao još dalje —
+    <strong>direktno u bazu podataka</strong>.
+  </p>
+
+  <div class="g2">
+    <div class="card" style="border-color:rgba(52,211,153,0.2);">
+      <div class="card-label" style="color:var(--green);">MongoDB — Document DB</div>
+      <h3>JavaScript u upitima</h3>
+      <p>MongoDB koristi JavaScript sintaksu za upite i agregacije.
+      JSON dokumenti nativno — nema ORM-a, nema mapiranja.
+      Isti jezik koji pišeš u React-u, pišeš i u MongoDB shell-u.</p>
+      <div class="code-blk" style="margin-top:10px;">
+        <div class="code-head"><span>MongoDB — JS upiti</span><span style="color:var(--green);">MongoDB</span></div>
+        <div class="code-body">
+          <span class="cc">// Isti JS sintaksa u bazi</span><br>
+          db.users.<span class="ca">find</span>({<br>
+          &nbsp;&nbsp;<span class="cn">age</span>: { <span class="cs">$gte</span>: <span class="cv">18</span> },<br>
+          &nbsp;&nbsp;<span class="cn">city</span>: <span class="cs">'Beograd'</span><br>
+          }).<span class="ca">sort</span>({ <span class="cn">name</span>: <span class="cv">1</span> });<br><br>
+          <span class="cc">// Agregacija sa JS pipeline-om</span><br>
+          db.orders.<span class="ca">aggregate</span>([<br>
+          &nbsp;&nbsp;{ <span class="cs">$group</span>: { _id: <span class="cs">'$city'</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;total: { <span class="cs">$sum</span>: <span class="cs">'$amount'</span> } } },<br>
+          &nbsp;&nbsp;{ <span class="cs">$sort</span>: { total: <span class="cv">-1</span> } }<br>
+          ]);
+        </div>
+      </div>
+      <div class="pills" style="margin-top:8px;">
+        <span class="pill pg">JSON dokumenti</span>
+        <span class="pill pg">JS upiti</span>
+        <span class="pill pg">Bez ORM-a</span>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(56,189,248,0.2);">
+      <div class="card-label" style="color:var(--blue);">Ostale JS baze</div>
+      <h3>CouchDB, Deno KV, PouchDB</h3>
+      <p><strong>CouchDB</strong> — JavaScript za MapReduce views.
+      <strong>PouchDB</strong> — IndexedDB wrapper, radi u browseru,
+      sinhronizuje sa CouchDB serverom.
+      <strong>Deno KV</strong> — key-value baza ugrađena u Deno runtime.
+      <strong>Cloudflare D1</strong> — SQLite na edge-u, queryuješ iz JS Worker-a.</p>
+      <div class="pills" style="margin-top:8px;">
+        <span class="pill pb">CouchDB</span>
+        <span class="pill pb">PouchDB (browser)</span>
+        <span class="pill pb">Deno KV</span>
+        <span class="pill pb">Cloudflare D1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout blue">
+    <span style="font-size:20px;flex-shrink:0;">🔄</span>
+    <div>
+      <strong>JS stack 2024:</strong> React (browser) → Next.js (server) →
+      Node.js/Express (API) → MongoDB (baza) → Redis (cache).
+      <strong>Jedan jezik, cijeli stack.</strong>
+      Isti developer može pisati UI komponentu i database query.
+      To je bio san 2009. kada je Node nastao. Danas je realnost.
+    </div>
+  </div>
+
+  <!-- VANILLA JS -->
+  <div class="vanilla-box">
+    <div class="sec-label" style="margin-top:0;">// šta je zapravo "vanilla js"</div>
+    <h2>Vanilla JS — zašto baš "vanilla"?</h2>
+
+    <p>
+      <strong>"Vanilla"</strong> dolazi iz sladolednog žargona — vanilla je
+      <em>podrazumevani ukus</em>, bez dodataka.
+      "Vanilla JS" znači čisti JavaScript <strong>bez ijednog frameworka ili biblioteke</strong>.
+      Samo ono što browser ima ugrađeno.
+    </p>
+
+    <div class="callout" style="margin:16px 0;background:rgba(250,204,21,0.04);">
+      <span style="font-size:20px;flex-shrink:0;">⚠️</span>
+      <div>
+        <strong>Pažnja — postoji i VanillaJS.com:</strong>
+        Sajt koji se šali na račun JS frameworka.
+        Tvrdi da je "VanillaJS" najbrži framework —
+        jer je čisti browser API, nula KB download.
+        <strong>Nije pravi framework.</strong> Satirična šala koja zbunjuje početnike.
+        Vanilla JS = čisti JS, bez frameworka. Ne mešati.
+      </div>
+    </div>
+
+    <div class="g2" style="margin-top:16px;">
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Vanilla JS primjeri u produkcionom kodu</div>
+        <div class="code-blk">
+          <div class="code-head"><span>Embedded skripte — Vanilla JS svuda</span></div>
+          <div class="code-body">
+            <span class="cc">// Google Analytics 4</span><br>
+            &lt;<span class="ck">script</span> <span class="ca">async</span><br>
+            &nbsp;&nbsp;<span class="ca">src</span>=<span class="cs">"https://www.googletagmanager.com/gtag/js"</span>&gt;<br>
+            &lt;/<span class="ck">script</span>&gt;<br>
+            &lt;<span class="ck">script</span>&gt;<br>
+            &nbsp;&nbsp;<span class="ca">gtag</span>(<span class="cs">'config'</span>, <span class="cs">'G-XXXXXX'</span>);<br>
+            &lt;/<span class="ck">script</span>&gt;<br><br>
+            <span class="cc">// Facebook Pixel</span><br>
+            <span class="ck">!function</span>(f,b,e,v,n,t,s){<br>
+            &nbsp;&nbsp;<span class="cc">/* fb pixel init — vanilla JS */</span><br>
+            }<br><br>
+            <span class="cc">// Google Maps embed</span><br>
+            &lt;<span class="ck">script</span> <span class="ca">src</span>=<span class="cs">"maps.googleapis.com/maps/api/js"</span>&gt;<br>
+            &lt;/<span class="ck">script</span>&gt;<br>
+            <span class="ck">new</span> <span class="cn">google.maps.Map</span>(el, options);
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Zašto vanilla za embeds</div>
+        <div class="g2" style="margin:0;gap:8px;">
+          <div class="card" style="padding:12px;">
+            <div class="card-label" style="color:var(--yellow);font-size:9px;">Nula zavisnosti</div>
+            <p>FB Pixel ne zna koji framework koristiš. Mora raditi na svakom sajtu — WordPress, React, plain HTML.</p>
+          </div>
+          <div class="card" style="padding:12px;">
+            <div class="card-label" style="color:var(--yellow);font-size:9px;">Veličina</div>
+            <p>Embed skripta mora biti mala. React 18 = 45KB. Vanilla fetch + DOM API = 0KB overhead.</p>
+          </div>
+          <div class="card" style="padding:12px;">
+            <div class="card-label" style="color:var(--yellow);font-size:9px;">Trajnost</div>
+            <p>Framework version se mijenja. <code>document.getElementById</code> radi od 1998. i radi u 2025.</p>
+          </div>
+          <div class="card" style="padding:12px;">
+            <div class="card-label" style="color:var(--yellow);font-size:9px;">Performance</div>
+            <p>Google Analytics se učitava asinhrono, ne blokira render. Vanilla async je native.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- "NIJE PRAVI JEZIK" PARADOKS -->
+  <div class="sec-label">// od "nije pravi jezik" do svugdje</div>
+  <h2>Atwood-ov zakon</h2>
+
+  <div class="callout" style="border-left-color:var(--yellow);background:rgba(250,204,21,0.04);">
+    <span style="font-size:24px;flex-shrink:0;">📜</span>
+    <div>
+      <strong style="color:var(--yellow);font-size:15px;">
+        "Any application that can be written in JavaScript,<br>
+        will eventually be written in JavaScript."
+      </strong>
+      <br>
+      <span style="font-size:12px;color:var(--muted);">— Jeff Atwood (Stack Overflow co-founder), 2007.</span>
+      <br><br>
+      <span style="font-size:13px;">
+        2007. ovo je zvučalo kao hiperbola. Danas — skoro doslovno tačno.
+        VS Code (Electron/JS). Figma (WebAssembly + JS).
+        Discord desktop (Electron). Slack (Electron).
+        MongoDB shell (JS). GitHub Copilot extension (JS/TS).
+        TensorFlow.js — machine learning u browseru.
+      </span>
+    </div>
+  </div>
+
+  <div class="g3" style="margin-top:20px;">
+    <div class="card">
+      <div class="card-label" style="color:var(--yellow);">Desktop aplikacije</div>
+      <h3>Electron</h3>
+      <p>VS Code, Slack, Discord, Figma desktop — sve Electron (Chromium + Node).
+      JavaScript pravi desktop aplikacije za Windows, Mac, Linux.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--yellow);">Mobilne aplikacije</div>
+      <h3>React Native</h3>
+      <p>Facebook 2015. Isti React kod — native iOS i Android aplikacije.
+      Expo dodatno simplifikuje. JS pravi native mobilne appove.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--yellow);">Machine Learning</div>
+      <h3>TensorFlow.js</h3>
+      <p>Google 2018. Treniranje i pokretanje ML modela direktno u browseru.
+      JavaScript radi machine learning. Atwood je imao pravo.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--yellow);">IoT / Hardware</div>
+      <h3>Johnny-Five, Espruino</h3>
+      <p>JavaScript kontroliše Arduino, Raspberry Pi, LED trake, senzore.
+      <code>board.on('ready', () => led.blink())</code></p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--yellow);">Edge Computing</div>
+      <h3>Cloudflare Workers</h3>
+      <p>JavaScript se izvršava na 300+ lokacija širom sveta,
+      50ms od svakog korisnika. Serverless JavaScript na globalnoj mreži.</p>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--yellow);">AI Tooling</div>
+      <h3>LangChain.js, Vercel AI</h3>
+      <p>JavaScript SDK za GPT, Claude, Llama.
+      AI aplikacije u Next.js. Streaming odgovori u React.
+      JS je i ovde stigao.</p>
+    </div>
+  </div>
+
+  <!-- JS EKOSISTEM -->
+  <div class="sec-label">// npm — najveći ekosistem paketa na svetu</div>
+  <h2>npm — 2+ miliona paketa</h2>
+  <p>
+    Node Package Manager (2010) je danas <strong>najveći softverski registar na svetu</strong>.
+    Svaka ozbiljna JS biblioteka ima npm paket.
+    I mnoge koje nisu ozbiljne — <code>is-odd</code>, <code>left-pad</code>
+    (čija 11-linijska brisanje je srušila pola interneta 2016.).
+  </p>
+
+  <div class="callout red">
+    <span style="font-size:20px;flex-shrink:0;">📦</span>
+    <div>
+      <strong>left-pad incident — 2016:</strong>
+      Developer Azer Koçulu obrisao je <code>left-pad</code> sa npm-a (11 linija koda).
+      React, Babel, stotine projekata prestali da se kompajliraju.
+      npm je morao <strong>prisilno da vrati paket</strong> bez dozvole autora.
+      Otvorilo je pitanje: <em>da li je OK da cijeli internet zavisi od 11 linija koda?</em>
+      Odgovor je bio: ne. npm je uveo politiku nepovratnog brisanja popularnih paketa.
+    </div>
+  </div>
+
+  <!-- ZAKLJUČAK -->
+  <div class="callout" style="margin-top:32px;border-left-color:var(--yellow);background:rgba(250,204,21,0.04);">
+    <span style="font-size:20px;flex-shrink:0;">🏆</span>
+    <div>
+      <strong>Jezici koji nisu obećavali, a dominiraju:</strong>
+      JavaScript (1995, 10 dana) → vodeći jezik po broju developera.
+      PHP (1994, "Personal Home Page tools") → 77% svih web servera.
+      Python (1991, "hobi projekt") → vodeći jezik za AI/ML.
+      <br><br>
+      Zajednička karakteristika: <strong>niski ulazni prag, ogromna zajednica,
+      pragmatičnost iznad purizma.</strong>
+      Savršeni jezici (Haskell, Elm) nikad nisu preuzeli tron.
+      Dovoljno dobri jezici s ogromnom zajednicom — jesu.
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <a href="css-evolucija.html" class="nf-link">← CSS Evolucija</a>
+    <a href="teme.html" class="nf-link" style="color:var(--yellow);">Teme →</a>
+  </div>
+
+</main>
+
+<footer>
+  <span>Frontend Vremenska Masina &nbsp;·&nbsp; JavaScript Evolucija</span>
+  <a href="teme.html">← Teme</a>
+</footer>
+
+</body>
+</html>

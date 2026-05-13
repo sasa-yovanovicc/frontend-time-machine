@@ -1,0 +1,259 @@
+/* hvala.css — Hvala / Kraj Prezentacije */
+/* Format: čisti CSS */
+
+:root {
+      --bg:    #050609;
+      --s1:    #0a0d16;
+      --s2:    #0f1220;
+      --border:rgba(148,163,184,0.1);
+      --text:  #e2e8f0;
+      --muted: #64748b;
+      --dim:   #4a5568;
+      --blue:  #38bdf8;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --mono:  'Syne Mono','Share Tech Mono',monospace;
+      --sans:  'Fira Code','Share Tech Mono',monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:var(--sans);
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      overflow-x:hidden;
+    }
+
+    /* Grid pozadina */
+    body::before{
+      content:'';
+      position:fixed;inset:0;
+      background-image:
+        linear-gradient(rgba(56,189,248,0.015) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(56,189,248,0.015) 1px,transparent 1px);
+      background-size:48px 48px;
+      pointer-events:none;z-index:0;
+    }
+
+    /* Glow */
+    .glow{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;}
+    .g1{width:500px;height:500px;background:radial-gradient(circle,rgba(56,189,248,0.06) 0%,transparent 70%);top:-150px;left:20%;}
+    .g2{width:400px;height:400px;background:radial-gradient(circle,rgba(52,211,153,0.05) 0%,transparent 70%);bottom:-100px;right:10%;}
+
+    nav{
+      position:sticky;top:0;z-index:100;
+      height:56px;display:flex;align-items:center;justify-content:space-between;
+      padding:0 40px;
+      background:rgba(5,6,9,0.92);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+      position:relative;z-index:1;
+    }
+    .logo{font-family:var(--mono);font-size:12px;color:var(--blue);text-decoration:none;letter-spacing:0.08em;}
+    .nav-links{display:flex;gap:3px;}
+    .nav-links a{
+      font-family:var(--mono);font-size:11px;
+      padding:5px 10px;border-radius:5px;
+      color:var(--muted);text-decoration:none;
+      transition:all .15s;text-transform:uppercase;letter-spacing:.5px;
+    }
+    .nav-links a:hover{color:var(--text);background:var(--s2);}
+    .nav-links a.active{color:var(--blue);background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.15);}
+
+    main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:60px 40px;
+      position:relative;z-index:1;
+      text-align:center;
+    }
+
+    /* Terminal prompt animacija */
+    .terminal-line{
+      font-family:var(--mono);
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .prompt{color:var(--green);}
+    .cursor{
+      display:inline-block;width:8px;height:14px;
+      background:var(--blue);
+      animation:blink 1.2s step-end infinite;
+    }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+    h1{
+      font-family:var(--mono);
+      font-size:clamp(36px,6vw,72px);
+      font-weight:500;
+      color:#fff;
+      letter-spacing:0.02em;
+      line-height:1.1;
+      margin-bottom:16px;
+    }
+    h1 span{color:var(--blue);}
+
+    .subtitle{
+      font-size:16px;
+      color:var(--muted);
+      max-width:520px;
+      line-height:1.8;
+      margin-bottom:48px;
+    }
+
+    /* GitHub kartica */
+    .github-card{
+      background:var(--s1);
+      border:1px solid rgba(56,189,248,0.2);
+      border-radius:14px;
+      padding:28px 36px;
+      max-width:560px;
+      width:100%;
+      margin-bottom:48px;
+      transition:border-color .2s,transform .2s;
+    }
+    .github-card:hover{
+      border-color:rgba(56,189,248,0.5);
+      transform:translateY(-3px);
+    }
+    .github-card a{text-decoration:none;}
+    .gh-header{
+      display:flex;align-items:center;gap:12px;
+      margin-bottom:14px;
+    }
+    .gh-icon{
+      width:36px;height:36px;
+      background:rgba(56,189,248,0.1);
+      border:1px solid rgba(56,189,248,0.2);
+      border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:18px;flex-shrink:0;
+    }
+    .gh-name{
+      font-family:var(--mono);
+      font-size:13px;
+      color:var(--blue);
+      letter-spacing:0.04em;
+    }
+    .gh-sub{
+      font-family:var(--mono);
+      font-size:10px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+    .gh-url{
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--muted);
+      background:var(--s2);
+      border:1px solid var(--border);
+      border-radius:6px;
+      padding:10px 14px;
+      text-align:left;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
+    }
+    .gh-url span{color:var(--blue);}
+    .gh-url .copy-hint{
+      font-size:10px;color:var(--dim);
+      white-space:nowrap;
+    }
+    .gh-btn{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      background:var(--blue);
+      color:#000;
+      font-family:var(--mono);
+      font-size:13px;
+      font-weight:500;
+      padding:11px 20px;
+      border-radius:8px;
+      text-decoration:none;
+      transition:opacity .2s,transform .2s;
+      letter-spacing:0.04em;
+      width:100%;
+    }
+    .gh-btn:hover{opacity:0.85;transform:translateY(-1px);}
+
+    /* Pitanja sekcija */
+    .qa-section{
+      max-width:600px;
+      width:100%;
+      background:var(--s1);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:24px 28px;
+      margin-bottom:48px;
+      text-align:left;
+    }
+    .qa-label{
+      font-family:var(--mono);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:2px;
+      color:var(--blue);
+      margin-bottom:14px;
+    }
+    .qa-item{
+      display:flex;align-items:flex-start;gap:10px;
+      padding:10px 0;
+      border-bottom:1px solid var(--border);
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+    .qa-item:last-child{border-bottom:none;padding-bottom:0;}
+    .qa-n{
+      font-family:var(--mono);
+      font-size:10px;
+      color:var(--blue);
+      flex-shrink:0;
+      margin-top:2px;
+    }
+
+    /* Autori info */
+    .author{
+      font-family:var(--mono);
+      font-size:11px;
+      color:var(--dim);
+      margin-bottom:32px;
+      line-height:2;
+    }
+    .author a{color:var(--muted);text-decoration:none;}
+    .author a:hover{color:var(--blue);}
+
+    /* Era navigacija */
+    .era-nav{
+      display:flex;flex-wrap:wrap;gap:6px;
+      justify-content:center;
+      margin-bottom:40px;
+    }
+    .era-nav a{
+      font-family:var(--mono);font-size:11px;
+      padding:5px 12px;border-radius:5px;
+      color:var(--muted);text-decoration:none;
+      border:1px solid var(--border);
+      transition:all .15s;
+    }
+    .era-nav a:hover{color:var(--blue);border-color:rgba(56,189,248,0.3);}
+
+    footer{
+      border-top:1px solid var(--border);
+      padding:20px 40px;
+      display:flex;align-items:center;justify-content:space-between;
+      font-family:var(--mono);font-size:11px;
+      color:var(--dim);
+      position:relative;z-index:1;
+    }
+    footer a{color:var(--blue);text-decoration:none;}

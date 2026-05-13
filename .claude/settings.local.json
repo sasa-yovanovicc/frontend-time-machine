@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep '^\\\\$' /home/sasa/projects/frontend-time-machine/css/era4.scss)",
+      "Bash(chown *)"
+    ]
+  }
+}
