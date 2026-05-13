@@ -3,7 +3,7 @@
 
 :root {
       --bg:#060810;--s1:#0c0f1e;--s2:#111827;--s3:#1f2937;
-      --border:rgba(148,163,184,0.1);--text:#e2e8f0;--muted:#64748b;--dim:#374151;
+      --border:rgba(148,163,184,0.1);--text:#e2e8f0;--muted:#64748b;--dim:#64748b;
       --blue:#38bdf8;--green:#34d399;--amber:#fbbf24;--pink:#f472b6;
       --purple:#a78bfa;--red:#f87171;--cyan:#67e8f9;
       --mono:'Syne Mono','Share Tech Mono',monospace;

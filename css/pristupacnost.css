@@ -9,7 +9,7 @@
       --border:rgba(148,163,184,0.1);
       --text:  #e2e8f0;
       --muted: #64748b;
-      --dim:   #4a5568;
+      --dim:   #64748b;
       --blue:  #38bdf8;
       --green: #34d399;
       --amber: #fbbf24;
@@ -242,7 +242,7 @@
     .ck { color: #f87171; } /* keyword */
     .ca { color: #fbbf24; } /* attribute */
     .cv { color: #34d399; } /* value */
-    .cc { color: #4a5568; } /* comment */
+    .cc { color: #64748b; } /* comment */
 
     /* SWAGGER DEMO */
     .swagger-demo {

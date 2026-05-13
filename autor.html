@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: O autoru :: Sasha Jovanovic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@300;400;500&family=Syne+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/era6.css">
+  <style>
+    /* ---- AUTOR PAGE ---- */
+    .autor-hero { max-width: 720px; padding: 60px 40px 40px; }
+    .autor-eyebrow { font-family: var(--mono); font-size: 12px; color: var(--ai); letter-spacing: 0.1em; margin-bottom: 16px; }
+    .autor-hero h1 { font-size: clamp(32px, 5vw, 52px); font-family: var(--mono); font-weight: 400; color: var(--text); line-height: 1.1; margin-bottom: 16px; }
+    .autor-subtitle { font-size: 15px; color: var(--muted); max-width: 560px; line-height: 1.7; }
+
+    main { padding: 0 40px 80px; max-width: 900px; }
+
+    .autor-section { margin-bottom: 60px; }
+    .autor-section-label { font-family: var(--mono); font-size: 11px; color: var(--ai); letter-spacing: 0.1em; margin-bottom: 20px; }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-item { display: flex; gap: 0; position: relative; }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: 55px;
+      top: 28px;
+      bottom: -1px;
+      width: 1px;
+      background: var(--border);
+    }
+    .tl-item:last-child::before { display: none; }
+    .tl-year {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ai);
+      min-width: 56px;
+      padding-top: 4px;
+      flex-shrink: 0;
+    }
+    .tl-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ai);
+      border: 2px solid var(--bg);
+      flex-shrink: 0;
+      margin-top: 6px;
+      margin-right: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .tl-text {
+      font-size: 13px;
+      color: var(--text);
+      padding: 2px 0 20px;
+      line-height: 1.6;
+    }
+
+    /* Books */
+    .books-grid { display: flex; gap: 24px; flex-wrap: wrap; }
+    .book-card {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      flex: 1;
+      min-width: 260px;
+    }
+    .book-card img {
+      width: 80px;
+      flex-shrink: 0;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .book-card-img-placeholder {
+      width: 80px;
+      height: 110px;
+      flex-shrink: 0;
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+    .book-info h3 { font-family: var(--mono); font-size: 13px; color: var(--text); margin-bottom: 4px; }
+    .book-info .book-pub { font-size: 11px; color: var(--ai); margin-bottom: 6px; }
+    .book-info .book-status { font-size: 11px; color: var(--muted); }
+    .book-note {
+      font-size: 12px;
+      color: var(--dim);
+      font-style: italic;
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-left: 2px solid var(--border);
+    }
+
+    /* Scrum highlight card */
+    .scrum-card {
+      background: linear-gradient(135deg, rgba(99,179,237,0.07), rgba(159,122,234,0.05));
+      border: 1px solid var(--border2);
+      border-left: 3px solid var(--ai);
+      border-radius: 10px;
+      padding: 24px 28px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .scrum-icon { font-size: 32px; flex-shrink: 0; }
+    .scrum-body { flex: 1; min-width: 200px; }
+    .scrum-body h3 { font-family: var(--mono); font-size: 14px; color: var(--ai); margin-bottom: 8px; }
+    .scrum-body p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+    .scrum-link {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--ai);
+      border: 1px solid var(--border2);
+      padding: 4px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .scrum-link:hover { background: rgba(99,179,237,0.1); }
+
+    /* Links grid */
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .link-card {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .link-card:hover { border-color: var(--border2); background: var(--s2); }
+    .link-card-icon { font-size: 22px; }
+    .link-card-title { font-family: var(--mono); font-size: 12px; color: var(--ai); }
+    .link-card-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+    @media (max-width: 600px) {
+      .autor-hero { padding: 40px 20px 30px; }
+      main { padding: 0 20px 60px; }
+      .books-grid { flex-direction: column; }
+      .scrum-card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+<!-- ACCESSIBILITY TOOLBAR -->
+<div style="background:rgba(5,6,9,0.95);border-bottom:1px solid rgba(148,163,184,0.1);padding:5px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-family:'Courier New',monospace;font-size:11px;" role="toolbar" aria-label="Pristupacnost">
+  <span style="color:#64748b;font-size:10px;text-transform:uppercase;letter-spacing:1px;">A11y:</span>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur-2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A-</button>
+  <button onclick="document.body.style.fontSize='15px'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A</button>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur+2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A+</button>
+  <span style="color:#333;">│</span>
+  <button onclick="document.body.classList.toggle('a11y-hc');this.style.color=document.body.classList.contains('a11y-hc')?'#6dd4fa':'#ddd'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">⬛ Kontrast</button>
+  <span style="color:#333;">│</span>
+  <a href="pristupacnost.html" style="color:#34d399;font-size:10px;text-decoration:none;padding:3px 8px;border:1px solid rgba(52,211,153,0.3);border-radius:3px;">♿ A11y</a>
+</div>
+<style>
+body.a11y-hc{background:#000!important;color:#fff!important;}
+body.a11y-hc nav,body.a11y-hc .topbar,body.a11y-hc header{background:#000!important;border-color:#fff!important;}
+body.a11y-hc a{color:#6dd4fa!important;}
+body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!important;border-color:#fff!important;}
+</style>
+
+<div class="glow-1"></div>
+<div class="glow-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-pulse"></div>
+    vremenska.masina
+  </div>
+  <div class="nav-links">
+    <a href="era0-rodjenje.html">ERA-0</a>
+    <a href="monitori.html">Monitori</a>
+    <a href="era1-1994.html">1994</a>
+    <a href="era2-2000.html">2000s</a>
+    <a href="era3-2005.html">2010s</a>
+    <a href="era4-2013.html">2015s</a>
+    <a href="era5-2020.html">2020s</a>
+    <a href="era6-2025.html">2025+</a>
+    <a href="teme.html">Teme</a>
+    <a href="css-evolucija.html">CSS</a>
+    <a href="js-evolucija.html">JS</a>
+    <a href="responsive.html">Responsive</a>
+    <a href="napredak.html">Napredak</a>
+    <a href="buducnost.html">Buducnost</a>
+    <a href="pristupacnost.html">Pristup</a>
+    <a href="autor.html" class="active">Autor</a>
+    <a href="hvala.html">Hvala</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="autor-hero">
+  <div class="autor-eyebrow">// o autoru</div>
+  <h1>Sasha Jovanovic</h1>
+  <p class="autor-subtitle">30+ godina u tehnologiji. Skoro svaka era u ovoj prezentaciji — lično iskustvo.</p>
+</div>
+
+<main id="main-content">
+
+  <!-- TIMELINE -->
+  <section class="autor-section">
+    <div class="autor-section-label">// put od 1990. do danas</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">1990</div>
+        <div class="tl-dot"></div>
+        <div class="tl-text">Počeo programirati.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1995</div>
+        <div class="tl-dot"></div>
+        <div class="tl-text">Web programiranje od prvog dana interneta u regionu.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1995–2025</div>
+        <div class="tl-dot"></div>
+        <div class="tl-text">Kreirao ili sudelovao u kreiranju preko 1000 web sajtova i aplikacija.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">—</div>
+        <div class="tl-dot"></div>
+        <div class="tl-text">Prošao kroz skoro sve tehnologije koje su se pojavile — ili ih barem okrznuo, zagrebao, zainteresovao se za njih.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKS -->
+  <section class="autor-section">
+    <div class="autor-section-label">// objavljene knjige</div>
+    <div class="books-grid">
+      <div class="book-card">
+        <img src="img/punk-guide.png" alt="The Punk Guide to Real Programming">
+        <div class="book-info">
+          <h3>The Punk Guide to Real Programming</h3>
+          <div class="book-pub">Oblik Books</div>
+          <div class="book-status" style="color:var(--green);">Objavljeno</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-card-img-placeholder">📖</div>
+        <div class="book-info">
+          <h3>Copilot Won't Save You</h3>
+          <div class="book-pub">Oblik Books</div>
+          <div class="book-status" style="color:var(--amber);">U pripremi — ~2026</div>
+        </div>
+      </div>
+    </div>
+    <div class="book-note">Pored tehničkih knjiga: roman u toku, putopis, zbirka priča.</div>
+  </section>
+
+  <!-- SCRUM -->
+  <section class="autor-section">
+    <div class="scrum-card">
+      <div class="scrum-icon">📋</div>
+      <div class="scrum-body">
+        <h3>Zvanični prevodilac Scrum Guide na srpski jezik</h3>
+        <p>Scrum Guide je najčitaniji agilni framework dokument na svetu. Srpski prevod — Sasha Jovanovic.</p>
+        <a href="https://scrumguides.org/download.html" class="scrum-link" target="_blank" rel="noopener">scrumguides.org/download.html →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LINKS -->
+  <section class="autor-section">
+    <div class="autor-section-label">// pronađi me</div>
+    <div class="links-grid">
+      <a href="https://oblik.sk/sasa-jovanovic.html" class="link-card" target="_blank" rel="noopener">
+        <div class="link-card-icon">🌐</div>
+        <div class="link-card-title">Web & Portfolio</div>
+        <div class="link-card-desc">oblik.sk/sasa-jovanovic.html</div>
+      </a>
+      <a href="https://linkedin.com/in/sjovanovic/" class="link-card" target="_blank" rel="noopener">
+        <div class="link-card-icon">💼</div>
+        <div class="link-card-title">LinkedIn</div>
+        <div class="link-card-desc">linkedin.com/in/sjovanovic/</div>
+      </a>
+      <a href="https://medium.com/@bastijan" class="link-card" target="_blank" rel="noopener">
+        <div class="link-card-icon">✍️</div>
+        <div class="link-card-title">Medium — @bastijan</div>
+        <div class="link-card-desc">Serija o AI i programiranju</div>
+      </a>
+      <a href="https://github.com/sasa-yovanovicc" class="link-card" target="_blank" rel="noopener">
+        <div class="link-card-icon">🐙</div>
+        <div class="link-card-title">GitHub</div>
+        <div class="link-card-desc">Uključujući ovu prezentaciju</div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Frontend Vremenska Masina &nbsp;·&nbsp; <a href="index.html">← Sve ere</a></span>
+  <span style="color:var(--dim);">Sasha Jovanovic &nbsp;·&nbsp; Oblik s.r.o. &nbsp;·&nbsp; oblik.sk</span>
+</footer>
+
+</body>
+</html>
