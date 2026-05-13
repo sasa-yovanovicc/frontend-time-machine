@@ -3,8 +3,10 @@
 | Fajl | Format | Era | Napomena |
 |------|--------|-----|----------|
 | era2.css | CSS | 2000–2006 | Čisti CSS, bez preprocesora |
-| era3.less | Less | 2010–2018 | Bootstrap 3 koristio Less |
-| era4.scss | SCSS | 2013–2020 | React era standard |
+| era3.css | CSS | 2010–2018 | Browser-kompatibilna verzija era3.less |
+| era3.less | Less | 2010–2018 | Edukativni source (Bootstrap 3 koristio Less) |
+| era4.css | CSS | 2013–2020 | Browser-kompatibilna verzija era4.scss |
+| era4.scss | SCSS | 2013–2020 | Edukativni source (React era standard) |
 | era5.css | CSS | 2020+ | Custom properties |
 | era6.css | CSS | 2025+ | Terminal estetika |
 | teme.css | CSS | — | Tematska predavanja |
