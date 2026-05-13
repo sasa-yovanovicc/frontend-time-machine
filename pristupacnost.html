@@ -471,6 +471,9 @@
 </footer>
 
 <script>
+// Defensive init — runs immediately on script parse, before any interaction
+document.body.classList.remove('hc', 'dyslexia');
+
 // Accessibility toolbar
 var fontSize = 15;
 
@@ -481,9 +484,6 @@ function toggleSize(dir) {
   document.documentElement.style.setProperty('--a11y-font-size', fontSize + 'px');
   document.body.style.fontSize = fontSize + 'px';
 }
-
-// Defensive init — remove any residual a11y classes on load
-document.body.classList.remove('hc', 'dyslexia');
 
 function toggleHC() {
   var isOn = document.body.classList.toggle('hc');
