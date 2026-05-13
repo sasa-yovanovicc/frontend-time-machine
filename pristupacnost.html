@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: Pristupačnost</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@300;400;500&family=Syne+Mono&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:    #050609;
+      --s1:    #0a0d16;
+      --s2:    #0f1220;
+      --s3:    #111827;
+      --border:rgba(148,163,184,0.1);
+      --text:  #e2e8f0;
+      --muted: #64748b;
+      --dim:   #4a5568;
+      --blue:  #38bdf8;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --pink:  #f472b6;
+      --purple:#a78bfa;
+      --red:   #f87171;
+      --mono:  'Syne Mono','Share Tech Mono',monospace;
+      --sans:  'Fira Code','Share Tech Mono',monospace;
+
+      /* Accessibility vars */
+      --a11y-font-size: 15px;
+      --a11y-font: var(--sans);
+    }
+
+    /* HIGH CONTRAST MODE */
+    body.hc {
+      --bg: #000;
+      --s1: #111;
+      --s2: #1a1a1a;
+      --border: rgba(255,255,255,0.3);
+      --text: #fff;
+      --muted: #ddd;
+      --dim: #aaa;
+      --blue: #6dd4fa;
+      --green: #6ee7b7;
+      --amber: #fcd34d;
+    }
+
+    /* DYSLEXIA MODE */
+    body.dyslexia {
+      --a11y-font: 'Lexend', sans-serif;
+      --a11y-font-size: 16px;
+    }
+    body.dyslexia * {
+      font-family: 'Lexend', sans-serif !important;
+      letter-spacing: 0.05em;
+      word-spacing: 0.1em;
+      line-height: 1.9 !important;
+    }
+
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--a11y-font);
+      font-size: var(--a11y-font-size);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background .2s, color .2s;
+    }
+
+    /* ACCESSIBILITY TOOLBAR — uvek vidljiv */
+    .a11y-bar {
+      background: var(--s1);
+      border-bottom: 1px solid var(--border);
+      padding: 6px 40px;
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    .a11y-label { color: var(--muted); margin-right: 4px; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; }
+    .a11y-btn {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 11px;
+      transition: all .15s;
+    }
+    .a11y-btn:hover, .a11y-btn.active {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .a11y-sep { color: var(--dim); }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      height: 52px; display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(5,6,9,0.95); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: var(--mono); font-size: 12px; color: var(--blue); text-decoration: none; letter-spacing: 0.08em; }
+    .nav-links { display: flex; gap: 2px; flex-wrap: wrap; }
+    .nav-links a {
+      font-family: var(--mono); font-size: 10px;
+      padding: 4px 8px; border-radius: 4px;
+      color: var(--muted); text-decoration: none;
+      transition: all .15s; text-transform: uppercase; letter-spacing: .5px;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--s2); }
+    .nav-links a.active { color: var(--green); background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      padding: 64px 40px 48px;
+      max-width: 860px; margin: 0 auto; text-align: center;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono); font-size: 11px;
+      text-transform: uppercase; letter-spacing: 3px;
+      color: var(--green); margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; flex: 1; max-width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(52,211,153,0.4));
+    }
+    .hero-eyebrow::after { transform: scaleX(-1); }
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 400; color: #fff;
+      letter-spacing: 0.03em; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    h1 em { color: var(--green); font-style: normal; }
+    .hero-sub { font-size: 15px; color: var(--muted); max-width: 580px; margin: 0 auto; line-height: 1.85; }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 0 40px 80px; }
+
+    /* SEKCIJE */
+    .section { margin-bottom: 48px; }
+    .sec-label {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 2px;
+      color: var(--muted); margin-bottom: 20px;
+    }
+    h2 {
+      font-family: var(--mono); font-size: 22px; font-weight: 400;
+      color: #fff; margin-bottom: 10px; letter-spacing: 0.03em;
+    }
+    p { font-size: 14px; color: var(--muted); line-height: 1.85; margin-bottom: 12px; }
+    p strong { color: var(--text); }
+    code {
+      font-family: var(--mono); font-size: 12px;
+      background: var(--s2); border: 1px solid var(--border);
+      padding: 1px 5px; border-radius: 3px; color: var(--green);
+    }
+
+    /* CARD GRID */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .card {
+      background: var(--s1); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 22px;
+      transition: border-color .2s;
+    }
+    .card:hover { border-color: rgba(52,211,153,0.2); }
+    .card-label {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+    .card h3 { font-family: var(--mono); font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 8px; }
+    .card p { font-size: 12px; color: var(--muted); line-height: 1.7; margin: 0; }
+
+    /* CALLOUT */
+    .callout {
+      background: var(--s1); border-left: 3px solid var(--green);
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      margin: 16px 0; display: flex; gap: 12px;
+    }
+    .callout.amber { border-left-color: var(--amber); }
+    .callout.blue { border-left-color: var(--blue); }
+    .callout.red { border-left-color: var(--red); }
+    .ci { font-size: 20px; flex-shrink: 0; }
+    .cb { font-size: 13px; color: var(--muted); line-height: 1.75; }
+    .cb strong { color: var(--text); }
+
+    /* LIČNA PRIČA */
+    .story-card {
+      background: linear-gradient(135deg, rgba(52,211,153,0.05), rgba(56,189,248,0.05));
+      border: 1px solid rgba(52,211,153,0.2);
+      border-radius: 14px; padding: 32px 36px;
+      margin: 24px 0; position: relative; overflow: hidden;
+    }
+    .story-card::before {
+      content: '"';
+      position: absolute; top: -10px; left: 20px;
+      font-family: Georgia, serif; font-size: 80px;
+      color: rgba(52,211,153,0.06); line-height: 1;
+    }
+    .story-label {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 2px;
+      color: var(--green); margin-bottom: 16px;
+    }
+    .story-card p { font-size: 14px; color: var(--muted); line-height: 1.9; }
+    .story-card p strong { color: var(--text); }
+
+    /* WCAG KONTRAST DEMO */
+    .contrast-demo {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3px; margin: 16px 0; border-radius: 10px; overflow: hidden;
+    }
+    .cd-cell { padding: 14px 16px; font-size: 13px; }
+
+    /* SCREEN READER DEMO */
+    .sr-demo {
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; margin: 16px 0;
+      font-family: var(--mono); font-size: 12px;
+    }
+    .sr-output {
+      background: #000; border: 1px solid #333;
+      border-radius: 6px; padding: 10px 14px;
+      margin-top: 10px; min-height: 44px;
+      color: var(--green); font-size: 13px; line-height: 1.6;
+    }
+
+    /* ARIA CODE BLOCK */
+    .code-block {
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden; margin: 12px 0;
+    }
+    .code-header {
+      background: var(--s3); padding: 6px 14px;
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+      display: flex; justify-content: space-between;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .code-body { padding: 12px 16px; font-family: var(--mono); font-size: 12px; line-height: 1.8; }
+    .ck { color: #f87171; } /* keyword */
+    .ca { color: #fbbf24; } /* attribute */
+    .cv { color: #34d399; } /* value */
+    .cc { color: #4a5568; } /* comment */
+
+    /* SWAGGER DEMO */
+    .swagger-demo {
+      background: #fff; border-radius: 10px;
+      overflow: hidden; margin: 16px 0;
+      border: 1px solid var(--border);
+    }
+    .sw-header { background: #1b1b1b; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+    .sw-logo { background: #85ea2d; color: #000; font-weight: 700; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-family: sans-serif; }
+    .sw-title { color: #fff; font-size: 13px; font-family: sans-serif; }
+    .sw-endpoint {
+      border-bottom: 1px solid #e0e0e0; padding: 10px 16px;
+      display: flex; gap: 10px; align-items: center; cursor: pointer;
+      transition: background .15s;
+    }
+    .sw-endpoint:hover { background: #f9f9f9; }
+    .sw-method {
+      font-family: monospace; font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 3px; min-width: 52px; text-align: center;
+    }
+    .get  { background: #e8f4fd; color: #0070d0; }
+    .post { background: #e8f8e8; color: #007700; }
+    .put  { background: #fff8e1; color: #b06000; }
+    .del  { background: #fdecea; color: #cc0000; }
+    .sw-path { font-family: monospace; font-size: 12px; color: #333; }
+    .sw-desc { font-size: 11px; color: #888; margin-left: auto; font-family: sans-serif; }
+
+    /* PILLS */
+    .pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .pill {
+      font-family: var(--mono); font-size: 10px;
+      padding: 2px 8px; border-radius: 3px; border: 1px solid;
+    }
+    .pg { color: var(--green); border-color: rgba(52,211,153,0.25); }
+    .pb { color: var(--blue); border-color: rgba(56,189,248,0.25); }
+    .pa { color: var(--amber); border-color: rgba(251,191,36,0.25); }
+    .pr { color: var(--red); border-color: rgba(248,113,113,0.25); }
+    .pp { color: var(--purple); border-color: rgba(167,139,250,0.25); }
+
+    /* NAV FOOTER */
+    .nav-footer {
+      display: flex; justify-content: space-between;
+      padding: 28px 0 0; border-top: 1px solid var(--border); margin-top: 48px;
+    }
+    .nf-link { font-family: var(--mono); font-size: 13px; color: var(--muted); text-decoration: none; transition: color .15s; }
+    .nf-link:hover { color: var(--green); }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 20px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--mono); font-size: 11px; color: var(--dim);
+    }
+    footer a { color: var(--green); text-decoration: none; }
+
+    /* LARGE TEXT MODE */
+    body.large-text { --a11y-font-size: 18px; }
+    body.large-text p, body.large-text .card p, body.large-text .cb { font-size: 16px !important; }
+    body.large-text h2 { font-size: 28px !important; }
+
+    /* FOCUS VISIBLE za keyboard navigaciju */
+    *:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    /* Skip to content */
+    .skip-link {
+      position: absolute; top: -40px; left: 20px;
+      background: var(--green); color: #000;
+      padding: 8px 16px; border-radius: 4px;
+      font-family: var(--mono); font-size: 12px;
+      text-decoration: none; z-index: 9999;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 10px; }
+  </style>
+</head>
+<body>
+
+<!-- Skip to content — screen reader standard -->
+<a href="#main-content" class="skip-link">Preskoči na sadržaj</a>
+
+<!-- ACCESSIBILITY TOOLBAR -->
+<div class="a11y-bar" role="toolbar" aria-label="Opcije pristupačnosti">
+  <span class="a11y-label">Pristupačnost:</span>
+  <button class="a11y-btn" onclick="toggleSize(-1)" aria-label="Smanji tekst">A-</button>
+  <button class="a11y-btn" onclick="toggleSize(0)" aria-label="Podrazumevana veličina">A</button>
+  <button class="a11y-btn" onclick="toggleSize(1)" aria-label="Povećaj tekst">A+</button>
+  <span class="a11y-sep">│</span>
+  <button class="a11y-btn" id="btn-hc" onclick="toggleHC()" aria-label="Visoki kontrast">⬛ Visoki kontrast</button>
+  <span class="a11y-sep">│</span>
+  <button class="a11y-btn" id="btn-dys" onclick="toggleDyslexia()" aria-label="Font za disleksiju">Aa Disleksija</button>
+  <span class="a11y-sep">│</span>
+  <button class="a11y-btn" onclick="simulateSR()" aria-label="Simuliraj screen reader">🔊 Screen reader demo</button>
+</div>
+
+<!-- NAV -->
+<nav role="navigation" aria-label="Glavna navigacija">
+  <a class="logo" href="index.html">// vremenska.masina</a>
+  <div class="nav-links">
+    <a href="era0-rodjenje.html">ERA-0</a>
+    <a href="monitori.html">Monitori</a>
+    <a href="era1-1994.html">1994</a>
+    <a href="era2-2000.html">2000s</a>
+    <a href="era3-2005.html">2010s</a>
+    <a href="era4-2010.html">2015s</a>
+    <a href="era5-2020.html">2020s</a>
+    <a href="era6-2025.html">2025+</a>
+    <a href="teme.html">Teme</a>
+    <a href="napredak.html">Napredak</a>
+    <a href="buducnost.html">Buducnost</a>
+    <a href="pristupacnost.html" class="active">A11y</a>
+    <a href="hvala.html">Hvala</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">// web za sve ljude</div>
+  <h1>Pristupačnost<br><em>nije feature</em></h1>
+  <p class="hero-sub">
+    Web je zamišljen kao univerzalan medij — "za sve ljude, bez obzira na hardver,
+    softver, jezik, kulturu, lokaciju ili fizičke i mentalne sposobnosti."<br>
+    <strong style="color:var(--text);">Tim Berners-Li, 1997.</strong>
+  </p>
+</div>
+
+<main id="main-content">
+
+  <!-- SCREEN READERI -->
+  <div class="section">
+    <div class="sec-label">// kako slepi programer čita kod</div>
+    <h2>Screen readeri — glas koji čita web</h2>
+    <p>Screen reader je softver koji <strong>čita DOM strukturu naglas</strong>.
+    Ne čita vizuelni izgled — čita semantiku. Zato semantic HTML nije estetski izbor,
+    to je pitanje da li neko uopšte može koristiti tvoj sajt.</p>
+
+    <!-- LIČNA PRIČA -->
+    <div class="story-card">
+      <div class="story-label">// lična priča</div>
+      <p>
+        Znam programera koji je <strong>oslepeo sa 27 godina</strong>.
+        Danas ima skoro 50 — i <strong>već 15 godina programira vrlo uspješno</strong>.
+        Ne radi frontend, ali upravo govorne aplikacije koje čitaju interfejs
+        pomažu mu da razume kod, da navigira IDE-ом, da čita dokumentaciju,
+        da razume stranice.<br><br>
+        Kada mu pošalješ API dokumentaciju bez dobre strukture headinga,
+        bez alt tekstova, bez aria labela — za tebe je to "loša dokumentacija".
+        Za njega je to <strong>neprohodna šuma bez putokaza</strong>.<br><br>
+        Accessibility nije checkbox na kraju projekta.
+        To je odluka doneta na početku, u strukturi HTML-a.
+        I kada je doneta dobro — pomaže svima, ne samo slepima.
+      </p>
+    </div>
+
+    <!-- Screen readeri tabela -->
+    <div class="g2" style="margin-top:20px;">
+      <div class="card" style="border-color:rgba(56,189,248,0.2);">
+        <div class="card-label" style="color:var(--blue);">Windows</div>
+        <h3>NVDA & JAWS</h3>
+        <p><strong>NVDA</strong> — besplatan, open source. Standard za Windows korisnike.
+        Čita DOM, forme, tabele, dinamički sadržaj (ARIA live regions).<br><br>
+        <strong>JAWS</strong> — Job Access With Speech. Profesionalni, skup (~1000$/god).
+        Dominantan u korporativnom i vladinim sektoru.</p>
+        <div class="pills">
+          <span class="pill pb">NVDA besplatan</span>
+          <span class="pill pa">JAWS profesionalni</span>
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(52,211,153,0.2);">
+        <div class="card-label" style="color:var(--green);">Apple / Android</div>
+        <h3>VoiceOver & TalkBack</h3>
+        <p><strong>VoiceOver</strong> — ugrađen u macOS, iOS, iPadOS.
+        Potpuno besplatan. Najkoriščeniji screen reader na mobilnim uređajima.<br><br>
+        <strong>TalkBack</strong> — Google, ugrađen u Android.
+        Isti princip — čita semantiku, ne piksel.</p>
+        <div class="pills">
+          <span class="pill pg">VoiceOver ugrađen</span>
+          <span class="pill pg">TalkBack ugrađen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semantic HTML demo -->
+    <div class="sec-label" style="margin-top:24px;">// semantic html — zašto je važno</div>
+    <div class="g2">
+      <div>
+        <div class="code-block">
+          <div class="code-header"><span>❌ Loše — div soup</span><span>HTML</span></div>
+          <div class="code-body">
+            <span class="cc">&lt;!-- Screen reader čita: "div div div" --&gt;</span><br>
+            <span class="ck">&lt;div</span> <span class="ca">class</span>=<span class="cv">"nav"</span><span class="ck">&gt;</span><br>
+            &nbsp;&nbsp;<span class="ck">&lt;div</span> <span class="ca">onclick</span>=<span class="cv">"go()"</span><span class="ck">&gt;</span>Pocetna<span class="ck">&lt;/div&gt;</span><br>
+            <span class="ck">&lt;/div&gt;</span><br>
+            <span class="ck">&lt;div</span> <span class="ca">class</span>=<span class="cv">"content"</span><span class="ck">&gt;</span><br>
+            &nbsp;&nbsp;<span class="ck">&lt;div</span> <span class="ca">class</span>=<span class="cv">"title"</span><span class="ck">&gt;</span>Naslov<span class="ck">&lt;/div&gt;</span><br>
+            <span class="ck">&lt;/div&gt;</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="code-block">
+          <div class="code-header"><span>✓ Dobro — semantic HTML</span><span>HTML</span></div>
+          <div class="code-body">
+            <span class="cc">&lt;!-- Screen reader zna gde je šta --&gt;</span><br>
+            <span class="ck">&lt;nav</span> <span class="ca">aria-label</span>=<span class="cv">"Glavna"</span><span class="ck">&gt;</span><br>
+            &nbsp;&nbsp;<span class="ck">&lt;a</span> <span class="ca">href</span>=<span class="cv">"/"</span><span class="ck">&gt;</span>Pocetna<span class="ck">&lt;/a&gt;</span><br>
+            <span class="ck">&lt;/nav&gt;</span><br>
+            <span class="ck">&lt;main&gt;</span><br>
+            &nbsp;&nbsp;<span class="ck">&lt;h1&gt;</span>Naslov<span class="ck">&lt;/h1&gt;</span><br>
+            <span class="ck">&lt;/main&gt;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen reader simulacija -->
+    <div class="sr-demo">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">🔊 Screen reader simulacija — klikni na elemente:</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+        <button class="a11y-btn" onclick="srRead('Navigacija. Lista sa 5 stavki. Pocetna, veza. Era nula, veza. Era 1994, veza. 2025 plus, veza. Teme, veza.')">Nav element</button>
+        <button class="a11y-btn" onclick="srRead('Heading level 1. Pristupačnost nije feature.')">H1 naslov</button>
+        <button class="a11y-btn" onclick="srRead('Slika. Alt tekst: Screenshot Lynx browsera koji prikazuje CERN homepage 1993 kao tekstualni interfejs bez slika.')">Slika sa alt</button>
+        <button class="a11y-btn" onclick="srRead('Slika. Bez opisa.')">Slika bez alt ⚠</button>
+        <button class="a11y-btn" onclick="srRead('Dugme. Povećaj veličinu teksta.')">Button</button>
+        <button class="a11y-btn" onclick="srRead('Tekst polje za unos. Email adresa. Obavezno polje.')">Input sa label</button>
+        <button class="a11y-btn" onclick="srRead('Tekst polje za unos.')">Input bez label ⚠</button>
+      </div>
+      <div class="sr-output" id="sr-output" aria-live="polite" aria-label="Screen reader izlaz">
+        <span style="color:var(--muted);">← klikni dugme gore da čuješ kako screen reader čita element</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WCAG STANDARD -->
+  <div class="section">
+    <div class="sec-label">// zakonski standard</div>
+    <h2>WCAG — Web Content Accessibility Guidelines</h2>
+    <p>W3C standard od 1999. Četiri principa — <strong>POUR</strong>:</p>
+
+    <div class="g2">
+      <div class="card">
+        <div class="card-label" style="color:var(--blue);">P — Perceivable</div>
+        <h3>Dostupno čulima</h3>
+        <p>Sadržaj mora biti dostupan bar jednim čulom. Alt text za slike (vid → sluh). Titlovi za video. Kontrast teksta.</p>
+      </div>
+      <div class="card">
+        <div class="card-label" style="color:var(--green);">O — Operable</div>
+        <h3>Operabilno</h3>
+        <p>Sve mora raditi sa tastaturom. Bez zamki za fokus. Dovoljno vremena za čitanje. Bez epileptičnih okidača.</p>
+      </div>
+      <div class="card">
+        <div class="card-label" style="color:var(--amber);">U — Understandable</div>
+        <h3>Razumljivo</h3>
+        <p>Jezik stranice deklarisan (<code>lang="sr"</code>). Greške u formama jasno objašnjene. Konzistentna navigacija.</p>
+      </div>
+      <div class="card">
+        <div class="card-label" style="color:var(--purple);">R — Robust</div>
+        <h3>Robustno</h3>
+        <p>Radi sa assistive tehnologijama. Validan HTML. ARIA samo kad je potrebno. Semantic first.</p>
+      </div>
+    </div>
+
+    <!-- Kontrast demo -->
+    <div class="sec-label" style="margin-top:24px;">// WCAG kontrast zahtev — 4.5:1 za normalan tekst</div>
+    <div class="contrast-demo">
+      <div class="cd-cell" style="background:#fff;color:#767676;">
+        <span style="font-family:var(--mono);font-size:10px;color:#aaa;">WCAG FAIL 3.8:1</span><br>
+        Ovo je tekst koji nije dovoljno kontrastan. Teško čitljivo za ljude sa slabijim vidom.
+      </div>
+      <div class="cd-cell" style="background:#fff;color:#595959;">
+        <span style="font-family:var(--mono);font-size:10px;color:#aaa;">WCAG AA ✓ 7:1</span><br>
+        Ovo je tekst sa dovoljnim kontrastom. Čitljivo za većinu korisnika.
+      </div>
+      <div class="cd-cell" style="background:#1a1a2e;color:#777;">
+        <span style="font-family:var(--mono);font-size:10px;color:#444;">WCAG FAIL 2.1:1</span><br>
+        Dark mode greška — sivi tekst na tamnoj pozadini. Čest problem.
+      </div>
+      <div class="cd-cell" style="background:#1a1a2e;color:#e2e8f0;">
+        <span style="font-family:var(--mono);font-size:10px;color:#444;">WCAG AA ✓ 12:1</span><br>
+        Dark mode ispravno — svetao tekst na tamnoj pozadini.
+      </div>
+    </div>
+  </div>
+
+  <!-- VIZUELNA PRISTUPAČNOST -->
+  <div class="section">
+    <div class="sec-label">// fontovi, kontrast, zoom</div>
+    <h2>Vizuelna pristupačnost</h2>
+
+    <div class="g3">
+      <div class="card" style="border-color:rgba(251,191,36,0.2);">
+        <div class="card-label" style="color:var(--amber);">Disleksija</div>
+        <h3>OpenDyslexic & Lexend</h3>
+        <p>Fontovi dizajnirani da smanje "preokretanje" slova.
+        Teža dna slova pomažu mozgu da ih razlikuje.
+        Lexend font — Google Fonts, besplatan.
+        Klikni "Aa Disleksija" gore da testiraš ovu stranicu.</p>
+        <div class="pills">
+          <span class="pill pa">OpenDyslexic</span>
+          <span class="pill pa">Lexend</span>
+          <span class="pill pa">Atkinson Hyperlegible</span>
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(56,189,248,0.2);">
+        <div class="card-label" style="color:var(--blue);">Kontrast teme</div>
+        <h3>High Contrast Mode</h3>
+        <p>Windows High Contrast, macOS Increased Contrast.
+        Sajt mora raditi — ne može se osloniti na slike i gradijente
+        za prenošenje informacija. Klikni "Visoki kontrast" gore.</p>
+        <div class="pills">
+          <span class="pill pb">Windows HCM</span>
+          <span class="pill pb">prefers-contrast</span>
+          <span class="pill pb">forced-colors</span>
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(167,139,250,0.2);">
+        <div class="card-label" style="color:var(--purple);">Zoom & Resize</div>
+        <h3>200% zoom mora raditi</h3>
+        <p>WCAG 1.4.4: tekst mora biti čitljiv na 200% zuma bez horizontalnog skrolovanja.
+        Responsive design je accessibility. Fluid layout je accessibility.</p>
+        <div class="pills">
+          <span class="pill pp">Ctrl+= / Cmd+=</span>
+          <span class="pill pp">rem umesto px</span>
+          <span class="pill pp">Fluid layout</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <span class="ci">💡</span>
+      <div class="cb">
+        <strong>Accessibility pomaže svima, ne samo osobama sa invaliditetom:</strong>
+        Subtitlovi pomažu gledaocima u buci ali i onima koji uče jezik.
+        Visoki kontrast pomaže onima na suncu sa lošim ekranom.
+        Keyboard navigacija pomaže power userima koji ne vole miš.
+        Alt text pomaže kada slika nije učitana na sporom internetu.
+        Semantic HTML pomaže i SEO robotima — i screen readerima.
+      </div>
+    </div>
+  </div>
+
+  <!-- ZAKONSKA OBAVEZA -->
+  <div class="section">
+    <div class="sec-label">// zakon i tužbe</div>
+    <h2>Zakonska obaveza — državni sajtovi</h2>
+
+    <div class="g2">
+      <div class="card">
+        <div class="card-label" style="color:var(--red);">EU — 2016</div>
+        <h3>Web Accessibility Directive</h3>
+        <p>Direktiva EU 2016/2102 — <strong>svi državni i javni sajtovi</strong>
+        moraju biti WCAG 2.1 AA kompatibilni.
+        Obavezna izjava o pristupačnosti na svakom sajtu.
+        Rok: javni sektor od 2019, mobilne aplikacije od 2021.</p>
+        <div class="pills">
+          <span class="pill pr">Obavezno za javni sektor</span>
+          <span class="pill pa">WCAG 2.1 AA minimum</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label" style="color:var(--red);">SAD — ADA tužbe</div>
+        <h3>Americans with Disabilities Act</h3>
+        <p>Domino's Pizza — tuženi jer slepa osoba nije mogla naručiti pizzu online.
+        Amazon, Netflix, Harvard — sve tuženi.
+        <strong>Svake godine hiljade tužbi.</strong>
+        Sud je odlučio: web je "mesto javnog smještaja" pod ADA.</p>
+        <div class="pills">
+          <span class="pill pr">Domino's Pizza tužba</span>
+          <span class="pill pr">Hiljade slučajeva/god</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout red">
+      <span class="ci">⚠️</span>
+      <div class="cb">
+        <strong>Srbija i region:</strong> Zakon o sprečavanju diskriminacije lica sa invaliditetom
+        propisuje pristupačnost digitalnih servisa. Državni portali (eUprava, poreska uprava)
+        imaju obavezu WCAG usklađenosti. U praksi — retko se primenjuje strogo,
+        ali trend ide ka obaveznoj primeni.
+      </div>
+    </div>
+  </div>
+
+  <!-- SWAGGER — FE KAO INTERFEJS ZA BE -->
+  <div class="section">
+    <div class="sec-label">// frontend kao ključ za razumevanje backenda</div>
+    <h2>Swagger — zašto bez FE nema ni razumevanja BE</h2>
+    <p>
+      Ovo je često zanemarena istina: <strong>backend API bez frontend prezentacije
+      je neupotrebljiv za ljude</strong>. JSON endpoint koji vraća 47 polja — ko to razume?
+      Swagger UI pretvara API specifikaciju u interaktivnu dokumentaciju.
+      To je frontend koji čini backend razumljivim.
+    </p>
+
+    <!-- Swagger simulacija -->
+    <div class="swagger-demo">
+      <div class="sw-header">
+        <div class="sw-logo">swagger</div>
+        <div class="sw-title">Ravanelius Competition API — v1.0</div>
+      </div>
+      <div class="sw-endpoint">
+        <span class="sw-method get">GET</span>
+        <span class="sw-path">/api/participants</span>
+        <span class="sw-desc">Lista svih prijavljenih učesnika</span>
+      </div>
+      <div class="sw-endpoint">
+        <span class="sw-method post">POST</span>
+        <span class="sw-path">/api/participants/register</span>
+        <span class="sw-desc">Prijava novog učesnika</span>
+      </div>
+      <div class="sw-endpoint">
+        <span class="sw-method get">GET</span>
+        <span class="sw-path">/api/participants/{id}</span>
+        <span class="sw-desc">Detalji jednog učesnika</span>
+      </div>
+      <div class="sw-endpoint">
+        <span class="sw-method put">PUT</span>
+        <span class="sw-path">/api/participants/{id}</span>
+        <span class="sw-desc">Ažuriranje podataka</span>
+      </div>
+      <div class="sw-endpoint">
+        <span class="sw-method del">DELETE</span>
+        <span class="sw-path">/api/participants/{id}</span>
+        <span class="sw-desc">Brisanje prijave</span>
+      </div>
+      <div style="background:#fafafa;padding:10px 16px;font-family:sans-serif;font-size:11px;color:#888;border-top:1px solid #eee;">
+        Swagger UI — klikni na endpoint da vidiš parametre, schema, test "Try it out" dugme
+      </div>
+    </div>
+
+    <div class="g2" style="margin-top:16px;">
+      <div class="callout blue" style="margin:0;">
+        <span class="ci">🔌</span>
+        <div class="cb">
+          <strong>Bez Swagger UI:</strong> developer otvori Postman,
+          pogodi URL, pogodi parametre, čita izvorni kod da sazna šta API vraća.
+          Sat vremena istraživanja za svaki novi endpoint.
+        </div>
+      </div>
+      <div class="callout" style="margin:0;">
+        <span class="ci">✅</span>
+        <div class="cb">
+          <strong>Sa Swagger UI:</strong> otvori browser, vidi sve endpointe,
+          klikni "Try it out", pošalji request, vidi response.
+          Pet minuta do razumevanja celog API-ja.
+          <strong>FE čini BE razumljivim.</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout amber" style="margin-top:16px;">
+      <span class="ci">🎯</span>
+      <div class="cb">
+        <strong>Ista filozofija svuda:</strong>
+        CLI alati imaju <code>--help</code> — to je njihov "frontend".
+        Git ima <code>git log --oneline --graph</code> — vizuelni frontend za historiju.
+        Docker Desktop je frontend za Docker daemon.
+        Kubernetes ima dashboard.
+        <strong>Svaki složen sistem treba prezentacioni sloj da bi bio razumljiv.</strong>
+        To je posao frontend developera — i uvek će biti.
+      </div>
+    </div>
+  </div>
+
+  <!-- KADA SE POČELO PRIMENJIVATI -->
+  <div class="section">
+    <div class="sec-label">// hronologija pristupačnosti na webu</div>
+    <h2>Kada se počelo primenjivati</h2>
+    <div class="g2">
+      <div class="card">
+        <div class="card-label" style="color:var(--muted);">1995 — Pioniri</div>
+        <h3>Alt text i tabindex</h3>
+        <p>HTML 2.0 uvodi <code>alt</code> atribut za slike.
+        Tad su ga koristili jer je internet bio spor — tekst se učitava brže od slike.
+        Accessibility i performance — ista odluka, različiti razlozi.</p>
+      </div>
+      <div class="card">
+        <div class="card-label" style="color:var(--muted);">1999 — Standard</div>
+        <h3>WCAG 1.0</h3>
+        <p>W3C objavljuje prvi WCAG standard. 14 smernica.
+        Malo ko ga primenjuje — obaveze nema, alati ne postoje.
+        Accessibility je "nice to have".</p>
+      </div>
+      <div class="card">
+        <div class="card-label" style="color:var(--amber);">2008 — Zreoost</div>
+        <h3>WCAG 2.0 — POUR</h3>
+        <p>Četiri principa: Perceivable, Operable, Understandable, Robust.
+        ARIA specifikacija. Screen readeri postaju moćniji.
+        Accessibility počinje biti deo tender zahteva.</p>
+      </div>
+      <div class="card">
+        <div class="card-label" style="color:var(--green);">2016 — Zakon</div>
+        <h3>EU Direktiva — obaveza</h3>
+        <p>Pristupačnost postaje zakonska obaveza u EU.
+        WCAG 2.1 (2018) dodaje mobile accessibility.
+        WCAG 2.2 (2023) dodaje cognitive accessibility.
+        WCAG 3.0 u razvoju.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV FOOTER -->
+  <div class="nav-footer">
+    <a href="monitori.html" class="nf-link">← Monitori</a>
+    <a href="era0-rodjenje.html" class="nf-link" style="color:var(--green);">ERA-0 Rodjenje Veba →</a>
+  </div>
+
+</main>
+
+<footer>
+  <span>Frontend Vremenska Masina &nbsp;·&nbsp; Pristupačnost</span>
+  <a href="index.html">← Pregled</a>
+</footer>
+
+<script>
+// Accessibility toolbar
+var fontSize = 15;
+
+function toggleSize(dir) {
+  if (dir === -1 && fontSize > 12) fontSize -= 2;
+  else if (dir === 1 && fontSize < 22) fontSize += 2;
+  else if (dir === 0) fontSize = 15;
+  document.documentElement.style.setProperty('--a11y-font-size', fontSize + 'px');
+  document.body.style.fontSize = fontSize + 'px';
+}
+
+function toggleHC() {
+  document.body.classList.toggle('hc');
+  document.getElementById('btn-hc').classList.toggle('active');
+}
+
+function toggleDyslexia() {
+  document.body.classList.toggle('dyslexia');
+  document.getElementById('btn-dys').classList.toggle('active');
+}
+
+// Screen reader simulacija
+function srRead(text) {
+  var el = document.getElementById('sr-output');
+  el.innerHTML = '<span style="color:var(--amber);">🔊</span> ' + text;
+
+  // Web Speech API ako je dostupan
+  if ('speechSynthesis' in window) {
+    var utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'sr-RS';
+    utt.rate = 1.1;
+    // Fallback na engleski
+    utt.onstart = function() {};
+    try { speechSynthesis.speak(utt); } catch(e) {}
+  }
+}
+
+function simulateSR() {
+  var msgs = [
+    'Preskoči na sadržaj. Link.',
+    'Opcije pristupačnosti. Toolbar.',
+    'A minus. Dugme. Smanji tekst.',
+    'Visoki kontrast. Dugme.',
+    'Glavna navigacija. ERA nula. Link. Monitori. Link. 1994. Link.',
+    'Pristupačnost nije feature. Heading level 1.',
+    'Screen readeri — glas koji čita web. Heading level 2.',
+    'Lična priča. Region.',
+    'Znam programera koji je oslepeo sa 27 godina...'
+  ];
+  var i = 0;
+  var el = document.getElementById('sr-output');
+
+  function next() {
+    if (i >= msgs.length) return;
+    el.innerHTML = '<span style="color:var(--amber);">🔊</span> ' + msgs[i];
+    if ('speechSynthesis' in window) {
+      var utt = new SpeechSynthesisUtterance(msgs[i]);
+      utt.rate = 1.15;
+      utt.onend = function() { i++; setTimeout(next, 300); };
+      speechSynthesis.speak(utt);
+    } else {
+      i++;
+      setTimeout(next, 1200);
+    }
+  }
+  next();
+}
+</script>
+</body>
+</html>

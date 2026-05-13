@@ -38,6 +38,24 @@ h1{font-size:clamp(28px,5vw,52px);font-weight:700;text-align:center;letter-spaci
 </style>
 </head>
 <body>
+<!-- ACCESSIBILITY TOOLBAR -->
+<div style="background:rgba(5,6,9,0.95);border-bottom:1px solid rgba(148,163,184,0.1);padding:5px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-family:'Courier New',monospace;font-size:11px;" role="toolbar" aria-label="Pristupacnost">
+  <span style="color:#4a5568;font-size:10px;text-transform:uppercase;letter-spacing:1px;">A11y:</span>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur-2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A-</button>
+  <button onclick="document.body.style.fontSize='15px'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A</button>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur+2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A+</button>
+  <span style="color:#333;">│</span>
+  <button onclick="document.body.classList.toggle('a11y-hc');this.style.color=document.body.classList.contains('a11y-hc')?'#6dd4fa':'#ddd'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">⬛ Kontrast</button>
+  <span style="color:#333;">│</span>
+  <a href="pristupacnost.html" style="color:#34d399;font-size:10px;text-decoration:none;padding:3px 8px;border:1px solid rgba(52,211,153,0.3);border-radius:3px;">♿ A11y</a>
+</div>
+<style>
+body.a11y-hc{background:#000!important;color:#fff!important;}
+body.a11y-hc nav,body.a11y-hc .topbar,body.a11y-hc header{background:#000!important;border-color:#fff!important;}
+body.a11y-hc a{color:#6dd4fa!important;}
+body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!important;border-color:#fff!important;}
+</style>
+
 
 <div class="title">Interaktivna prezentacija</div>
 <h1>Frontend Vremenska Masina</h1>
@@ -48,9 +66,36 @@ h1{font-size:clamp(28px,5vw,52px);font-weight:700;text-align:center;letter-spaci
 
 <div class="grid">
 
+
+  <a href="monitori.html" class="era-link" style="background:#0a0700;border-color:rgba(255,176,0,0.15);">
+    <div class="era-yr" style="color:#ffb000;">Monitori</div>
+    <div class="era-name" style="color:#ffb000;">Evolucija Ekrana</div>
+    <div class="era-desc">Od zelenog fosfora i Amber CRT do VGA revolucije, Retina i 4K. Kako je svaki monitor promenio web dizajn.</div>
+    <div class="era-tech">
+      <span class="tech-pill">CRT Amber</span><span class="tech-pill">CGA 16 boja</span>
+      <span class="tech-pill">VGA ★</span><span class="tech-pill">Retina @2x</span>
+      <span class="tech-pill">4K HDR</span>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+
+  <a href="era0-rodjenje.html" class="era-link e1" style="border-color:rgba(0,255,0,0.15);background:#020802">
+    <div class="era-yr" style="color:#00aa00">PRE 1994 — ERA 0</div>
+    <div class="era-name" style="color:#00ff00">Rođenje Veba</div>
+    <div class="era-desc">BBS, Gopher, Lynx, USENET. Terminal browseri, ANSI 16 boja, HTML 1.0 bez boja. Web u pelenama.</div>
+    <div class="era-tech">
+      <span class="tech-pill">BBS</span>
+      <span class="tech-pill">Gopher</span>
+      <span class="tech-pill">Lynx</span>
+      <span class="tech-pill">ANSI</span>
+      <span class="tech-pill">HTML 1.0</span>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+
   <a href="era1-1994.html" class="era-link e1">
     <div class="era-yr">1994 — 1999</div>
-    <div class="era-name">Budjenje Veba</div>
+    <div class="era-name">Detinjstvo Veba</div>
     <div class="era-desc">Tabele za layout, FONT tagovi, spacer.gif, bgcolor. Autentični HTML 3.2 bez ijedne linije CSS-a.</div>
     <div class="era-tech">
       <span class="tech-pill">TABLE layout</span>
@@ -174,7 +219,7 @@ h1{font-size:clamp(28px,5vw,52px);font-weight:700;text-align:center;letter-spaci
 </div>
 
 <div class="footer">
-  Frontend Vremenska Masina &nbsp;·&nbsp; 8 era &nbsp;·&nbsp; 10 HTML fajlova &nbsp;·&nbsp; 30 godina frontend historije
+  Frontend Vremenska Masina &nbsp;·&nbsp; 9 era &nbsp;·&nbsp; 12 HTML fajlova &nbsp;·&nbsp; 30 godina frontend historije
 </div>
 
 </body>

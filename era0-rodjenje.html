@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="sr">
+<!-- Terminal era. Nema GUI. Nema misa. Nema boja osim ANSI 16. -->
+<!-- Ovo je web u pelenama — cudesan, nov, niko ne zna u sta ce izrasti. -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: Era 0 :: Rodjenje Veba</title>
+  <style>
+    /* Terminal estetika — zeleni tekst na crnom. Kao sto je bilo. */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    /* CRT scan lines efekat */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none; z-index: 999;
+    }
+
+    /* Terminal cursor blinking */
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .cur { display:inline-block; width:8px; height:14px;
+           background:#00ff00; animation:blink 1s step-end infinite;
+           vertical-align:text-bottom; }
+
+    /* MEMORIJA STATUS — vrh svake strane */
+    .mem-status {
+      background: #001100;
+      border-bottom: 1px solid #00ff00;
+      padding: 8px 20px;
+      font-size: 12px;
+      display: flex; gap: 20px; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .mem-col { display: flex; flex-direction: column; gap: 2px; }
+    .mem-label { color: #008800; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .mem-val   { color: #00ff00; }
+    .mem-none  { color: #004400; }
+    .mem-sep   { color: #004400; align-self: center; }
+
+    /* NAV — terminal stil */
+    .term-nav {
+      background: #001100;
+      border-bottom: 2px solid #00ff00;
+      padding: 6px 20px;
+      display: flex; align-items: center; gap: 0;
+      flex-wrap: wrap;
+      font-size: 12px;
+    }
+    .term-nav .nav-logo {
+      color: #00ff00; font-weight: bold;
+      margin-right: 16px; white-space: nowrap;
+    }
+    .term-nav a {
+      color: #008800; text-decoration: none;
+      padding: 2px 8px;
+      border: 1px solid transparent;
+    }
+    .term-nav a:hover { color: #00ff00; border-color: #00ff00; }
+    .term-nav a.active {
+      color: #000; background: #00ff00;
+      border-color: #00ff00;
+    }
+    .term-nav .sep { color: #004400; padding: 0 2px; }
+
+    /* MAIN container */
+    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+    /* ERA header */
+    .era-header {
+      border: 1px solid #00ff00;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .era-header::before {
+      content: '┌─ ERA 0 ─────────────────────────────────┐';
+      display: block; color: #004400; font-size: 11px;
+      margin-bottom: 8px;
+    }
+    .era-tag { color: #008800; font-size: 11px; margin-bottom: 6px; }
+    .era-title { color: #00ff00; font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+    .era-sub { color: #008800; font-size: 13px; }
+
+    /* Sekcija */
+    .section {
+      border: 1px solid #003300;
+      margin-bottom: 16px;
+      padding: 16px 18px;
+    }
+    .section-title {
+      color: #00ff00; font-weight: bold;
+      font-size: 13px; margin-bottom: 12px;
+      border-bottom: 1px solid #003300;
+      padding-bottom: 6px;
+    }
+    .section-title::before { content: '▶ '; color: #008800; }
+    p { color: #00cc00; margin-bottom: 10px; font-size: 13px; line-height: 1.7; }
+    strong { color: #00ff00; }
+    em { color: #008800; font-style: normal; }
+
+    /* Terminal box — simulacija ekrana */
+    .term-box {
+      background: #000800;
+      border: 1px solid #004400;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 12px;
+    }
+    .term-prompt { color: #008800; }
+    .term-cmd    { color: #00ff00; }
+    .term-out    { color: #006600; margin-left: 16px; }
+    .term-link   { color: #00ffff; }
+    .term-hi     { background: #00ff00; color: #000; padding: 0 2px; }
+
+    /* ANSI boje demonstracija */
+    .ansi-grid {
+      display: grid; grid-template-columns: repeat(8, 1fr);
+      gap: 4px; margin: 12px 0;
+    }
+    .ansi-cell {
+      height: 32px; display: flex; align-items: center;
+      justify-content: center; font-size: 10px;
+      border: 1px solid #003300;
+    }
+
+    /* Hronologija */
+    .timeline { margin: 12px 0; }
+    .tl-row {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 12px; margin-bottom: 8px;
+      align-items: flex-start;
+    }
+    .tl-yr { color: #008800; font-size: 11px; padding-top: 2px; text-align: right; }
+    .tl-dot { color: #00ff00; }
+    .tl-content { color: #00cc00; font-size: 12px; line-height: 1.6; }
+    .tl-content strong { color: #00ff00; }
+
+    /* Grid 2 kolone */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+
+    /* Callout */
+    .callout {
+      border-left: 3px solid #00ff00;
+      padding: 10px 14px;
+      margin: 12px 0;
+      background: #001a00;
+      font-size: 12px; color: #00cc00; line-height: 1.7;
+    }
+    .callout strong { color: #00ff00; }
+
+    /* Tehnologije tabela */
+    table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 12px 0; }
+    th { background: #001100; color: #008800; text-align: left;
+         padding: 6px 10px; border: 1px solid #003300; font-size: 11px;
+         text-transform: uppercase; letter-spacing: 1px; }
+    td { padding: 6px 10px; border: 1px solid #003300; color: #00cc00; }
+    tr:hover td { background: #001a00; }
+
+    /* Next era dugme */
+    .next-era {
+      border: 2px solid #00ff00;
+      padding: 14px 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .next-era a {
+      color: #00ff00; text-decoration: none; font-weight: bold;
+      font-size: 14px;
+    }
+    .next-era a:hover { background: #00ff00; color: #000; padding: 2px 8px; }
+
+    /* UI/UX i baza oznake */
+    .tag {
+      display: inline-block; font-size: 10px;
+      padding: 1px 6px; border: 1px solid;
+      margin-right: 4px; margin-bottom: 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-ui  { color: #00ccff; border-color: #004455; }
+    .tag-mem { color: #ffcc00; border-color: #554400; }
+    .tag-db  { color: #ff8800; border-color: #442200; }
+    .tag-none { color: #004400; border-color: #002200; }
+  </style>
+</head>
+<body>
+<!-- ACCESSIBILITY TOOLBAR -->
+<div style="background:rgba(5,6,9,0.95);border-bottom:1px solid rgba(148,163,184,0.1);padding:5px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-family:'Courier New',monospace;font-size:11px;" role="toolbar" aria-label="Pristupacnost">
+  <span style="color:#4a5568;font-size:10px;text-transform:uppercase;letter-spacing:1px;">A11y:</span>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur-2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A-</button>
+  <button onclick="document.body.style.fontSize='15px'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A</button>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur+2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A+</button>
+  <span style="color:#333;">│</span>
+  <button onclick="document.body.classList.toggle('a11y-hc');this.style.color=document.body.classList.contains('a11y-hc')?'#6dd4fa':'#ddd'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">⬛ Kontrast</button>
+  <span style="color:#333;">│</span>
+  <a href="pristupacnost.html" style="color:#34d399;font-size:10px;text-decoration:none;padding:3px 8px;border:1px solid rgba(52,211,153,0.3);border-radius:3px;">♿ A11y</a>
+</div>
+<style>
+body.a11y-hc{background:#000!important;color:#fff!important;}
+body.a11y-hc nav,body.a11y-hc .topbar,body.a11y-hc header{background:#000!important;border-color:#fff!important;}
+body.a11y-hc a{color:#6dd4fa!important;}
+body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!important;border-color:#fff!important;}
+</style>
+
+
+<!-- MEMORIJA STATUS — vrh stranice -->
+<!-- MEM_STATUS -->
+<div class="mem-status">
+  <div class="mem-col">
+    <span class="mem-label">Memorija (klijent)</span>
+    <span class="mem-none">✗ Ne postoji</span>
+  </div>
+  <span class="mem-sep">│</span>
+  <div class="mem-col">
+    <span class="mem-label">Persistencija</span>
+    <span class="mem-none">✗ Svaki request = amnezija</span>
+  </div>
+  <span class="mem-sep">│</span>
+  <div class="mem-col">
+    <span class="mem-label">UI paradigma</span>
+    <span class="mem-val">Terminal / Tekst</span>
+  </div>
+  <span class="mem-sep">│</span>
+  <div class="mem-col">
+    <span class="mem-label">FE ↔ Podaci</span>
+    <span class="mem-none">✗ Statički fajlovi</span>
+  </div>
+  <span class="mem-sep">│</span>
+  <div class="mem-col">
+    <span class="mem-label">Boje</span>
+    <span class="mem-val">ANSI 16 (terminal) → 0 (HTML 1.0)</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="term-nav">
+  <span class="nav-logo">// vremenska.masina $</span>
+  <a href="era0-rodjenje.html" class="active">[ERA-0]</a> |
+  <a href="monitori.html">[MONITORI]</a> |
+  <a href="era1-1994.html">[1994]</a> |
+  <a href="era2-2000.html">[2000s]</a> |
+  <a href="era3-2005.html">[2010s]</a> |
+  <a href="era4-2010.html">[2015s]</a> |
+  <a href="era5-2020.html">[2020s]</a> |
+  <a href="era6-2025.html">[2025+]</a> |
+  <a href="teme.html">[TEME]</a> |
+  <a href="napredak.html">[NAPREDAK]</a> |
+  <a href="buducnost.html">[BUDUCNOST]</a> |
+  <a href="hvala.html">[HVALA]</a>
+</div>
+
+<div class="container">
+
+  <!-- ERA HEADER -->
+  <div class="era-header">
+    <div class="era-tag">// pre-web era · 1969–1993</div>
+    <div class="era-title">ERA 0: Rođenje Veba</div>
+    <div class="era-sub">
+      Web u pelenama — cudesan, nov, niko ne zna u sta ce izrasti.<br>
+      Nema GUI. Nema misa. Nema boja. Samo tekst, terminali i san o povezanom svetu.<span class="cur"></span>
+    </div>
+  </div>
+
+  <!-- HRONOLOGIJA TEHNOLOGIJA -->
+  <div class="section">
+    <div class="section-title">Hronologija — kako je sve pocelo</div>
+
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-yr">1969<br><span class="tl-dot">●</span></div>
+        <div class="tl-content">
+          <strong>ARPANET</strong> — cetiri universiteta, prvi packet-switched network.
+          "Frontend" = teletype terminal. Ekran ne postoji.
+          Svaka interakcija je stampana na papiru.
+          <div style="margin-top:4px;">
+            <span class="tag tag-ui">UI: Teletype</span>
+            <span class="tag tag-none">Memorija: ✗</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-yr">1978<br><span class="tl-dot">●</span></div>
+        <div class="tl-content">
+          <strong>BBS — Bulletin Board Systems</strong> — Ward Christensen i Randy Suess.
+          Modemom se direktno dializas na neciji racunar.
+          Tekstualni meni, chat, fajlovi, igre. Prva "drustvena mreza".
+          Nije bio internet — bio je direktna veza. Kao poziv telefonom,
+          samo sto si na kraju dobio kompjuter umesto glasa.
+          <div style="margin-top:4px;">
+            <span class="tag tag-ui">UI: ASCII meni</span>
+            <span class="tag tag-none">Memorija: ✗ lokalno</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-yr">1979<br><span class="tl-dot">●</span></div>
+        <div class="tl-content">
+          <strong>USENET</strong> — distribuirani forum pre foruma.
+          Tekstualni, decentralizovan, bez ijednog piksela grafike.
+          Tamo je nastala internet kultura: trollovi, flamewars, netiquette.
+          rec.arts.movies, comp.lang.c, alt.* grupe.
+          Sve sto je Reddit danas, USENET je bio 1980ih.
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-yr">1981<br><span class="tl-dot">●</span></div>
+        <div class="tl-content">
+          <strong>IBM PC + CGA grafika</strong> — 4 boje na ekranu.
+          "Grafika" znaci 320×200 piksela, 4 boje iz palete od 16.
+          Ali web ne postoji jos. Kompjuteri su ostrva — bez veze.
+          <div style="margin-top:4px;">
+            <span class="tag tag-ui">UI: CGA 4 boje</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-yr">1983<br><span class="tl-dot">●</span></div>
+        <div class="tl-content">
+          <strong>ANSI.SYS + ANSI Art</strong> — escape kodovi za boje i pozicioniranje u terminalu.
+          16 boja: 8 normalnih + 8 svetlih. <code>ESC[31m</code> = crvena.
+          BBS scene eksplodira sa ANSI artom — "grafika" napravljena od
+          ASCII karaktera i 16 boja. Cela vizuelna kultura unutar terminala.
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-yr">1991<br><span class="tl-dot">●</span></div>
+        <div class="tl-content">
+          <strong>Gopher</strong> — Univerzitet Minnesote.
+          Hijerarhijski sistem menija i tekst fajlova na internetu.
+          Nema linkova unutar teksta, samo meni.
+          1993. ima vise saobracaja od HTTP-a.
+          Za godinu dana Mosaic i HTTP ga sahranili.
+          <div style="margin-top:4px;">
+            <span class="tag tag-ui">UI: Meni hijerarhija</span>
+            <span class="tag tag-none">Memorija: ✗</span>
+            <span class="tag tag-none">Podaci: ✗ staticki</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-yr">1991<br><span class="tl-dot" style="color:#ffff00">●</span></div>
+        <div class="tl-content" style="border-left:2px solid #ffff00;padding-left:10px;">
+          <strong style="color:#ffff00">Tim Berners-Li objavljuje WWW</strong> —
+          HTML 1.0, HTTP, URL. Sve na jednom A4 dokumentu.
+          18 tagova. Nema boja, nema fonta, nema layouta.
+          Samo semantika i linkovi. "Vague but exciting."<br><br>
+          <strong>HTML 1.0 nema:</strong> boje, fontove, tabele, forme, slike unutar teksta.
+          Slike su u posebnom prozoru. Nema ni CSS-a — ne postoji jos.
+          <div style="margin-top:4px;">
+            <span class="tag tag-ui">UI: Tekst + linkovi</span>
+            <span class="tag tag-none">Memorija: ✗</span>
+            <span class="tag tag-none">CSS: ✗ ne postoji</span>
+            <span class="tag tag-none">JS: ✗ ne postoji</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-yr">1992<br><span class="tl-dot">●</span></div>
+        <div class="tl-content">
+          <strong>Lynx browser</strong> — University of Kansas.
+          Tekstualni browser koji i danas radi.
+          Navigacija strelicama, linkovi su oznaceni brojevima.
+          Nema slika. Nema boja (tek kasnije ANSI verzije).
+          Ovo je "web browser" za vecinu korisnika 1992-1994.
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-yr">1993<br><span class="tl-dot" style="color:#00ffff">●</span></div>
+        <div class="tl-content" style="border-left:2px solid #00ffff;padding-left:10px;">
+          <strong style="color:#00ffff">Mosaic browser</strong> —
+          Marc Andreessen, NCSA. Revolucija: slike unutar teksta!
+          Do tada slike su bile u posebnom prozoru.
+          Mosaic preuzet milion puta za godinu dana.
+          Andreessen osniva Netscape. Web postaje vizuelan.<br><br>
+          <em>Ovde zavrsava "Rodjenje veba" i pocinje "Detinjstvo veba".</em>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ANSI I BOJE -->
+  <div class="section">
+    <div class="section-title">Boje — od nicega do 16 do nule pa opet</div>
+
+    <p>Pre weba, "boja na ekranu" znacila je ANSI terminal boje. 16 opcija.
+    Kada je HTML 1.0 dosao 1991. — web je imao <strong>nula boja</strong>.
+    Manje od terminala. Korak unazad, ali korak prema nečemu novom.</p>
+
+    <!-- ANSI 16 boja -->
+    <div style="margin:12px 0;">
+      <div style="font-size:11px;color:#008800;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">ANSI 16 boja (terminal, 1983)</div>
+      <div class="ansi-grid">
+        <div class="ansi-cell" style="background:#000;color:#888;">000</div>
+        <div class="ansi-cell" style="background:#800000;color:#fff;">Crvena</div>
+        <div class="ansi-cell" style="background:#008000;color:#fff;">Zelena</div>
+        <div class="ansi-cell" style="background:#808000;color:#fff;">Zuta</div>
+        <div class="ansi-cell" style="background:#000080;color:#fff;">Plava</div>
+        <div class="ansi-cell" style="background:#800080;color:#fff;">Ljubic.</div>
+        <div class="ansi-cell" style="background:#008080;color:#fff;">Tirkiz</div>
+        <div class="ansi-cell" style="background:#c0c0c0;color:#000;">Siva</div>
+        <div class="ansi-cell" style="background:#808080;color:#fff;">T.siva</div>
+        <div class="ansi-cell" style="background:#ff0000;color:#fff;">Sv.crv</div>
+        <div class="ansi-cell" style="background:#00ff00;color:#000;">Sv.zel</div>
+        <div class="ansi-cell" style="background:#ffff00;color:#000;">Sv.zut</div>
+        <div class="ansi-cell" style="background:#0000ff;color:#fff;">Sv.pla</div>
+        <div class="ansi-cell" style="background:#ff00ff;color:#fff;">Sv.lju</div>
+        <div class="ansi-cell" style="background:#00ffff;color:#000;">Sv.tir</div>
+        <div class="ansi-cell" style="background:#fff;color:#000;">Bela</div>
+      </div>
+      <div style="font-size:11px;color:#004400;margin-top:4px;">
+        HTML 1.0 (1991): 0 boja &nbsp;·&nbsp;
+        HTML 3.2 (1996): bgcolor="#RRGGBB" — 16 miliona boja &nbsp;·&nbsp;
+        CSS 1 (1996): color: red, #ff0000, rgb(255,0,0)
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Paradoks boja:</strong> Terminal je imao 16 boja. HTML 1.0 je imao 0.
+      Web je poceo siromašniji od terminala kojeg je trebao da zameni.
+      Ali za razliku od ANSI kodova, HTML boje su bile <strong>prenosive</strong> —
+      isti dokument, isti izgled na svakom racunaru. To je bila prava revolucija.
+    </div>
+  </div>
+
+  <!-- LYNX SIMULACIJA — INTERAKTIVNA -->
+  <div class="section">
+    <div class="section-title">Lynx browser — interaktivna simulacija</div>
+    <p>Ovo je pravi Lynx interfejs — mozete navigirati kao 1992. godine.<br>
+    Koristite <strong>↑↓</strong> za kretanje između linkova, <strong>→ ili Enter</strong> za otvaranje,
+    <strong>← ili Backspace</strong> za nazad, <strong>G</strong> za unos URL-a, <strong>Q</strong> za izlaz.</p>
+
+    <!-- LYNX SIMULATOR -->
+    <div id="lynx-sim" style="margin:12px 0;outline:none;" tabindex="0">
+
+      <!-- Status bar — gornji -->
+      <div id="lynx-topbar" style="background:#0000aa;color:#fff;padding:3px 8px;font-size:12px;font-family:'Courier New',monospace;display:flex;justify-content:space-between;">
+        <span id="lynx-title">CERN — World Wide Web</span>
+        <span id="lynx-scroll">[1-18 of 18 lines]</span>
+      </div>
+
+      <!-- Glavni sadrzaj -->
+      <div id="lynx-content" style="background:#000;min-height:320px;padding:10px 12px;font-size:12px;font-family:'Courier New',monospace;line-height:1.75;cursor:default;position:relative;">
+      </div>
+
+      <!-- Status bar — donji -->
+      <div id="lynx-statusbar" style="background:#0000aa;color:#fff;padding:3px 8px;font-size:11px;font-family:'Courier New',monospace;">
+        Commands: Use arrow keys to move. 'H' for help. 'Q' to quit. Arrow keys: Up and Down to move.
+      </div>
+
+      <!-- Help bar -->
+      <div style="background:#001100;padding:4px 8px;font-size:11px;font-family:'Courier New',monospace;color:#008800;display:flex;gap:16px;flex-wrap:wrap;">
+        <span><span style="color:#00ff00;">↑↓</span> kretanje</span>
+        <span><span style="color:#00ff00;">→/Enter</span> otvori</span>
+        <span><span style="color:#00ff00;">←/Bksp</span> nazad</span>
+        <span><span style="color:#00ff00;">G</span> URL</span>
+        <span><span style="color:#00ff00;">H</span> pomoć</span>
+        <span><span style="color:#00ff00;">Q</span> izlaz</span>
+        <span style="color:#004400;">│</span>
+        <span style="color:#006600;">klikni na simulator pa pritisni taster</span>
+      </div>
+    </div>
+
+    <!-- G prompt -->
+    <div id="lynx-prompt" style="display:none;background:#000;border:1px solid #00ff00;padding:8px 12px;font-family:'Courier New',monospace;font-size:12px;margin-top:4px;">
+      <span style="color:#00ff00;">URL to open: </span>
+      <input id="lynx-url-input" type="text" value=""
+        style="background:#000;color:#00ff00;border:none;outline:none;font-family:'Courier New',monospace;font-size:12px;width:300px;"
+        placeholder="https://...">
+      <span style="color:#008800;font-size:11px;"> (Enter potvrdi, Esc odustani)</span>
+    </div>
+
+    <div class="callout" style="margin-top:12px;">
+      <strong>Lynx i danas radi.</strong> U terminalu: <code>sudo apt install lynx</code> pa
+      <code>lynx https://example.com</code>. Isti interfejs 1992. i danas.
+      Test pristupacnosti: ako radi u Lynxu, radi svuda.
+      <br>Takodjer: <code>curl https://example.com</code> i
+      <code>wget https://example.com</code> — zivi fossili koji pokrecu pola interneta.
+    </div>
+  </div>
+
+  <!-- EMAIL TO WEB -->
+  <div class="section">
+    <div class="section-title">Email-to-Web — browsing bez browsera</div>
+    <p>Vecina korisnika 1993. nije imala direktan internet pristup — samo email
+    kroz UUCP ili Fidonet. Resenje: posaljes email sa URL-om, server ti vrati stranicu.</p>
+
+    <div class="g2">
+      <div class="term-box">
+        <div style="color:#ffff00;margin-bottom:8px;font-size:12px;"><b>Slanje zahteva:</b></div>
+        <div style="font-size:11px;color:#00cc00;line-height:1.9;">
+          <span style="color:#888;">To:</span> <span style="color:#00ffff;">agora@dna.affrc.go.jp</span><br>
+          <span style="color:#888;">Subject:</span> <span style="color:#fff;">(prazno)</span><br>
+          <span style="color:#888;">Body:</span><br>
+          <span style="color:#00ff00;">SEND http://www.cern.ch/</span><br>
+          <br>
+          <span style="color:#888;">--- ili ---</span><br>
+          <br>
+          <span style="color:#888;">To:</span> <span style="color:#00ffff;">webmail@cern.ch</span><br>
+          <span style="color:#888;">Body:</span><br>
+          <span style="color:#00ff00;">GET http://info.cern.ch/</span>
+        </div>
+      </div>
+      <div class="term-box">
+        <div style="color:#ffff00;margin-bottom:8px;font-size:12px;"><b>Odgovor (posle par sati):</b></div>
+        <div style="font-size:11px;color:#00cc00;line-height:1.9;">
+          <span style="color:#888;">From:</span> <span style="color:#00ffff;">agora@dna.affrc.go.jp</span><br>
+          <span style="color:#888;">Subject:</span> WWW response<br>
+          <span style="color:#888;">Body:</span><br>
+          <span style="color:#00ff00;">&lt;TITLE&gt;World Wide Web&lt;/TITLE&gt;</span><br>
+          <span style="color:#00ff00;">&lt;H1&gt;World Wide Web&lt;/H1&gt;</span><br>
+          <span style="color:#006600;">...ceo HTML sadrzaj stranice...</span><br>
+          <br>
+          <span style="color:#444;">--- 1-3 dana kasnije ---</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="border-color:#ffff00;background:#1a1a00;color:#cccc00;">
+      <strong style="color:#ffff00;">Servisi koji su postojali:</strong>
+      Agora (Japan), WebMail (CERN), FTPmail (za fajlove), Gopher-by-email.
+      Za korisnike u Africi, Aziji, Istocnoj Evropi koji su imali samo email —
+      ovo je bio jedini nacin da "surfaju". Odgovor je stizao za sate ili dane.
+      Web je bio spor — ali dostupan svima koji su imali email.
+    </div>
+  </div>
+
+  <!-- CURL I WGET -->
+  <div class="section">
+    <div class="section-title">curl i wget — zivi fossili iz 1996/1998.</div>
+    <p>Neki alati ne umiru. curl (1996) i wget (1996) su HTTP klijenti iz komandne linije
+    koji i danas pokrecu automatizaciju, CI/CD pipeline, skripte, monitoring.</p>
+
+    <div class="g2">
+      <div class="term-box">
+        <div style="color:#00ffff;margin-bottom:6px;font-size:11px;">$ curl — transfer podataka</div>
+        <div style="font-size:11px;color:#00cc00;line-height:2;">
+          <span style="color:#008800;"># Preuzmi stranicu</span><br>
+          <span style="color:#00ff00;">curl https://example.com</span><br>
+          <br>
+          <span style="color:#008800;"># Vidi headere</span><br>
+          <span style="color:#00ff00;">curl -I https://example.com</span><br>
+          <br>
+          <span style="color:#008800;"># POST request</span><br>
+          <span style="color:#00ff00;">curl -X POST -d '{"key":"val"}' \<br>
+          &nbsp;&nbsp;https://api.example.com/data</span><br>
+          <br>
+          <span style="color:#008800;"># Prati redirect-e</span><br>
+          <span style="color:#00ff00;">curl -L https://bit.ly/xyz</span>
+        </div>
+      </div>
+      <div class="term-box">
+        <div style="color:#00ffff;margin-bottom:6px;font-size:11px;">$ wget — preuzimanje fajlova</div>
+        <div style="font-size:11px;color:#00cc00;line-height:2;">
+          <span style="color:#008800;"># Preuzmi fajl</span><br>
+          <span style="color:#00ff00;">wget https://example.com/file.zip</span><br>
+          <br>
+          <span style="color:#008800;"># Preuzmi ceo sajt (mirror)</span><br>
+          <span style="color:#00ff00;">wget --mirror \<br>
+          &nbsp;&nbsp;--convert-links \<br>
+          &nbsp;&nbsp;https://sajt.com</span><br>
+          <br>
+          <span style="color:#008800;"># Nastavi prekinuto preuzimanje</span><br>
+          <span style="color:#00ff00;">wget -c https://example.com/big.iso</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Danas:</strong> curl je ugradjen u Windows 10+, macOS, svaki Linux.
+      Svaki CI/CD pipeline (GitHub Actions, Jenkins, GitLab CI) koristi curl.
+      Svaki health check, webhook, API test. Alat iz 1996. pokrece moderni cloud.
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    // ─── LYNX SIMULATOR ─────────────────────────────────────────────
+
+    // Baza stranica
+    var PAGES = {
+      'cern': {
+        title: 'CERN — World Wide Web',
+        url: 'http://info.cern.ch/',
+        lines: 18,
+        content: [
+          {type:'h', text:'World Wide Web'},
+          {type:'p', text:'The WorldWideWeb (W3) is a wide-area hypermedia information retrieval initiative aiming to give universal access to a large universe of documents.'},
+          {type:'p', text:'Everything there is online about W3 is linked directly or indirectly to this document, including an executive summary of the project, Mailing lists, Policy, November\'s W3 news, Frequently Asked Questions.'},
+          {type:'br'},
+          {type:'link', text:'What\'s out there?',    target:'whatout'},
+          {type:'link', text:'Help',                  target:'help'},
+          {type:'link', text:'Technical details',     target:'technical'},
+          {type:'link', text:'Bibliography',          target:'bibliography'},
+          {type:'link', text:'People',                target:'people'},
+          {type:'link', text:'Getting code',          target:'code'},
+          {type:'br'},
+          {type:'p', text:'This is the first website in history. It went online on 6 August 1991.'},
+        ]
+      },
+      'whatout': {
+        title: 'What\'s out there? — WWW',
+        url: 'http://info.cern.ch/hypertext/WWW/DataSources/Top.html',
+        lines: 24,
+        content: [
+          {type:'h', text:'What\'s out there?'},
+          {type:'p', text:'Pointers to the world\'s online information, subjects, W3 servers, etc.'},
+          {type:'br'},
+          {type:'link', text:'World Wide Web servers',   target:'servers'},
+          {type:'link', text:'Subject catalogs',         target:'subjects'},
+          {type:'link', text:'CERN library',             target:'library'},
+          {type:'link', text:'Usenet news groups',       target:'usenet'},
+          {type:'link', text:'Gopher servers',           target:'gopher'},
+          {type:'br'},
+          {type:'p', text:'[Arrow keys: Up and Down to move. Right to follow a link; Left to go back.]'},
+        ]
+      },
+      'gopher': {
+        title: 'Gopher servers — Minnesota',
+        url: 'gopher://gopher.tc.umn.edu/',
+        lines: 20,
+        content: [
+          {type:'h', text:'Gopher Menu — University of Minnesota'},
+          {type:'p', text:'Gopher is a distributed document retrieval system. Navigate with arrow keys.'},
+          {type:'br'},
+          {type:'link', text:'About Gopher',                target:'about_gopher'},
+          {type:'link', text:'Computer Information',        target:'comp_info'},
+          {type:'link', text:'Discussion Groups',           target:'discuss'},
+          {type:'link', text:'Fun & Games',                 target:'games'},
+          {type:'link', text:'Internet file server (ftp)',  target:'ftp'},
+          {type:'link', text:'Libraries',                   target:'libraries'},
+          {type:'link', text:'News',                        target:'news_g'},
+          {type:'link', text:'Other Gopher Servers',        target:'other_gopher'},
+          {type:'br'},
+          {type:'p', text:'[In 1993, Gopher had more traffic than HTTP. One year later, it was dead.]'},
+        ]
+      },
+      'usenet': {
+        title: 'Usenet News — NNTP',
+        url: 'news:news.announce.newusers',
+        lines: 22,
+        content: [
+          {type:'h', text:'Usenet Newsgroups'},
+          {type:'p', text:'Usenet is a worldwide distributed discussion system. It consists of newsgroups — think Reddit, but invented in 1980 and entirely text-based.'},
+          {type:'br'},
+          {type:'link', text:'comp.lang.javascript',   target:'comp_js'},
+          {type:'link', text:'comp.lang.html',         target:'comp_html'},
+          {type:'link', text:'alt.internet.services',  target:'alt_inet'},
+          {type:'link', text:'rec.arts.movies',        target:'rec_movies'},
+          {type:'link', text:'news.announce.newusers', target:'news_ann'},
+          {type:'br'},
+          {type:'p', text:'Before Twitter, Reddit, Facebook — this was the internet\'s town square.'},
+          {type:'p', text:'The culture of the web — trolls, flamewars, netiquette, memes — started here.'},
+        ]
+      },
+      'comp_js': {
+        title: 'comp.lang.javascript — Usenet',
+        url: 'news:comp.lang.javascript',
+        lines: 20,
+        content: [
+          {type:'h', text:'comp.lang.javascript'},
+          {type:'p', text:'Discussion of the JavaScript language. Est. 1996.'},
+          {type:'br'},
+          {type:'msg', from:'Brendan Eich', date:'Dec 4 1995', text:'Re: Mocha/LiveScript/JavaScript — yes, it was written in 10 days. No, I\'m not proud of some parts.'},
+          {type:'msg', from:'anonymous',    date:'Dec 5 1995', text:'This "JavaScript" is just a toy. Java is the future. Nobody will use this.'},
+          {type:'msg', from:'netizen_995',  date:'Dec 6 1995', text:'Why does typeof null === "object"? This makes no sense.'},
+          {type:'msg', from:'B.Eich',       date:'Dec 6 1995', text:'Historical accident. I know.'},
+          {type:'br'},
+          {type:'p', text:'[3,847 messages in thread]'},
+        ]
+      },
+      'help': {
+        title: 'Lynx help — COMMANDS',
+        url: 'lynxhelp:',
+        lines: 30,
+        content: [
+          {type:'h', text:'LYNX HELP — Keyboard Commands'},
+          {type:'br'},
+          {type:'cmd', key:'↑ ↓',      desc:'Move between links'},
+          {type:'cmd', key:'→ Enter',  desc:'Follow selected link'},
+          {type:'cmd', key:'← Bksp',  desc:'Go back to previous page'},
+          {type:'cmd', key:'G',        desc:'Go to URL (type URL, press Enter)'},
+          {type:'cmd', key:'H',        desc:'This help screen'},
+          {type:'cmd', key:'Q',        desc:'Quit Lynx'},
+          {type:'cmd', key:'/',        desc:'Search on page'},
+          {type:'cmd', key:'P',        desc:'Print page'},
+          {type:'cmd', key:'D',        desc:'Download link'},
+          {type:'cmd', key:'=',        desc:'Show page info'},
+          {type:'br'},
+          {type:'p', text:'Lynx 2.8.9, University of Kansas, 1992. Still works in 2025.'},
+        ]
+      },
+      'quit': {
+        title: 'Lynx — Izlaz',
+        url: '',
+        lines: 5,
+        content: [
+          {type:'h', text:'Lynx — session ended'},
+          {type:'br'},
+          {type:'p', text:'Thank you for using Lynx. The year is 1993. You have 32KB of RAM free.'},
+          {type:'p', text:'Connection closed.'},
+          {type:'br'},
+          {type:'link', text:'Restart Lynx simulator', target:'cern'},
+        ]
+      }
+    };
+
+    // Podrazumevana stranica za nepoznate
+    function getPage(key) {
+      if (PAGES[key]) return PAGES[key];
+      return {
+        title: '404 — Not Found',
+        url: 'http://???',
+        lines: 5,
+        content: [
+          {type:'h', text:'404 Not Found'},
+          {type:'p', text:'This document does not exist. (Or the internet is down. In 1993, both were common.)'},
+          {type:'br'},
+          {type:'link', text:'Back to CERN homepage', target:'cern'},
+        ]
+      };
+    }
+
+    var state = {
+      pageKey: 'cern',
+      cursor: 0,   // indeks trenutno selektovanog linka
+      history: [],
+      quit: false
+    };
+
+    var sim = document.getElementById('lynx-sim');
+    var contentEl = document.getElementById('lynx-content');
+    var titleEl = document.getElementById('lynx-title');
+    var scrollEl = document.getElementById('lynx-scroll');
+    var statusEl = document.getElementById('lynx-statusbar');
+    var promptEl = document.getElementById('lynx-prompt');
+    var urlInput = document.getElementById('lynx-url-input');
+
+    function getLinks(page) {
+      return page.content.filter(function(i){ return i.type==='link'; });
+    }
+
+    function render() {
+      var page = getPage(state.pageKey);
+      titleEl.textContent = 'LYNX 2.8  ' + page.title;
+      scrollEl.textContent = '[1-' + page.lines + ' of ' + page.lines + ' lines]';
+
+      var links = getLinks(page);
+      if (state.cursor >= links.length) state.cursor = links.length - 1;
+      if (state.cursor < 0) state.cursor = 0;
+
+      var html = '';
+      var linkIdx = 0;
+      page.content.forEach(function(item) {
+        if (item.type === 'h') {
+          html += '<div style="color:#00ffff;font-weight:bold;font-size:13px;margin-bottom:4px;">' + item.text + '</div>';
+        } else if (item.type === 'p') {
+          html += '<div style="color:#00cc00;margin-bottom:6px;">' + item.text + '</div>';
+        } else if (item.type === 'br') {
+          html += '<div style="height:6px;"></div>';
+        } else if (item.type === 'link') {
+          var isActive = (linkIdx === state.cursor);
+          var style = isActive
+            ? 'background:#00ff00;color:#000;padding:0 4px;display:inline-block;'
+            : 'color:#00ffff;text-decoration:underline;';
+          html += '<div style="margin-bottom:2px;">'
+               + '<span style="color:#008800;">[' + (linkIdx+1) + ']</span> '
+               + '<span style="' + style + '" data-link="' + linkIdx + '">' + item.text + '</span>'
+               + '</div>';
+          linkIdx++;
+        } else if (item.type === 'msg') {
+          html += '<div style="margin-bottom:8px;border-left:2px solid #004400;padding-left:8px;">'
+               + '<div style="color:#008800;font-size:11px;">' + item.from + ' &lt;' + item.date + '&gt;</div>'
+               + '<div style="color:#00cc00;">' + item.text + '</div></div>';
+        } else if (item.type === 'cmd') {
+          html += '<div style="margin-bottom:4px;">'
+               + '<span style="color:#00ff00;display:inline-block;width:100px;">' + item.key + '</span>'
+               + '<span style="color:#00cc00;">' + item.desc + '</span></div>';
+        }
+      });
+
+      contentEl.innerHTML = html;
+
+      // Status bar
+      if (links.length > 0 && state.cursor < links.length) {
+        statusEl.textContent = 'Arrow keys: Up and Down to move.  Right to follow: ' + links[state.cursor].text;
+      } else {
+        statusEl.textContent = 'Commands: Use arrow keys. H=help Q=quit G=goto';
+      }
+
+      // Klik na linkove
+      contentEl.querySelectorAll('[data-link]').forEach(function(el) {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', function() {
+          var idx = parseInt(el.getAttribute('data-link'));
+          state.cursor = idx;
+          followLink();
+        });
+      });
+    }
+
+    function followLink() {
+      var page = getPage(state.pageKey);
+      var links = getLinks(page);
+      if (links.length === 0) return;
+      var link = links[state.cursor];
+      if (link.target === 'quit') {
+        state.history.push(state.pageKey);
+        state.pageKey = 'quit';
+        state.cursor = 0;
+      } else {
+        state.history.push(state.pageKey);
+        state.pageKey = link.target;
+        state.cursor = 0;
+      }
+      render();
+    }
+
+    function goBack() {
+      if (state.history.length > 0) {
+        state.pageKey = state.history.pop();
+        state.cursor = 0;
+        render();
+        status('Returned to previous page.');
+      } else {
+        status('No previous page.');
+      }
+    }
+
+    function status(msg) {
+      statusEl.textContent = msg;
+    }
+
+    // Keyboard
+    sim.addEventListener('keydown', function(e) {
+      var page = getPage(state.pageKey);
+      var links = getLinks(page);
+
+      if (promptEl.style.display !== 'none') return; // URL prompt aktivan
+
+      switch(e.key) {
+        case 'ArrowUp':
+          e.preventDefault();
+          if (state.cursor > 0) { state.cursor--; render(); }
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          if (state.cursor < links.length - 1) { state.cursor++; render(); }
+          break;
+        case 'ArrowRight':
+        case 'Enter':
+          e.preventDefault();
+          followLink();
+          break;
+        case 'ArrowLeft':
+        case 'Backspace':
+          e.preventDefault();
+          goBack();
+          break;
+        case 'g':
+        case 'G':
+          e.preventDefault();
+          promptEl.style.display = 'block';
+          urlInput.focus();
+          break;
+        case 'h':
+        case 'H':
+          e.preventDefault();
+          state.history.push(state.pageKey);
+          state.pageKey = 'help';
+          state.cursor = 0;
+          render();
+          break;
+        case 'q':
+        case 'Q':
+          e.preventDefault();
+          state.history.push(state.pageKey);
+          state.pageKey = 'quit';
+          state.cursor = 0;
+          render();
+          break;
+      }
+    });
+
+    // URL prompt enter/esc
+    urlInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        promptEl.style.display = 'none';
+        var url = urlInput.value.trim().toLowerCase();
+        // Mapiranje URL-ova na page keys
+        var map = {
+          'gopher': 'gopher', 'usenet': 'usenet',
+          'help': 'help', 'cern': 'cern',
+          'news': 'usenet', 'comp.lang.javascript': 'comp_js'
+        };
+        var found = null;
+        Object.keys(map).forEach(function(k) {
+          if (url.indexOf(k) !== -1) found = map[k];
+        });
+        state.history.push(state.pageKey);
+        state.pageKey = found || 'cern';
+        state.cursor = 0;
+        urlInput.value = '';
+        sim.focus();
+        render();
+      } else if (e.key === 'Escape') {
+        promptEl.style.display = 'none';
+        sim.focus();
+      }
+    });
+
+    // Klik na simulator da dobije fokus
+    sim.addEventListener('click', function() { sim.focus(); });
+
+    // Focus highlight
+    sim.addEventListener('focus', function() {
+      contentEl.style.outline = '1px solid #004400';
+    });
+    sim.addEventListener('blur', function() {
+      contentEl.style.outline = 'none';
+    });
+
+    // Init
+    render();
+    status('Klikni na simulator pa koristi tastere. G=unesi URL, H=pomoc, Q=izlaz.');
+
+  })();
+  </script>
+
+  <!-- MEMORIJA — NEMA JE -->
+  <div class="section">
+    <div class="section-title">Memorija — web koji nista ne pamti</div>
+
+    <div class="g2">
+      <div>
+        <p>Web je od pocetka bio <strong>stateless</strong> — bez stanja.
+        Svaki HTTP request je potpuno nezavisan. Server ne zna ko si.
+        Server ne zna da li si vec bio ovde. Server ne zna nista.</p>
+        <p>Kliknuo si na link? Nova stranica. Stara se ne pamti.
+        Popunio si formu? Reload. Sve izbrisan.
+        Kupujes nesto? Svaka stranica ne zna za korpu sa prethodne.</p>
+        <div class="callout">
+          <strong>HTTP je dizajniran tako namerno</strong> —
+          Berners-Li je hteo jednostavnost i skalabilnost.
+          Stateless protokol moze da opsluzi milion korisnika
+          bez da pamti ijednog. Cookies 1994. su "hakovanje"
+          tog ogranicenja — Netscape je dodao memoriju
+          sistemu koji je bio dizajniran da je nema.
+        </div>
+      </div>
+      <div>
+        <table>
+          <tr><th>Godina</th><th>Sta se pamti</th></tr>
+          <tr><td>1991</td><td style="color:#ff4444;">Nista. Apsolutno nista.</td></tr>
+          <tr><td>1994</td><td style="color:#ffaa00;">Cookies (4KB, server citа)</td></tr>
+          <tr><td>1999</td><td style="color:#ffaa00;">Cookies poboljsani (max-age, secure)</td></tr>
+          <tr><td>2009</td><td style="color:#88ff00;">localStorage (5MB, ostaje zauvek)</td></tr>
+          <tr><td>2009</td><td style="color:#88ff00;">sessionStorage (umire sa tabom)</td></tr>
+          <tr><td>2015</td><td style="color:#00ff00;">IndexedDB (prava baza u browseru)</td></tr>
+          <tr><td>2015</td><td style="color:#00ff00;">Cache API (offline web, Service Worker)</td></tr>
+          <tr><td>2023</td><td style="color:#00ffff;">Storage Buckets (upravljanje kvotama)</td></tr>
+        </table>
+        <div style="font-size:11px;color:#004400;margin-top:6px;">
+          Lou Montulli (Netscape) izmislio Cookies 1994. —
+          isti covek sto je izmislio &lt;blink&gt; tag.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BBS I GOPHER -->
+  <div class="section">
+    <div class="section-title">BBS i Gopher — interfejs pre interfejsa</div>
+
+    <div class="g2">
+
+      <div class="term-box">
+        <div style="color:#ffff00;font-weight:bold;margin-bottom:8px;">
+          ╔══════════════════════════════╗<br>
+          ║  WELCOME TO BELGRADE BBS     ║<br>
+          ║  Running TBBS v2.2           ║<br>
+          ║  Sysop: Pera Peric           ║<br>
+          ╚══════════════════════════════╝
+        </div>
+        <div style="font-size:12px;color:#00cc00;line-height:2;">
+          [M] Message boards<br>
+          [F] File downloads<br>
+          [C] Chat with sysop<br>
+          [G] Games<br>
+          [U] User list<br>
+          [Q] Logoff<br>
+          <br>
+          <span class="term-prompt">Your choice: </span><span class="cur"></span>
+        </div>
+        <div style="font-size:11px;color:#004400;margin-top:8px;">
+          BBS — direktna modem veza, 300-9600 baud.<br>
+          Bez interneta. Jedna lokacija. Lokalna zajednica.
+        </div>
+      </div>
+
+      <div class="term-box">
+        <div style="color:#00ffff;font-weight:bold;margin-bottom:8px;">
+          Gopher Menu — University of Minnesota
+        </div>
+        <div style="font-size:12px;color:#00cc00;line-height:2;">
+          --> 1. About Gopher/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;2. Computer Information/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;3. Discussion Groups/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;4. Fun &amp; Games/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;5. Internet file server (ftp) sites/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;6. Libraries/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;7. News/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;8. Other Gopher and Information Servers/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;9. Phone Books/<br>
+        </div>
+        <div style="font-size:11px;color:#004400;margin-top:8px;">
+          Gopher — hijerarhijski meni, tekst fajlovi.<br>
+          1993: vise saobracaja od HTTP-a. 1994: mrtav.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TABELA TEHNOLOGIJA -->
+  <div class="section">
+    <div class="section-title">Tehnologije ere 0 — sta je postojalo</div>
+    <table>
+      <tr>
+        <th>Tehnologija</th>
+        <th>Godina</th>
+        <th>UI</th>
+        <th>Memorija</th>
+        <th>Napomena</th>
+      </tr>
+      <tr>
+        <td><strong>Teletype terminal</strong></td>
+        <td>~1960s</td>
+        <td>Stampani papir</td>
+        <td style="color:#ff4444;">Nema</td>
+        <td>Svaka interakcija stampana</td>
+      </tr>
+      <tr>
+        <td><strong>VT100 terminal</strong></td>
+        <td>1978</td>
+        <td>Tekstualni ekran</td>
+        <td style="color:#ff4444;">Nema</td>
+        <td>Standard za terminal UI</td>
+      </tr>
+      <tr>
+        <td><strong>BBS</strong></td>
+        <td>1978</td>
+        <td>ASCII meni</td>
+        <td style="color:#ffaa00;">Na serveru</td>
+        <td>Direktna modem veza</td>
+      </tr>
+      <tr>
+        <td><strong>USENET</strong></td>
+        <td>1980</td>
+        <td>Tekstualni forum</td>
+        <td style="color:#ffaa00;">Na serveru</td>
+        <td>Distribuirani newsgroups</td>
+      </tr>
+      <tr>
+        <td><strong>ANSI boje</strong></td>
+        <td>1983</td>
+        <td>16 boja terminal</td>
+        <td style="color:#ff4444;">Nema</td>
+        <td>ESC kodovi za boje</td>
+      </tr>
+      <tr>
+        <td><strong>Gopher</strong></td>
+        <td>1991</td>
+        <td>Meni hijerarhija</td>
+        <td style="color:#ff4444;">Nema</td>
+        <td>Predhodnik WWW-a</td>
+      </tr>
+      <tr>
+        <td><strong>HTML 1.0 / WWW</strong></td>
+        <td>1991</td>
+        <td>Tekst + linkovi</td>
+        <td style="color:#ff4444;">Nema</td>
+        <td>18 tagova, nema boja</td>
+      </tr>
+      <tr>
+        <td><strong>Lynx browser</strong></td>
+        <td>1992</td>
+        <td>Tekstualni browser</td>
+        <td style="color:#ff4444;">Nema</td>
+        <td>I danas radi</td>
+      </tr>
+      <tr>
+        <td><strong>Mosaic browser</strong></td>
+        <td>1993</td>
+        <td>GUI + slike!</td>
+        <td style="color:#ff4444;">Nema</td>
+        <td>Revolucija — kraj ere 0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ZAKLJUCAK -->
+  <div class="callout" style="border-color:#ffff00;background:#1a1a00;color:#cccc00;">
+    <strong style="color:#ffff00;">Zasto je ovo vazno razumeti:</strong><br>
+    Web nije poceo kao vizuelni medij. Poceo je kao tekstualni sistem za razmenu
+    naucnih dokumenata. Mosaic je 1993. "pokvario" tu cistotu dodavanjem slika.
+    Sve sto je doslo posle — CSS, JavaScript, Flash, React, AI interfejsi —
+    bila su nasa nastojanja da odgovorimo na pitanje koje Berners-Li
+    nije ni postavljao: <strong style="color:#ffff00;">kako ovo ucini lepim?</strong><br><br>
+    I u toj tenziji izmedju cistog informacionog sistema i vizuelnog iskustva
+    lezi cela historija frontenda.
+  </div>
+
+  <!-- NEXT ERA -->
+  <div class="next-era">
+    <a href="era1-1994.html">[ Sledeca era: Detinjstvo Veba (1994-1999) → ]</a>
+  </div>
+
+</div><!-- /container -->
+
+</body>
+</html>

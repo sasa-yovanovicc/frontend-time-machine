@@ -361,6 +361,24 @@
   </style>
 </head>
 <body>
+<!-- ACCESSIBILITY TOOLBAR -->
+<div style="background:rgba(5,6,9,0.95);border-bottom:1px solid rgba(148,163,184,0.1);padding:5px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-family:'Courier New',monospace;font-size:11px;" role="toolbar" aria-label="Pristupacnost">
+  <span style="color:#4a5568;font-size:10px;text-transform:uppercase;letter-spacing:1px;">A11y:</span>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur-2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A-</button>
+  <button onclick="document.body.style.fontSize='15px'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A</button>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur+2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A+</button>
+  <span style="color:#333;">│</span>
+  <button onclick="document.body.classList.toggle('a11y-hc');this.style.color=document.body.classList.contains('a11y-hc')?'#6dd4fa':'#ddd'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">⬛ Kontrast</button>
+  <span style="color:#333;">│</span>
+  <a href="pristupacnost.html" style="color:#34d399;font-size:10px;text-decoration:none;padding:3px 8px;border:1px solid rgba(52,211,153,0.3);border-radius:3px;">♿ A11y</a>
+</div>
+<style>
+body.a11y-hc{background:#000!important;color:#fff!important;}
+body.a11y-hc nav,body.a11y-hc .topbar,body.a11y-hc header{background:#000!important;border-color:#fff!important;}
+body.a11y-hc a{color:#6dd4fa!important;}
+body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!important;border-color:#fff!important;}
+</style>
+
 
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
@@ -373,6 +391,8 @@
       frontend.vremenska.masina
     </div>
     <div class="nav">
+      <a href="era0-rodjenje.html">ERA-0</a>
+      <a href="monitori.html">Monitori</a>
       <a href="era1-1994.html">1994</a>
       <a href="era2-2000.html">2000s</a>
       <a href="era3-2005.html">2010s</a>
@@ -385,6 +405,9 @@
       <a href="hvala.html">Hvala</a>
     </div>
   </nav>
+<!-- MEM_STATUS -->
+<div style="background:rgba(129,140,248,0.05);border-bottom:1px solid rgba(129,140,248,0.3);padding:7px 20px;font-family:"Inter",sans-serif;font-size:11px;display:flex;gap:16px;flex-wrap:wrap;color:#888;"><span style="color:#818cf8;">MEMORIJA: IndexedDB, Cache API, Service Worker</span> &nbsp;│&nbsp; <span style="color:#818cf8;">COOKIES: SameSite, Secure, HttpOnly — zrela zaštita</span> &nbsp;│&nbsp; <span style="color:#818cf8;">UI: Server Components, Tailwind, TypeScript</span> &nbsp;│&nbsp; <span style="color:#818cf8;">FE↔PODACI: GraphQL, tRPC, Edge Functions</span> &nbsp;│&nbsp; <span style="color:#88ff88;">OFFLINE: PWA može raditi bez interneta — pun krug</span></div>
+<!-- /MEM_STATUS -->
 
   <!-- HERO -->
   <div class="hero">
