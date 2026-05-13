@@ -133,6 +133,60 @@ body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!i
     </iframe>
   </section>
 
+  <!-- KNUTH CALLOUT -->
+  <div class="knuth-callout">
+    <span class="knuth-callout-icon">📚</span>
+    <span class="knuth-callout-text">Ne znaš ko je Donald Knuth (izgovara se "Knut")?</span>
+    <button class="knuth-callout-btn" onclick="document.getElementById('knuth-modal').classList.add('open')">Ko je Knuth? →</button>
+  </div>
+
+  <!-- KNUTH MODAL -->
+  <div id="knuth-modal" class="knuth-modal-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="knuth-modal" role="dialog" aria-modal="true" aria-labelledby="knuth-modal-title">
+      <button class="knuth-modal-close" onclick="document.getElementById('knuth-modal').classList.remove('open')" aria-label="Zatvori">×</button>
+      <div class="knuth-modal-body">
+        <div class="knuth-modal-text">
+          <h3 id="knuth-modal-title">Donald Knuth — "Knut"</h3>
+          <p class="knuth-born">Rođen 1938, Milwaukee</p>
+
+          <p>Napisao je "The Art of Computer Programming" — biblijsku knjigu programiranja. Zamislio je jednu knjigu sa 12 poglavlja 1962. Postalo je 7 tomova. Objavljeno je 5 tomova (1968, 1969, 1973, 2011, 4B nedavno). Tomovi 5, 6 i 7 još čekaju. Knuth ima 87 godina i još piše.</p>
+
+          <div class="knuth-volumes">
+            <div class="knuth-vol"><span class="knuth-vol-n">Vol. 1</span><span class="knuth-vol-y">(1968)</span> Fundamental Algorithms — linked liste, stabla, grafovi</div>
+            <div class="knuth-vol"><span class="knuth-vol-n">Vol. 2</span><span class="knuth-vol-y">(1969)</span> Seminumerical Algorithms — slučajni brojevi, aritmetika</div>
+            <div class="knuth-vol"><span class="knuth-vol-n">Vol. 3</span><span class="knuth-vol-y">(1973)</span> Sorting and Searching — sortiranje i pretraga</div>
+            <div class="knuth-vol"><span class="knuth-vol-n">Vol. 4A</span><span class="knuth-vol-y">(2011)</span> Combinatorial Algorithms — kombinatorika</div>
+            <div class="knuth-vol"><span class="knuth-vol-n">Vol. 4B</span><span class="knuth-vol-y">(nedavno)</span> Combinatorial Algorithms nastavak</div>
+            <div class="knuth-vol knuth-vol-pending"><span class="knuth-vol-n">Vol. 5, 6, 7</span> — u pripremi <span class="knuth-vol-wait">(čeka se...)</span></div>
+          </div>
+
+          <div class="knuth-facts">
+            <div class="knuth-fact">💰 Nudi $2.56 za svaku grešku nađenu u knjizi — 256 centi = jedan "hexadecimal dollar"</div>
+            <div class="knuth-fact">🔤 Izmislio je TeX — sistem kojim su pisane skoro sve naučne publikacije na svijetu (LaTeX ga koristi danas)</div>
+            <div class="knuth-fact">🎓 Profesor Emeritus na Stanfordu, titula: "Professor of The Art of Computer Programming"</div>
+          </div>
+
+          <blockquote class="knuth-gates">
+            <p>"If you think you're a really good programmer, read Knuth's Art of Computer Programming. You should definitely send me a resume if you can read the whole thing."</p>
+            <cite>— Bill Gates</cite>
+          </blockquote>
+
+          <hr class="knuth-sep">
+
+          <div class="knuth-imidz">
+            <div class="knuth-imidz-heading">Zašto kupiti Knuth komplet (200–300 EUR)?</div>
+            <p>Ako želite da vas neko posmatra kao da na zidu imate uramljen prvi dolar koji ste zaradili — ili crni pojas u karateu — potrošite 200–300 EUR na Knuth komplet i neka bude vidljiv u vašoj kancelariji.</p>
+            <p>Knuth je za programiranje kao iPhone za imidž biznismena. Niko ne mora da ga je pročitao. Dovoljno je da stoji.</p>
+            <p class="knuth-imidz-note">Napomena: Bill Gates kaže da treba da mu pošalješ CV ako si ga pročitao cijelog. Skoro niko nije.</p>
+          </div>
+        </div>
+        <div class="knuth-modal-img">
+          <img src="img/the-art-of-programming.jpg" alt="The Art of Computer Programming — Donald Knuth">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- KNUT PARADOKS -->
   <section id="knut">
     <div class="sec-label">Istorijski paradoks</div>
