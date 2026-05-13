@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Vremenska Masina :: Caveats :: Upozorenja iz iskustva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@300;400;500&family=Syne+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/era6.css">
+  <style>
+    /* ---- CAVEAT PAGE ---- */
+    .caveat-quote {
+      background: linear-gradient(135deg, rgba(251,191,36,0.06), rgba(248,113,113,0.04));
+      border: 1px solid rgba(251,191,36,0.25);
+      border-left: 4px solid var(--amber);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .caveat-quote::before {
+      content: '"';
+      position: absolute;
+      top: -8px; left: 20px;
+      font-family: Georgia, serif;
+      font-size: 72px;
+      color: rgba(251,191,36,0.08);
+      line-height: 1;
+    }
+    .caveat-quote-text {
+      font-family: var(--mono);
+      font-size: 17px;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+    .caveat-quote-attr {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 0.08em;
+    }
+
+    .caveat-number {
+      font-family: var(--mono);
+      font-size: 48px;
+      font-weight: 400;
+      color: rgba(251,191,36,0.12);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .caveat-title {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 14px;
+      letter-spacing: 0.02em;
+    }
+    .caveat-title em {
+      color: var(--amber);
+      font-style: normal;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin: 18px 0;
+    }
+    .compare-col {
+      padding: 20px 22px;
+    }
+    .compare-col.bad {
+      background: rgba(248,113,113,0.05);
+      border-right: 1px solid var(--border);
+    }
+    .compare-col.good {
+      background: rgba(52,211,153,0.04);
+    }
+    .compare-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+    .compare-label.bad-label { color: var(--red); }
+    .compare-label.good-label { color: var(--green); }
+    .compare-list {
+      list-style: none;
+      margin: 0; padding: 0;
+    }
+    .compare-list li {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      padding: 3px 0;
+      padding-left: 14px;
+      position: relative;
+    }
+    .compare-list li::before {
+      position: absolute;
+      left: 0;
+      font-size: 10px;
+    }
+    .compare-col.bad .compare-list li::before { content: '✗'; color: var(--red); }
+    .compare-col.good .compare-list li::before { content: '✓'; color: var(--green); }
+
+    .caniuse-box {
+      background: var(--s1);
+      border: 1px solid rgba(56,189,248,0.2);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 18px 0;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .caniuse-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .caniuse-body h4 {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--blue);
+      margin-bottom: 6px;
+      font-weight: 400;
+    }
+    .caniuse-body p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+    .caniuse-body code {
+      font-family: var(--mono);
+      font-size: 11px;
+      background: var(--s2);
+      border: 1px solid var(--border);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--blue);
+    }
+
+    .voltaire-card {
+      background: linear-gradient(135deg, rgba(167,139,250,0.06), rgba(56,189,248,0.04));
+      border: 1px solid rgba(167,139,250,0.2);
+      border-radius: 14px;
+      padding: 36px 40px;
+      margin: 32px 0 8px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .voltaire-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(167,139,250,0.4), transparent);
+    }
+    .voltaire-text {
+      font-family: var(--mono);
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: var(--text);
+      font-style: italic;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .voltaire-text em { color: var(--purple); font-style: normal; }
+    .voltaire-attr {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--purple);
+      letter-spacing: 0.1em;
+    }
+    .voltaire-note {
+      font-size: 12px;
+      color: var(--dim);
+      margin-top: 16px;
+      font-style: italic;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 44px 0;
+    }
+
+    .caveat-etymology {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 3px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      border-left: 2px solid rgba(251,191,36,0.3);
+      padding: 8px 14px;
+      margin: 12px 0 22px;
+      text-align: left;
+      line-height: 1.85;
+    }
+    .caveat-etymology em { color: var(--amber); font-style: italic; }
+    .caveat-etymology .ce-dot { color: rgba(251,191,36,0.25); margin: 2px 0; font-size: 9px; }
+
+    @media (max-width: 600px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .compare-col.bad { border-right: none; border-bottom: 1px solid var(--border); }
+      .voltaire-card { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+<!-- ACCESSIBILITY TOOLBAR -->
+<div style="background:rgba(5,6,9,0.95);border-bottom:1px solid rgba(148,163,184,0.1);padding:5px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-family:'Courier New',monospace;font-size:11px;" role="toolbar" aria-label="Pristupacnost">
+  <span style="color:#64748b;font-size:10px;text-transform:uppercase;letter-spacing:1px;">A11y:</span>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur-2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A-</button>
+  <button onclick="document.body.style.fontSize='15px'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A</button>
+  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur+2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A+</button>
+  <span style="color:#333;">│</span>
+  <button onclick="document.body.classList.toggle('a11y-hc');this.style.color=document.body.classList.contains('a11y-hc')?'#6dd4fa':'#ddd'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">⬛ Kontrast</button>
+  <span style="color:#333;">│</span>
+  <a href="pristupacnost.html" style="color:#aaa;font-size:10px;text-decoration:none;padding:3px 8px;border:1px solid #333;border-radius:3px;">♿ A11y</a>
+</div>
+<style>
+body.a11y-hc{background:#000!important;color:#fff!important;}
+body.a11y-hc nav,body.a11y-hc .topbar,body.a11y-hc header{background:#000!important;border-color:#fff!important;}
+body.a11y-hc a{color:#6dd4fa!important;}
+body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!important;border-color:#fff!important;}
+</style>
+
+<div class="glow-1"></div>
+<div class="glow-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-pulse"></div>
+    vremenska.masina
+  </div>
+  <div class="nav-links">
+    <a href="era0-rodjenje.html">ERA-0</a>
+    <a href="monitori.html">Monitori</a>
+    <a href="era1-1994.html">1994</a>
+    <a href="era2-2000.html">2000s</a>
+    <a href="era3-2005.html">2010s</a>
+    <a href="era4-2013.html">2015s</a>
+    <a href="era5-2020.html">2020s</a>
+    <a href="era6-2025.html">2025+</a>
+    <a href="teme.html">Teme</a>
+    <a href="css-evolucija.html">CSS</a>
+    <a href="js-evolucija.html">JS</a>
+    <a href="responsive.html">Responsive</a>
+    <a href="caveat.html" class="active">Caveats</a>
+    <a href="napredak.html">Napredak</a>
+    <a href="buducnost.html">Buducnost</a>
+    <a href="pristupacnost.html">Pristup</a>
+    <a href="autor.html">Autor</a>
+    <a href="hvala.html">Hvala</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero">
+    <div class="era-tag">// upozorenja iz iskustva</div>
+    <h1>
+      Caveats<br>
+      <span class="line2">— <em style="color:var(--amber);font-style:normal;">caveat</em></span>
+    </h1>
+    <div class="caveat-etymology">
+      <span><em>Lat. caveat</em> = "neka se čuva" &nbsp;(<em>od lat. cavere</em> = čuvati se)</span>
+      <span class="ce-dot">···</span>
+      <span>Poznata izreka: <em>Caveat emptor</em> — neka se kupac pazi.<br>Klasični pravni termin koji se i danas koristi u ugovorima.</span>
+      <span class="ce-dot">···</span>
+      <span>U programiranju: <em>Caveat developer</em> — neka se developer pazi.</span>
+    </div>
+    <p class="hero-sub">Tri stvari koje vam nitko neće reći na frontend kursu. Ali koje svaki iskusni developer zna — iz bola.</p>
+  </div>
+</div>
+
+<main id="main-content">
+
+  <!-- CAVEAT 1 -->
+  <section class="section" id="caveat-1">
+    <div class="sec-label">// caveat #1</div>
+    <div class="caveat-number">01</div>
+    <div class="caveat-title"><em>Perfekcija</em> je ubica produktivnosti</div>
+
+    <p>Postoji tačka u svakom projektu gdje nastaviti polirati znači ne isporučiti. Frontend developeri su posebno podložni ovoj zamci — jer uvijek ima još jedne animacije za podesiti, još jednog breakpointa za fino ugoditi, još jednog browser bug-a za zaobići.</p>
+    <p>U praksi: klijent nikad neće videti razliku između <strong>97% savršenstva</strong> i <strong>100% savršenstva</strong>. Ali će sigurno videti razliku između isporučenog i neisporučenog.</p>
+
+    <div class="caveat-quote">
+      <div class="caveat-quote-text">"Saša, ostavi tako. Ovo je dovoljno dobro. Pusti."</div>
+      <div class="caveat-quote-attr">— kolega, 2009. — rečeno mi dok sam sat vremena ugađao piksel-po-piksel poravnanje u IE6</div>
+    </div>
+
+    <div class="callout" style="border-left-color: var(--green);">
+      <div class="ci">✓</div>
+      <div class="cb">
+        <p><strong>Good enough shipped beats perfect unshipped.</strong> Korisnici koriste software koji postoji — ne software koji bi mogao biti savršen da se ikad isporuči. Svaka sledeća iteracija može da polira.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CAVEAT 2 -->
+  <section class="section" id="caveat-2">
+    <div class="sec-label">// caveat #2</div>
+    <div class="caveat-number">02</div>
+    <div class="caveat-title">Kaži <em>'ne'</em> mrtvim tehnologijama</div>
+
+    <p>Svake godine pojavi se klijent koji želi da se sajt "prikaže pravilno u Internet Exploreru". Ili traži Flash animaciju. Ili insistira na tabličnom layoutu "jer je tako radio naš stari sajt".</p>
+    <p>Deo posla iskusnog developera je da jasno i ljubazno kaže: <strong>ova tehnologija je mrtva</strong>. Ne zaostajanje — zaštita klijenta od skupih grešaka. Koristiti mrtvu tehnologiju u 2025. je isto što i graditi kuću od materijala koji više nema podršku.</p>
+
+    <div class="caniuse-box">
+      <div class="caniuse-icon">🔍</div>
+      <div class="caniuse-body">
+        <h4>caniuse.com — tvoj najvažniji alat</h4>
+        <p>Pre nego što koristiš bilo šta novo — provjeri <code>caniuse.com</code>. Pokazuje podršku browsera za svaki CSS, JS ili HTML feature. Zeleno = safe. Crveno = izoliraj ili ne koristi. Sivo = ne postoji.</p>
+        <p style="margin-top:8px;">Bookmark ovo. Otvori ga više puta dnevno. Nema izgovora za "nisam znao da to ne radi u Safariju".</p>
+      </div>
+    </div>
+
+    <div class="callout" style="border-left-color: var(--amber);">
+      <div class="ci">⚠️</div>
+      <div class="cb">
+        <p><strong>Internet Explorer statistike:</strong> IE11 je zvanično ugašen juna 2022. Microsoft ga je sam ubio. Globalni market share: ispod 0.3%. A koliko projekata u 2024. je još imalo "IE11 support" u zahtjevima? Previše.</p>
+        <p>Svaki sat potrošen na IE11 compatibility je sat oduzet od korisnika koji koriste moderne browsere.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CAVEAT 3 -->
+  <section class="section" id="caveat-3">
+    <div class="sec-label">// caveat #3</div>
+    <div class="caveat-number">03</div>
+    <div class="caveat-title">Web nije <em>desktop aplikacija</em></div>
+
+    <p>Dizajneri dolaze sa Figma fileovima gdje svaki element stoji na tačno određenom mestu. Pixel perfect. Fiksna širina. Savršene margine. I onda developer mora da objasni da web ne funkcioniše tako.</p>
+    <p>Web je <strong>fluidni medij</strong>. Postoji na ekranima od 320px do 5120px. Na watch-evima i na 8K televizorima. Sa sistemskim fontovima, zoom levelima, accessibility podešavanjima, dark/light mode preferencijama korisnika. Klijentove se ne mogu kontrolisati sve te varijable — i to je <em>dobra stvar</em>. Klijenti će rado prihvatiti "nije moguće" nego duga tehnička objašnjenja.</p>
+
+    <div class="compare-grid">
+      <div class="compare-col bad">
+        <div class="compare-label bad-label">// Figma očekivanje</div>
+        <ul class="compare-list">
+          <li>Tačno 1440px širine uvijek</li>
+          <li>Font uvijek isti, uvijek iste veličine</li>
+          <li>Elementi stoje gdje ih postavim</li>
+          <li>Sve izgleda isto na svim uređajima</li>
+          <li>Nema scroll-a u hero sekciji</li>
+          <li>Animacija radi savršeno svugdje</li>
+        </ul>
+      </div>
+      <div class="compare-col good">
+        <div class="compare-label good-label">// Web realnost</div>
+        <ul class="compare-list">
+          <li>320px do 5120px — isti kod</li>
+          <li>Korisnik mijenja font size u browseru</li>
+          <li>Flexbox i Grid — elementi se prilagođavaju</li>
+          <li>iOS Safari, Android Chrome, Firefox — sve različito</li>
+          <li>Pinch-zoom, landscape, split-screen</li>
+          <li>prefers-reduced-motion — animacija se gasi</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="border-left-color: var(--amber);">
+      <div class="ci">💡</div>
+      <div class="cb">
+        <p><strong>Postavi očekivanja na prvom sastanku.</strong> Pokaži klijentu sajt na telefonu, na tabletu, na velikom monitoru. Pokaži da izgleda <em>dobro</em> — ali različito. "Pixel perfect na svakom uređaju" nije cilj — cilj je "sjajno korisničko iskustvo na svakom uređaju". To je drugačija — i dostižna — metrika.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- VOLTAIRE -->
+  <section class="section">
+    <div class="voltaire-card">
+      <div class="voltaire-text">
+        "Le mieux est l'ennemi du bien."<br>
+        <span style="font-size:0.75em; color:var(--dim);">— Bolje je neprijatelj dobrog.</span>
+      </div>
+      <div class="voltaire-attr">— Voltaire, 1772.</div>
+      <div class="voltaire-note">Frontend developeri su ovo otkrili ponovo, 230 godina kasnije,<br>na Stack Overflow-u, u 2 ujutro, uz četvrti kafi.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Frontend Vremenska Masina &nbsp;·&nbsp; <a href="index.html">← Sve ere</a></span>
+  <span style="color:var(--dim);">Sasha Jovanovic &nbsp;·&nbsp; Oblik s.r.o. &nbsp;·&nbsp; oblik.sk</span>
+</footer>
+
+</body>
+</html>
