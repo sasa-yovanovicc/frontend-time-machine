@@ -417,7 +417,7 @@ body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!i
         <a href="era1-1994.html">1994</a>
         <a href="era2-2000.html">2000s</a>
         <a href="era3-2005.html">2010s</a>
-        <a href="era4-2010.html" class="active">2015s</a>
+        <a href="era4-2013.html" class="active">2015s</a>
         <a href="era5-2020.html">2020+</a>
         <a href="era6-2025.html">2025+</a>
         <a href="teme.html">Teme</a>
@@ -515,116 +515,178 @@ body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!i
         <p class="section-desc">React Hooks (2019) — useState umjesto class komponenti. Isti princip, čišći kod.</p>
       </div>
 
-      <!-- REACT DEMO: jednosmerni tok podataka -->
+      <!-- REACT DEMO: pravi React via CDN -->
       <div class="demo-area" style="margin-bottom:16px;">
-        <h4 style="margin-bottom:4px;">⚛ Sta React zaista demonstrira — jednosmerni tok podataka</h4>
-        <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">
-          Promeni ime u polju. Gledaj kako se <strong>sve tri komponente</strong> ažuriraju istovremeno
-          iz jednog izvora — bez da jedna "zna" za drugu. To jQuery ne moze bez koda koji drži stanje.
-        </p>
 
-        <!-- State vizualizacija -->
-        <div style="display:grid;grid-template-columns:1fr 40px 1fr 1fr;gap:12px;align-items:start;margin-bottom:16px;">
+        <h4 style="margin-bottom:4px;">⚛ React — jednosmerni tok podataka</h4>
 
-          <!-- INPUT: jedini izvor promene -->
-          <div style="background:var(--s2);border:1px solid rgba(97,218,251,0.3);border-radius:8px;padding:14px;">
-            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
-              📝 Komponenta: Input
-            </div>
-            <input
-              id="react-name-input"
-              type="text"
-              placeholder="Upiši ime..."
-              oninput="reactStateUpdate(this.value)"
-              style="width:100%;background:var(--s3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:6px;font-family:var(--mono);font-size:13px;"
-              value="Saša"
-            >
-            <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:8px;">
-              onChange → setState({name})
-            </div>
-          </div>
-
-          <!-- STRELICA -->
-          <div style="text-align:center;padding-top:30px;font-size:20px;color:var(--accent);">↓</div>
-
-          <!-- STATE: jedini izvor istine -->
-          <div style="background:rgba(97,218,251,0.08);border:1px solid rgba(97,218,251,0.4);border-radius:8px;padding:14px;">
-            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
-              🗃 State (jedini izvor)
-            </div>
-            <div style="font-family:var(--mono);font-size:12px;color:var(--text);line-height:1.8;">
-              {<br>
-              &nbsp;&nbsp;name: "<span id="state-name-display" style="color:var(--accent);">Saša</span>",<br>
-              &nbsp;&nbsp;renders: <span id="state-renders" style="color:var(--accent);">1</span><br>
-              }
-            </div>
-          </div>
-
-          <!-- 3 komponente koje citaju state -->
-          <div style="display:flex;flex-direction:column;gap:8px;">
-
-            <!-- Kartica korisnika -->
-            <div id="comp-card" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px;transition:border-color 0.2s;">
-              <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:5px;">Komponenta: &lt;UserCard&gt;</div>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;color:#000;font-weight:700;" id="comp-avatar">S</div>
-                <div style="font-size:13px;color:var(--text);font-weight:600;" id="comp-card-name">Saša</div>
-              </div>
-            </div>
-
-            <!-- Pozdrav -->
-            <div id="comp-greeting" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px;transition:border-color 0.2s;">
-              <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:4px;">Komponenta: &lt;Greeting&gt;</div>
-              <div style="font-size:13px;color:var(--text);">Zdravo, <strong id="comp-greeting-name" style="color:var(--accent);">Saša</strong>! 👋</div>
-            </div>
-
-            <!-- Naslov -->
-            <div id="comp-title" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px;transition:border-color 0.2s;">
-              <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:4px;">Komponenta: &lt;PageTitle&gt;</div>
-              <div style="font-size:11px;color:var(--muted);">Profil korisnika</div>
-              <div style="font-size:13px;color:var(--text);font-weight:600;" id="comp-title-name">Saša — Frontend Dev</div>
-            </div>
+        <div style="background:rgba(97,218,251,0.06);border:1px solid rgba(97,218,251,0.2);border-radius:6px;padding:8px 14px;margin-bottom:14px;display:flex;gap:10px;align-items:center;">
+          <span style="font-size:16px;">ℹ️</span>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6;">
+            <strong style="color:var(--accent);">Embedded React via CDN</strong> —
+            ovo nije kompajlirani React sa <code>npm</code> i Webpack-om.
+            React, ReactDOM i Babel su učitani direktno sa
+            <code>unpkg.com</code> CDN-a. Babel transpajlira JSX u realnom vremenu u browseru.
+            U produkciji — uvek koristiti build proces (<code>Vite</code>, <code>Create React App</code>).
+            Ovde je samo radi demonstracije, bez ikakve instalacije.
           </div>
         </div>
 
-        <!-- jQuery vs React poredjenje -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+        <!-- React CDN skripte -->
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">
+          Ukucaj ime u polje — sve tri komponente se ažuriraju iz jednog state-a.
+          Otvori DevTools Console da vidiš re-rendere.
+        </p>
+
+        <!-- Mount tačka za React app -->
+        <div id="react-demo-root" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:16px;min-height:200px;"></div>
+
+        <!-- JSX kod koji se izvrsava -->
+        <script type="text/babel">
+          const { useState, useEffect } = React;
+
+          /* ── Tri zasebne komponente ── */
+
+          function UserCard({ name }) {
+            const initial = name ? name.charAt(0).toUpperCase() : '?';
+            return (
+              <div style={{display:'flex',alignItems:'center',gap:10,background:'var(--s1)',border:'1px solid var(--border)',borderRadius:8,padding:10}}>
+                <div style={{width:32,height:32,borderRadius:'50%',background:'var(--accent)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'#000',fontWeight:700,flexShrink:0}}>
+                  {initial}
+                </div>
+                <div>
+                  <div style={{fontSize:10,color:'var(--muted)',fontFamily:'var(--mono)',textTransform:'uppercase',letterSpacing:1}}>UserCard</div>
+                  <div style={{fontSize:13,color:'var(--text)',fontWeight:600}}>{name || '...'}</div>
+                </div>
+              </div>
+            );
+          }
+
+          function Greeting({ name }) {
+            return (
+              <div style={{background:'var(--s1)',border:'1px solid var(--border)',borderRadius:8,padding:10}}>
+                <div style={{fontSize:10,color:'var(--muted)',fontFamily:'var(--mono)',textTransform:'uppercase',letterSpacing:1,marginBottom:4}}>Greeting</div>
+                <div style={{fontSize:13,color:'var(--text)'}}>
+                  Zdravo, <strong style={{color:'var(--accent)'}}>{name || '...'}</strong>! 👋
+                </div>
+              </div>
+            );
+          }
+
+          function PageTitle({ name }) {
+            return (
+              <div style={{background:'var(--s1)',border:'1px solid var(--border)',borderRadius:8,padding:10}}>
+                <div style={{fontSize:10,color:'var(--muted)',fontFamily:'var(--mono)',textTransform:'uppercase',letterSpacing:1,marginBottom:2}}>PageTitle</div>
+                <div style={{fontSize:11,color:'var(--muted)'}}>Profil korisnika</div>
+                <div style={{fontSize:13,color:'var(--text)',fontWeight:600}}>{name || '...'} — Frontend Dev</div>
+              </div>
+            );
+          }
+
+          /* ── Glavni App — drži state ── */
+
+          function App() {
+            const [name, setName]       = useState('Saša');
+            const [renders, setRenders] = useState(1);
+
+            useEffect(() => {
+              setRenders(r => r + 1);
+              console.log('[React demo] re-render, name =', name);
+            }, [name]);
+
+            return (
+              <div>
+                {/* State vizualizacija */}
+                <div style={{display:'grid',gridTemplateColumns:'1fr 36px 1fr 1fr',gap:10,alignItems:'start',marginBottom:14}}>
+
+                  {/* Input */}
+                  <div style={{background:'var(--s1)',border:'1px solid rgba(97,218,251,0.3)',borderRadius:8,padding:12}}>
+                    <div style={{fontFamily:'var(--mono)',fontSize:10,color:'var(--accent)',textTransform:'uppercase',letterSpacing:1,marginBottom:8}}>📝 Input</div>
+                    <input
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      placeholder="Upiši ime..."
+                      style={{width:'100%',background:'var(--s2)',border:'1px solid var(--border)',color:'var(--text)',padding:'7px 10px',borderRadius:6,fontFamily:'var(--mono)',fontSize:13}}
+                    />
+                    <div style={{fontFamily:'var(--mono)',fontSize:10,color:'var(--muted)',marginTop:6}}>
+                      onChange → setName(value)
+                    </div>
+                  </div>
+
+                  {/* Strelica */}
+                  <div style={{textAlign:'center',paddingTop:28,fontSize:18,color:'var(--accent)'}}>↓</div>
+
+                  {/* State prikaz */}
+                  <div style={{background:'rgba(97,218,251,0.06)',border:'1px solid rgba(97,218,251,0.35)',borderRadius:8,padding:12}}>
+                    <div style={{fontFamily:'var(--mono)',fontSize:10,color:'var(--accent)',textTransform:'uppercase',letterSpacing:1,marginBottom:8}}>🗃 State</div>
+                    <div style={{fontFamily:'var(--mono)',fontSize:12,color:'var(--text)',lineHeight:1.8}}>
+                      {'{'}<br/>
+                      &nbsp;&nbsp;name: "<span style={{color:'var(--accent)'}}>{name}</span>",<br/>
+                      &nbsp;&nbsp;renders: <span style={{color:'var(--accent)'}}>{renders}</span><br/>
+                      {'}'}
+                    </div>
+                  </div>
+
+                  {/* Tri komponente */}
+                  <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                    <UserCard name={name} />
+                    <Greeting name={name} />
+                    <PageTitle name={name} />
+                  </div>
+
+                </div>
+
+                {/* Footer */}
+                <div style={{fontFamily:'var(--mono)',fontSize:11,color:'var(--muted)',textAlign:'center',marginTop:4}}>
+                  Re-renderovano: <span style={{color:'var(--accent)'}}>{renders}</span> puta
+                  &nbsp;·&nbsp; Virtual DOM diff: samo promenjeni tekst
+                  &nbsp;·&nbsp; <span style={{color:'rgba(97,218,251,0.5)'}}>React 18 via CDN (unpkg)</span>
+                </div>
+              </div>
+            );
+          }
+
+          /* ── Mount ── */
+          const root = ReactDOM.createRoot(document.getElementById('react-demo-root'));
+          root.render(<App />);
+        </script>
+
+        <!-- jQuery vs React poređenje -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;">
           <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-radius:6px;padding:12px;">
             <div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">❌ jQuery način</div>
             <div style="font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;">
               <span style="color:var(--red);">$('#input').on('input', function() {</span><br>
               &nbsp;var n = $(this).val();<br>
-              &nbsp;<span style="color:var(--red);"># Rucno azuriraj svaki element:</span><br>
+              &nbsp;<span style="color:var(--red);"># Ručno svaki element:</span><br>
               &nbsp;$('.card-name').text(n);<br>
-              &nbsp;$('.greeting').text('Zdravo, '+n);<br>
-              &nbsp;$('.page-title').text(n+' — Dev');<br>
-              &nbsp;$('.avatar').text(n[0]);<br>
+              &nbsp;$('.greeting').text('Zdravo '+n);<br>
+              &nbsp;$('.title').text(n+' — Dev');<br>
               <span style="color:var(--red);">});</span>
             </div>
-            <div style="font-size:11px;color:var(--red);margin-top:8px;">Zaboravis jedan → bug. Dodas komponentu → azuriras handler.</div>
+            <div style="font-size:11px;color:var(--red);margin-top:8px;">Zaboraviš jedan → bug. Dodaš komponentu → menjaš handler.</div>
           </div>
           <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:6px;padding:12px;">
             <div style="font-family:var(--mono);font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">✓ React način</div>
             <div style="font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;">
               <span style="color:var(--green);">const [name, setName] = useState('');</span><br><br>
-              <span style="color:var(--muted);"># Svaka komponenta sama cita:</span><br>
+              <span style="color:var(--muted);"># Svaka komponenta sama čita:</span><br>
               <span style="color:var(--green);">&lt;UserCard name={name} /&gt;</span><br>
               <span style="color:var(--green);">&lt;Greeting name={name} /&gt;</span><br>
-              <span style="color:var(--green);">&lt;PageTitle name={name} /&gt;</span><br><br>
-              <span style="color:var(--green);">// Input menja samo state.</span><br>
-              <span style="color:var(--green);">// Ostalo se samo azurira.</span>
+              <span style="color:var(--green);">&lt;PageTitle name={name} /&gt;</span>
             </div>
-            <div style="font-size:11px;color:var(--green);margin-top:8px;">Dodas komponentu → automatski prima state. Handler ne menjas.</div>
+            <div style="font-size:11px;color:var(--green);margin-top:8px;">Dodaš komponentu → automatski prima state. Handler ne menjaš.</div>
           </div>
         </div>
 
-        <div style="font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;margin-top:10px;">
-          Re-renderovan: <span id="render-flash" style="color:var(--accent);">1</span> put/a
-          &nbsp;·&nbsp; Virtual DOM diff: samo promenjeni tekst, ne cela stranica
-        </div>
       </div>
     </div>
 
+    <!-- ANGULAR VS REACT VS VUE -->
     <!-- ANGULAR VS REACT VS VUE -->
     <div class="section">
       <div class="section-header">
@@ -933,48 +995,10 @@ body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!i
       <a href="era1-1994.html">← Pocetak</a>
     </p>
     <p style="margin-top:4px;font-size:11px;">
-      Ova stranica koristi CSS custom properties, CSS Grid, Inter font, modern JS — autentične tehnike 2015–2020.
+      Ova stranica koristi CSS custom properties, CSS Grid, Inter font, modern JS — autentične tehnike 2013–2020.
     </p>
   </footer>
 
-  <script>
-    let renderCount = 1;
-
-    function reactStateUpdate(value) {
-      renderCount++;
-
-      // Azuriraj state prikaz
-      document.getElementById('state-name-display').textContent = value || '""';
-      document.getElementById('state-renders').textContent = renderCount;
-      document.getElementById('render-flash').textContent = renderCount;
-
-      // Azuriraj sve tri komponente — simulacija React re-rendera
-      const name = value || '...';
-      const initial = name.charAt(0).toUpperCase() || '?';
-
-      document.getElementById('comp-card-name').textContent = name;
-      document.getElementById('comp-avatar').textContent = initial;
-      document.getElementById('comp-greeting-name').textContent = name;
-      document.getElementById('comp-title-name').textContent = name + ' — Frontend Dev';
-
-      // Vizuelni flash na komponentama — simulira React highlight
-      ['comp-card','comp-greeting','comp-title'].forEach(function(id) {
-        var el = document.getElementById(id);
-        el.style.borderColor = 'rgba(97,218,251,0.7)';
-        el.style.background = 'rgba(97,218,251,0.06)';
-        setTimeout(function() {
-          el.style.borderColor = '';
-          el.style.background = '';
-        }, 300);
-      });
-    }
-
-    // Inicijalizacija
-    document.addEventListener('DOMContentLoaded', function() {
-      var input = document.getElementById('react-name-input');
-      if (input) reactStateUpdate(input.value);
-    });
-  </script>
 
 </body>
 </html>
