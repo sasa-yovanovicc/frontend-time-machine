@@ -6,6 +6,7 @@
   <title>Frontend Vremenska Masina :: Pristupačnost</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@300;400;500&family=Syne+Mono&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/pristupacnost.css">
+  <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
 </head>
 <body>
 
@@ -506,7 +507,7 @@ function srHL(el) {
 
 // Stop all speech and reset state
 function srStop() {
-  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  responsiveVoice.cancel();
   srHL(null);
   sr.active = false;
   srRemoveCursorBtn();
@@ -551,15 +552,14 @@ function srReadQueue(queue, startIdx) {
       var preview = item.text.length > 90 ? item.text.slice(0, 90) + '…' : item.text;
       out.innerHTML = '<span style="color:var(--amber);">🔊</span> ' + preview;
     }
-    if ('speechSynthesis' in window) {
-      var utt = makeSrUtt(item.text);
-      utt.onend  = function() { idx++; setTimeout(next, 180); };
-      utt.onerror = function() { idx++; setTimeout(next, 180); };
-      try { speechSynthesis.speak(utt); } catch(e) { idx++; setTimeout(next, 1000); }
-    } else {
-      idx++;
-      setTimeout(next, 1400);
-    }
+    /* EN version — uncomment for English:
+       var utt = new SpeechSynthesisUtterance(item.text);
+       utt.lang = 'en-US';
+       speechSynthesis.speak(utt);
+    */
+    responsiveVoice.speak(item.text, "Serbian Male", {
+      onend: function() { idx++; setTimeout(next, 300); }
+    });
   }
   next();
 }
@@ -577,12 +577,15 @@ function simulateSR() {
 
 // srRead — individual demo buttons (single element, no highlight loop)
 function srRead(text) {
-  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  responsiveVoice.cancel();
   var out = document.getElementById('sr-output');
   if (out) out.innerHTML = '<span style="color:var(--amber);">🔊</span> ' + text;
-  if ('speechSynthesis' in window) {
-    try { speechSynthesis.speak(makeSrUtt(text)); } catch(e) {}
-  }
+  /* EN version — uncomment for English:
+     var utt = new SpeechSynthesisUtterance(text);
+     utt.lang = 'en-US';
+     speechSynthesis.speak(utt);
+  */
+  responsiveVoice.speak(text, "Serbian Male");
 }
 
 // ── "Čitaj od kursora" ────────────────────────────────────────────────────────
@@ -652,13 +655,13 @@ document.addEventListener('click', function(e) {
   srShowCursorBtn(e.clientX, e.clientY, block);
 }, false);
 
-// Pre-load voices list (Chrome defers this until first call)
-if ('speechSynthesis' in window) {
+// Pre-load voices list (Web Speech API — not needed with ResponsiveVoice)
+/* if ('speechSynthesis' in window) {
   speechSynthesis.getVoices();
   if (typeof speechSynthesis.onvoiceschanged !== 'undefined') {
     speechSynthesis.onvoiceschanged = function() { speechSynthesis.getVoices(); };
   }
-}
+} */
 </script>
 </body>
 </html>
