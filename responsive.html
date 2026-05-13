@@ -323,6 +323,65 @@
     </div>
   </div>
 
+  <div class="sec-label" style="margin-top:32px;">// novi form factori — uvijek nešto novo</div>
+  <h2>Responsive nije 'postavi i zaboravi'</h2>
+  <p>Svaki novi uređaj donosi novi problem koji CSS ne pokriva automatski. Uvijek postoji djelić manuelnog rada — mjerenje, testiranje, prilagođavanje.</p>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-label" style="color:var(--cyan);">Device chrome</div>
+      <h3>Širina i debljina ivica</h3>
+      <p>Svaki telefon ima fizičke ivice različite debljine. Samsung ima drugačije zakrivljenje nego iPhone. Notch, Dynamic Island, punch-hole kamera — svaki "grize" upotrebljivi prostor drugačije. CSS <code>env(safe-area-inset-*)</code> je rješenje, ali mora se ručno testirati na svakom uređaju.</p>
+      <div class="pills">
+        <span class="pill pc">env(safe-area-inset-top)</span>
+        <span class="pill pb">viewport-fit=cover</span>
+        <span class="pill pr">notch</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label" style="color:var(--amber);">2019+ — još nema standarda</div>
+      <h3>Foldable displej — novi divlji zapad</h3>
+      <p>Samsung Galaxy Fold, Motorola Razr — displej koji se savija. Kada je sklopljen: ~360px. Kada je raširen: ~700px. Ali to NIJE isti breakpoint kao tablet — ponašanje je potpuno drugačije. CSS <code>@media (horizontal-viewport-segments: 2)</code> postoji ali podrška je eksperimentalna. Još nema ustaljenog standarda. Isti problem kao Retina 2010.</p>
+      <div class="pills">
+        <span class="pill pa">horizontal-viewport-segments</span>
+        <span class="pill pa">fold</span>
+        <span class="pill pr">eksperimentalno</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label" style="color:var(--green);">2010 — niko nije bio spreman</div>
+      <h3>Retina — isti obrazac, uvijek iznova</h3>
+      <p>Kad je Apple objavio Retina 2010. — svi sajtovi su izgledali zamućeno. Nije bilo CSS rješenja unaprijed. Industrija je morala da reaguje: srcset, @2x slike, SVG revolucija. Svaki novi form factor slijedi isti obrazac: pojava → haos → community rješenje → CSS standard. Foldable je sada u "haos" fazi.</p>
+      <div class="pills">
+        <span class="pill pg">srcset</span>
+        <span class="pill pg">@2x</span>
+        <span class="pill pg">SVG</span>
+        <span class="pill pc">device-pixel-ratio</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label" style="color:var(--blue);">280px i manje</div>
+      <h3>Ispod mobilnog — wearables</h3>
+      <p>Apple Watch browser (Skylight), Galaxy Watch. Ekrani 280×320px ili manji. Okrugli displej. Nikakav Bootstrap breakpoint ne pokriva ovo. Fluid CSS i <code>clamp()</code> su jedini pravi odgovor — ali i oni imaju limite na 280px. Responsive "mobile first" se mislio na 320px iPhone. Wearables su nova granica.</p>
+      <div class="pills">
+        <span class="pill pb">280px</span>
+        <span class="pill pg">clamp()</span>
+        <span class="pill pg">fluid</span>
+        <span class="pill pc">wearables</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <span style="font-size:20px;flex-shrink:0;">⚠️</span>
+    <div>
+      Responsive design nije tehnički problem koji se jednom riješi. To je kontinuiran proces — svaki novi uređaj, novi browser, novi form factor donosi novi edge case koji niko nije predvidio. Jedina prava odbrana: fluid CSS koji se prilagođava svemu, testiranje na realnim uređajima, i pomiriti se sa tim da uvijek postoji nešto što ne radi savršeno na najnovijem Galaxy Foldu.
+    </div>
+  </div>
+
   <div class="callout green">
     <span style="font-size:20px;flex-shrink:0;">🎯</span>
     <div>
