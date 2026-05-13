@@ -463,14 +463,21 @@ function toggleSize(dir) {
   document.body.style.fontSize = fontSize + 'px';
 }
 
+// Defensive init — remove any residual a11y classes on load
+document.body.classList.remove('hc', 'dyslexia');
+
 function toggleHC() {
   var isOn = document.body.classList.toggle('hc');
-  document.getElementById('btn-hc').classList.toggle('active', isOn);
+  var btn = document.getElementById('btn-hc');
+  btn.style.borderColor = isOn ? 'var(--blue)' : '';
+  btn.style.color       = isOn ? 'var(--blue)' : '';
 }
 
 function toggleDyslexia() {
   var isOn = document.body.classList.toggle('dyslexia');
-  document.getElementById('btn-dys').classList.toggle('active', isOn);
+  var btn = document.getElementById('btn-dys');
+  btn.style.borderColor = isOn ? 'var(--blue)' : '';
+  btn.style.color       = isOn ? 'var(--blue)' : '';
 }
 
 // ── Screen Reader Engine ──────────────────────────────────────────────────────
