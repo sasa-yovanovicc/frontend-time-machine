@@ -6,17 +6,20 @@
   <title>Frontend Vremenska Masina :: Kako razumeti napredak</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@300;400;500&family=Syne+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/napredak.css">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+<script>if(localStorage.getItem('a11y-dys')==='1')document.body.classList.add('dyslexia');if(localStorage.getItem('a11y-hc')==='1'){document.body.classList.add('a11y-hc');}</script>
 <!-- ACCESSIBILITY TOOLBAR -->
 <div style="background:rgba(5,6,9,0.95);border-bottom:1px solid rgba(148,163,184,0.1);padding:5px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-family:'Courier New',monospace;font-size:11px;" role="toolbar" aria-label="Pristupacnost">
   <span style="color:#64748b;font-size:10px;text-transform:uppercase;letter-spacing:1px;">A11y:</span>
-  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur-2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A-</button>
-  <button onclick="document.body.style.fontSize='15px'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A</button>
-  <button onclick="(function(){var s=document.body.style.fontSize;var cur=parseInt(s)||15;document.body.style.fontSize=(cur+2)+'px';})()" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A+</button>
+  <button onclick="document.body.classList.remove('text-lg','text-xl','text-md');document.body.classList.add('text-sm');" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A-</button>
+  <button onclick="document.body.classList.remove('text-sm','text-lg','text-xl');document.body.classList.add('text-md');" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A</button>
+  <button onclick="document.body.classList.remove('text-sm','text-md','text-xl');document.body.classList.add('text-lg');" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">A+</button>
   <span style="color:#333;">│</span>
-  <button onclick="document.body.classList.toggle('a11y-hc');this.style.color=document.body.classList.contains('a11y-hc')?'#6dd4fa':'#ddd'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">⬛ Kontrast</button>
+  <button onclick="document.body.classList.toggle('a11y-hc');localStorage.setItem('a11y-hc',document.body.classList.contains('a11y-hc')?'1':'0');this.style.color=document.body.classList.contains('a11y-hc')?'#6dd4fa':'#ddd'" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">⬛ Kontrast</button>
   <span style="color:#333;">│</span>
+  <button onclick="document.body.classList.toggle('dyslexia');localStorage.setItem('a11y-dys',document.body.classList.contains('dyslexia')?'1':'0');this.style.color=document.body.classList.contains('dyslexia')?'#6dd4fa':'#ddd';this.style.borderColor=document.body.classList.contains('dyslexia')?'#6dd4fa':'#333';" style="background:#111;border:1px solid #333;color:#ddd;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:inherit;font-size:11px;">Aa Disleksija</button>
   <a href="pristupacnost.html" style="color:#aaa;font-size:10px;text-decoration:none;padding:3px 8px;border:1px solid #333;border-radius:3px;">♿ A11y</a>
 </div>
 <style>
@@ -24,6 +27,8 @@ body.a11y-hc{background:#000!important;color:#fff!important;}
 body.a11y-hc nav,body.a11y-hc .topbar,body.a11y-hc header{background:#000!important;border-color:#fff!important;}
 body.a11y-hc a{color:#6dd4fa!important;}
 body.a11y-hc .card,body.a11y-hc .section,body.a11y-hc .callout{background:#111!important;border-color:#fff!important;}
+
+body.dyslexia*{font-family:'Lexend',sans-serif!important;letter-spacing:0.05em;word-spacing:0.1em;line-height:1.9!important;}
 </style>
 
 

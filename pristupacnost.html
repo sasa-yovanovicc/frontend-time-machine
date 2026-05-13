@@ -9,7 +9,7 @@
   <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
 </head>
 <body>
-<script>document.body.classList.remove('dyslexia','hc');</script>
+<script>if(localStorage.getItem('a11y-dys')==='1')document.body.classList.add('dyslexia');if(localStorage.getItem('a11y-hc')==='1')document.body.classList.add('hc');</script>
 
 <!-- Skip to content — screen reader standard -->
 <a href="#main-content" class="skip-link">Preskoči na sadržaj</a>
@@ -471,22 +471,23 @@
 </footer>
 
 <script>
-// Defensive init — runs immediately on script parse, before any interaction
-document.body.classList.remove('hc', 'dyslexia');
-
 // Accessibility toolbar
-var fontSize = 15;
-
 function toggleSize(dir) {
-  if (dir === -1 && fontSize > 12) fontSize -= 2;
-  else if (dir === 1 && fontSize < 22) fontSize += 2;
-  else if (dir === 0) fontSize = 15;
-  document.documentElement.style.setProperty('--a11y-font-size', fontSize + 'px');
-  document.body.style.fontSize = fontSize + 'px';
+  if (dir === -1) {
+    document.body.classList.remove('text-lg', 'text-xl', 'text-md');
+    document.body.classList.add('text-sm');
+  } else if (dir === 1) {
+    document.body.classList.remove('text-sm', 'text-md', 'text-xl');
+    document.body.classList.add('text-lg');
+  } else {
+    document.body.classList.remove('text-sm', 'text-lg', 'text-xl');
+    document.body.classList.add('text-md');
+  }
 }
 
 function toggleHC() {
   var isOn = document.body.classList.toggle('hc');
+  localStorage.setItem('a11y-hc', isOn ? '1' : '0');
   var btn = document.getElementById('btn-hc');
   btn.style.borderColor = isOn ? 'var(--blue)' : '';
   btn.style.color       = isOn ? 'var(--blue)' : '';
@@ -494,6 +495,7 @@ function toggleHC() {
 
 function toggleDyslexia() {
   var isOn = document.body.classList.toggle('dyslexia');
+  localStorage.setItem('a11y-dys', isOn ? '1' : '0');
   var btn = document.getElementById('btn-dys');
   btn.style.borderColor = isOn ? 'var(--blue)' : '';
   btn.style.color       = isOn ? 'var(--blue)' : '';
@@ -688,6 +690,18 @@ document.addEventListener('click', function(e) {
     speechSynthesis.onvoiceschanged = function() { speechSynthesis.getVoices(); };
   }
 } */
+
+// Restore button visual state from localStorage on page load
+document.addEventListener('DOMContentLoaded', function() {
+  if (localStorage.getItem('a11y-hc') === '1') {
+    var b = document.getElementById('btn-hc');
+    if (b) { b.style.borderColor = 'var(--blue)'; b.style.color = 'var(--blue)'; }
+  }
+  if (localStorage.getItem('a11y-dys') === '1') {
+    var b = document.getElementById('btn-dys');
+    if (b) { b.style.borderColor = 'var(--blue)'; b.style.color = 'var(--blue)'; }
+  }
+});
 </script>
 </body>
 </html>

@@ -30,3 +30,29 @@ h1{font-size:clamp(28px,5vw,52px);font-weight:700;text-align:center;letter-spaci
 .era-link:hover .arrow{opacity:1;right:16px}
 .footer{text-align:center;margin-top:40px;font-size:12px;color:#3a3f55;font-family:'Space Mono',monospace}
 .tech-note{text-align:center;margin-top:20px;font-size:12px;color:#3a3f55;line-height:1.8;max-width:600px;margin-left:auto;margin-right:auto}
+
+/* A11y text scaling */
+body.text-sm { font-size: 13px !important; }
+body.text-md { font-size: 15px !important; }
+body.text-lg { font-size: 18px !important; }
+body.text-xl { font-size: 21px !important; }
+body[class*="text-"] p,
+body[class*="text-"] li,
+body[class*="text-"] .hero-sub,
+body[class*="text-"] .card p,
+body[class*="text-"] .cb,
+body[class*="text-"] .tl-body,
+body[class*="text-"] .mon-desc,
+body[class*="text-"] .wc-body,
+body[class*="text-"] .section-desc,
+body[class*="text-"] .callout-body,
+body[class*="text-"] .prose p,
+body[class*="text-"] .z-body,
+body[class*="text-"] .outro p,
+body[class*="text-"] .autor-subtitle,
+body[class*="text-"] .story-card p,
+body[class*="text-"] .scenario p,
+body[class*="text-"] .bq p,
+body[class*="text-"] .era-sub,
+body[class*="text-"] .tl-content
+{ font-size: 1em !important; }
