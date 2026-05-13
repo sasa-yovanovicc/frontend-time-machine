@@ -1,7 +1,7 @@
-/* hvala.css — Hvala / Kraj Prezentacije */
+/* hvala.css — Hvala / Kraj prezentacije */
 /* Format: čisti CSS */
 
-:root {
+    :root {
       --bg:    #050609;
       --s1:    #0a0d16;
       --s2:    #0f1220;
@@ -257,3 +257,4 @@
       position:relative;z-index:1;
     }
     footer a{color:var(--blue);text-decoration:none;}
+  

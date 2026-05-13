@@ -15,6 +15,7 @@
 | hvala.css | CSS | — | Hvala / kraj prezentacije |
 | index.css | CSS | — | Pocetna stranica |
 | css-evolucija.css | CSS | — | CSS evolucija |
+| js-evolucija.css | CSS | — | JavaScript evolucija |
 | responsive.css | CSS | — | Responsive design |
 
 ## Napomene
