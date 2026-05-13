@@ -1,0 +1,238 @@
+
+<style>
+.wrap { font-family: var(--font-sans); max-width: 660px; }
+.msg { display:flex; gap:10px; margin-bottom:16px; align-items:flex-start; }
+.msg.u { flex-direction:row-reverse; }
+.av { width:30px; height:30px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500; }
+.av-ai { background:var(--color-background-info); color:var(--color-text-info); }
+.av-u  { background:var(--color-background-secondary); color:var(--color-text-secondary); }
+.bub { max-width:90%; border-radius:var(--border-radius-lg); padding:10px 13px; font-size:14px; line-height:1.6; color:var(--color-text-primary); }
+.bub-ai { background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); }
+.bub-u  { background:var(--color-background-info); border:0.5px solid var(--color-border-info); }
+
+.card-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+.apt-card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); overflow:hidden; cursor:pointer; transition:border-color .15s; }
+.apt-card:hover { border-color:var(--color-border-secondary); }
+.apt-card.sel { border:1.5px solid #3b82f6; }
+.apt-img { width:100%; height:90px; display:flex; align-items:center; justify-content:center; font-size:28px; }
+.apt-body { padding:9px 11px; }
+.apt-name { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:3px; }
+.apt-loc  { font-size:12px; color:var(--color-text-secondary); margin-bottom:5px; }
+.apt-row  { display:flex; justify-content:space-between; align-items:center; }
+.apt-price { font-size:14px; font-weight:500; color:var(--color-text-primary); }
+.apt-night { font-size:11px; color:var(--color-text-tertiary); }
+.stars { color:#f59e0b; font-size:12px; letter-spacing:1px; }
+.badge { display:inline-block; padding:2px 7px; border-radius:4px; font-size:11px; font-weight:500; }
+.badge-g { background:var(--color-background-success); color:var(--color-text-success); }
+.badge-a { background:var(--color-background-warning); color:var(--color-text-warning); }
+
+.detail-card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px; margin-top:8px; }
+.detail-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.detail-name { font-size:15px; font-weight:500; color:var(--color-text-primary); }
+.detail-price { font-size:18px; font-weight:500; color:var(--color-text-primary); }
+.features { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.feat { background:var(--color-background-secondary); border-radius:4px; padding:3px 9px; font-size:12px; color:var(--color-text-secondary); }
+.price-breakdown { border-top:0.5px solid var(--color-border-tertiary); margin-top:10px; padding-top:10px; }
+.pb-row { display:flex; justify-content:space-between; font-size:13px; color:var(--color-text-secondary); margin-bottom:5px; }
+.pb-total { display:flex; justify-content:space-between; font-size:14px; font-weight:500; color:var(--color-text-primary); padding-top:7px; border-top:0.5px solid var(--color-border-tertiary); margin-top:5px; }
+
+.input-row { display:flex; gap:8px; margin-top:16px; }
+.input-row input { flex:1; font-size:13px; }
+.input-row button { font-size:13px; padding:0 16px; white-space:nowrap; }
+.chip-row { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0; }
+.chip { background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); border-radius:20px; padding:4px 12px; font-size:12px; color:var(--color-text-secondary); cursor:pointer; }
+.chip:hover { border-color:var(--color-border-secondary); color:var(--color-text-primary); }
+.typing { display:flex; gap:4px; align-items:center; padding:10px 14px; }
+.dot { width:6px; height:6px; border-radius:50%; background:var(--color-text-tertiary); animation:blink 1.2s infinite; }
+.dot:nth-child(2) { animation-delay:.2s; }
+.dot:nth-child(3) { animation-delay:.4s; }
+@keyframes blink { 0%,80%,100%{opacity:.3} 40%{opacity:1} }
+</style>
+<link rel="stylesheet" href="css/booking-demo.css">
+<div class="wrap">
+
+<div id="chat"></div>
+
+<div class="input-row">
+  <input id="inp" placeholder="Pitaj za smeštaj, cijene, lokacije..." />
+  <button onclick="sendMsg()">Pošalji ↗</button>
+</div>
+<div class="chip-row" style="margin-top:8px;">
+  <span class="chip" onclick="quickSend('Prikaži mi stanove u Barceloni za 3 noći')">📍 Barcelona, 3 noći</span>
+  <span class="chip" onclick="quickSend('Koji je najjeftiniji od ponuđenih?')">💸 Najjeftiniji?</span>
+  <span class="chip" onclick="quickSend('Detalji za Studio Gótico')">🏠 Detalji Studio Gótico</span>
+  <span class="chip" onclick="quickSend('Koliko košta ukupno za 5 noći?')">🧮 5 noći ukupno</span>
+</div>
+
+</div>
+
+<script>
+const listings = [
+  { id:1, name:'Studio Gótico', loc:'Barri Gòtic, Barcelona', price:58, rating:4.7, reviews:312, type:'Studio', img:'🏙️', color:'#dbeafe',
+    features:['WiFi','Klima','Kuhinja','Elevator'], deposit:150, cleaning:25,
+    desc:'Srce gotičke četvrti, 5 min od La Rambla. Autentičan barcelona feel.' },
+  { id:2, name:'Eixample Sunlight', loc:'Eixample, Barcelona', price:84, rating:4.9, reviews:186, type:'1-soban', img:'☀️', color:'#fef9c3',
+    features:['WiFi','Klima','Terasa','Parking'], deposit:200, cleaning:35,
+    desc:'Modernistička zgrada iz 1910. Visoki plafoni, pogled na Sagrada Família.' },
+  { id:3, name:'Barceloneta Sea View', loc:'Barceloneta, Barcelona', price:112, rating:4.6, reviews:428, type:'2-soban', img:'🌊', color:'#d1fae5',
+    features:['WiFi','Klima','Pogled na more','Plaža 2min'], deposit:300, cleaning:45,
+    desc:'50 metara od plaže. Pogled na Mediteran iz dnevne sobe.' },
+  { id:4, name:'Gràcia Local Vibe', loc:'Gràcia, Barcelona', price:67, rating:4.8, reviews:94, type:'Studio+', img:'🎨', color:'#ede9fe',
+    features:['WiFi','Kuhinja','Dvorište','Bicikl'], deposit:100, cleaning:20,
+    desc:'Mirna bohemska četvrt, lokalni restorani i marketi na korak.' },
+];
+
+let msgs = [];
+let nights = 3;
+
+function renderStars(r) {
+  const full = Math.round(r);
+  return '★'.repeat(full) + '☆'.repeat(5-full);
+}
+
+function cardsHTML() {
+  return `<div class="card-grid">` +
+    listings.map(l => `
+      <div class="apt-card" onclick="selectListing(${l.id})">
+        <div class="apt-img" style="background:${l.color}">${l.img}</div>
+        <div class="apt-body">
+          <div class="apt-name">${l.name}</div>
+          <div class="apt-loc"><i class="ti ti-map-pin" style="font-size:11px;"></i> ${l.loc}</div>
+          <div class="apt-row">
+            <div>
+              <span class="apt-price">€${l.price}</span>
+              <span class="apt-night">/noć</span>
+            </div>
+            <div>
+              <span class="stars">${renderStars(l.rating)}</span>
+              <span style="font-size:11px;color:var(--color-text-tertiary);"> ${l.rating}</span>
+            </div>
+          </div>
+        </div>
+      </div>`).join('') + `</div>
+  <div style="font-size:12px;color:var(--color-text-tertiary);margin-top:8px;">Klikni na stan za detalje i razčlambu cijene.</div>`;
+}
+
+function detailHTML(l, n) {
+  const base = l.price * n;
+  const total = base + l.cleaning + l.deposit;
+  const perNight = (total/n).toFixed(0);
+  return `<div class="detail-card">
+    <div class="detail-head">
+      <div>
+        <div class="apt-img" style="background:${l.color};width:48px;height:48px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:6px;">${l.img}</div>
+        <div class="detail-name">${l.name}</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);">${l.loc} · ${l.type}</div>
+        <div style="margin-top:4px;"><span class="stars">${renderStars(l.rating)}</span> <span style="font-size:12px;color:var(--color-text-secondary);">${l.rating} · ${l.reviews} recenzija</span></div>
+      </div>
+      <div style="text-align:right;">
+        <div class="detail-price">€${l.price}<span style="font-size:13px;font-weight:400;color:var(--color-text-secondary);">/noć</span></div>
+        <span class="badge ${l.price < 70 ? 'badge-g' : 'badge-a'}">${l.price < 70 ? 'Odlična cijena' : 'Popularan'}</span>
+      </div>
+    </div>
+    <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:8px;">${l.desc}</div>
+    <div class="features">${l.features.map(f=>`<span class="feat">${f}</span>`).join('')}</div>
+    <div class="price-breakdown">
+      <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px;">RAZČLAMBA CIJENE — ${n} noći</div>
+      <div class="pb-row"><span>€${l.price} × ${n} noći</span><span>€${base}</span></div>
+      <div class="pb-row"><span>Čišćenje</span><span>€${l.cleaning}</span></div>
+      <div class="pb-row"><span>Depozit (vraća se)</span><span>€${l.deposit}</span></div>
+      <div class="pb-total"><span>Ukupno</span><span>€${total}</span></div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px;">≈ €${perNight} efektivno po noći</div>
+    </div>
+  </div>`;
+}
+
+function cheapestHTML() {
+  const sorted = [...listings].sort((a,b) => a.price-b.price);
+  const l = sorted[0];
+  return `Najjeftiniji je <strong>${l.name}</strong> — €${l.price}/noć (${l.loc}).<br><br>` + detailHTML(l, nights);
+}
+
+function totalHTML(n) {
+  nights = n;
+  return `<div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:10px;">Ukupne cijene za ${n} noći:</div>
+  <table style="width:100%;border-collapse:collapse;font-size:13px;">
+    <thead><tr>
+      <th style="padding:6px 8px;text-align:left;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);">Stan</th>
+      <th style="padding:6px 8px;text-align:right;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);">€/noć</th>
+      <th style="padding:6px 8px;text-align:right;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);">Ukupno</th>
+    </tr></thead>
+    <tbody>${listings.map(l => {
+      const t = l.price*n + l.cleaning + l.deposit;
+      return `<tr><td style="padding:7px 8px;border-bottom:0.5px solid var(--color-border-tertiary);">${l.img} ${l.name}</td>
+        <td style="padding:7px 8px;text-align:right;border-bottom:0.5px solid var(--color-border-tertiary);">€${l.price}</td>
+        <td style="padding:7px 8px;text-align:right;border-bottom:0.5px solid var(--color-border-tertiary);font-weight:500;">€${t}</td></tr>`;
+    }).join('')}</tbody>
+  </table>
+  <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:6px;">Uključuje čišćenje i depozit.</div>`;
+}
+
+function addMsg(from, text, rich) {
+  msgs.push({from, text, rich});
+  render();
+}
+
+function typing(cb) {
+  msgs.push({from:'ai', typing:true});
+  render();
+  setTimeout(() => {
+    msgs.pop();
+    cb();
+  }, 900);
+}
+
+function render() {
+  const chat = document.getElementById('chat');
+  chat.innerHTML = msgs.map(m => {
+    if (m.typing) return `<div class="msg"><div class="av av-ai">AI</div><div class="bub bub-ai"><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div></div>`;
+    const isU = m.from === 'user';
+    return `<div class="msg ${isU?'u':''}">
+      <div class="av ${isU?'av-u':'av-ai'}">${isU?'Ti':'AI'}</div>
+      <div class="bub ${isU?'bub-u':'bub-ai'}">${m.text}${m.rich ? m.rich : ''}</div>
+    </div>`;
+  }).join('');
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function selectListing(id) {
+  const l = listings.find(x=>x.id===id);
+  addMsg('user', `Detalji za ${l.name}`);
+  typing(() => addMsg('ai', `Evo detalja za <strong>${l.name}</strong>:`, detailHTML(l, nights)));
+}
+
+function quickSend(txt) {
+  document.getElementById('inp').value = txt;
+  sendMsg();
+}
+
+function sendMsg() {
+  const inp = document.getElementById('inp');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  inp.value = '';
+  addMsg('user', txt);
+
+  const low = txt.toLowerCase();
+  typing(() => {
+    if (low.includes('barcelona') || low.includes('stan') || low.includes('smještaj') || low.includes('smeštaj') || low.includes('prikaži')) {
+      nights = (low.match(/(\d+)\s*noć/) || [])[1] || 3;
+      nights = parseInt(nights);
+      addMsg('ai', `Pronašao sam <strong>${listings.length} slobodna smještaja</strong> u Barceloni za ${nights} noći:`, cardsHTML());
+    } else if (low.includes('najjeftiniji') || low.includes('cheap') || low.includes('jeftin')) {
+      addMsg('ai', '', cheapestHTML());
+    } else if (low.includes('detalji') || low.includes('studio gótico') || low.includes('gothic')) {
+      addMsg('ai', 'Evo detalja:', detailHTML(listings[0], nights));
+    } else if (low.includes('5 noći') || low.includes('5 noci')) {
+      addMsg('ai', '', totalHTML(5));
+    } else if (low.includes('ukupno') || low.includes('noći') || low.includes('noci')) {
+      const n = parseInt((low.match(/(\d+)\s*noć/) || [])[1] || 3);
+      addMsg('ai', '', totalHTML(n));
+    } else {
+      addMsg('ai', `Mogu ti pomoći s pretragom smeštaja u Barceloni. Pokušaj: "Prikaži stanove za 3 noći" ili klikni na jedan od prijedloga ispod. 🏠`);
+    }
+  });
+}
+
+addMsg('ai', 'Zdravo! Mogu ti pronaći smeštaj, prikazati cijene i razčlambu troškova direktno ovde u chatu. Kuda putujemo? 🗺️');
+</script>

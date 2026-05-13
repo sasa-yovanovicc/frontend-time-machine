@@ -1,0 +1,174 @@
+/* Booking demo — standalone CSS, zamjena za Claude.ai CSS varijable */
+
+:root {
+  --bg:           #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-info:      #eff6ff;
+  --bg-success:   #f0fdf4;
+  --bg-warning:   #fffbeb;
+  --text:         #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary:  #9ca3af;
+  --text-info:    #1d4ed8;
+  --text-success: #15803d;
+  --text-warning: #b45309;
+  --border:       rgba(0,0,0,0.1);
+  --border-hover: rgba(0,0,0,0.2);
+  --border-info:  rgba(59,130,246,0.3);
+  --radius-md:    8px;
+  --radius-lg:    12px;
+  --font:         -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:           #1f2937;
+    --bg-secondary: #111827;
+    --bg-info:      #1e3a5f;
+    --bg-success:   #14532d;
+    --bg-warning:   #78350f;
+    --text:         #f9fafb;
+    --text-secondary: #9ca3af;
+    --text-tertiary:  #6b7280;
+    --text-info:    #93c5fd;
+    --text-success: #86efac;
+    --text-warning: #fcd34d;
+    --border:       rgba(255,255,255,0.1);
+    --border-hover: rgba(255,255,255,0.2);
+    --border-info:  rgba(59,130,246,0.4);
+  }
+}
+
+/* ── Reset ─────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Container ─────────────── */
+.wrap { font-family: var(--font); max-width: 660px; }
+
+/* ── Chat messages ─────────── */
+.msg { display: flex; gap: 10px; margin-bottom: 16px; align-items: flex-start; }
+.msg.u { flex-direction: row-reverse; }
+
+.av {
+  width: 30px; height: 30px; border-radius: 50%;
+  flex-shrink: 0; display: flex; align-items: center;
+  justify-content: center; font-size: 12px; font-weight: 500;
+}
+.av-ai { background: var(--bg-info); color: var(--text-info); }
+.av-u  { background: var(--bg-secondary); color: var(--text-secondary); }
+
+.bub {
+  max-width: 90%; border-radius: var(--radius-lg);
+  padding: 10px 13px; font-size: 14px; line-height: 1.6;
+  color: var(--text);
+}
+.bub-ai { background: var(--bg-secondary); border: 0.5px solid var(--border); }
+.bub-u  { background: var(--bg-info); border: 0.5px solid var(--border-info); }
+
+/* ── Typing animation ──────── */
+.typing { display: flex; gap: 4px; align-items: center; padding: 4px 2px; }
+.dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text-tertiary);
+  animation: blink 1.2s infinite;
+}
+.dot:nth-child(2) { animation-delay: .2s; }
+.dot:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 0%,80%,100%{opacity:.3} 40%{opacity:1} }
+
+/* ── Apartment cards ───────── */
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+
+.apt-card {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden; cursor: pointer;
+  transition: border-color .15s;
+}
+.apt-card:hover { border-color: var(--border-hover); }
+.apt-card.sel   { border: 1.5px solid #3b82f6; }
+
+.apt-img {
+  width: 100%; height: 90px;
+  display: flex; align-items: center;
+  justify-content: center; font-size: 28px;
+}
+.apt-body { padding: 9px 11px; }
+.apt-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.apt-loc  { font-size: 12px; color: var(--text-secondary); margin-bottom: 5px; }
+.apt-row  { display: flex; justify-content: space-between; align-items: center; }
+.apt-price { font-size: 14px; font-weight: 500; color: var(--text); }
+.apt-night { font-size: 11px; color: var(--text-tertiary); }
+.stars { color: #f59e0b; font-size: 12px; letter-spacing: 1px; }
+
+/* ── Badges ────────────────── */
+.badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+.badge-g { background: var(--bg-success); color: var(--text-success); }
+.badge-a { background: var(--bg-warning); color: var(--text-warning); }
+
+/* ── Detail card ───────────── */
+.detail-card {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px; margin-top: 8px;
+}
+.detail-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.detail-name { font-size: 15px; font-weight: 500; color: var(--text); }
+.detail-price { font-size: 18px; font-weight: 500; color: var(--text); }
+
+.features { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.feat {
+  background: var(--bg-secondary); border-radius: 4px;
+  padding: 3px 9px; font-size: 12px; color: var(--text-secondary);
+}
+
+.price-breakdown { border-top: 0.5px solid var(--border); margin-top: 10px; padding-top: 10px; }
+.pb-row   { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; }
+.pb-total {
+  display: flex; justify-content: space-between;
+  font-size: 14px; font-weight: 500; color: var(--text);
+  padding-top: 7px; border-top: 0.5px solid var(--border); margin-top: 5px;
+}
+
+/* ── Table ─────────────────── */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  text-align: left; padding: 6px 8px;
+  font-size: 12px; font-weight: 500;
+  color: var(--text-secondary);
+  border-bottom: 0.5px solid var(--border);
+}
+td { padding: 7px 8px; border-bottom: 0.5px solid var(--border); color: var(--text); }
+
+/* ── Input row ─────────────── */
+.input-row { display: flex; gap: 8px; margin-top: 16px; }
+.input-row input {
+  flex: 1; font-size: 13px; font-family: var(--font);
+  padding: 8px 12px; border-radius: var(--radius-md);
+  border: 0.5px solid var(--border);
+  background: var(--bg); color: var(--text);
+  outline: none;
+}
+.input-row input:focus { border-color: #3b82f6; }
+.input-row button {
+  font-size: 13px; font-family: var(--font);
+  padding: 8px 16px; border-radius: var(--radius-md);
+  border: 0.5px solid var(--border);
+  background: var(--bg-secondary); color: var(--text);
+  cursor: pointer; white-space: nowrap;
+  transition: background .15s;
+}
+.input-row button:hover { background: var(--border); }
+
+/* ── Quick chips ───────────── */
+.chip-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+.chip {
+  background: var(--bg-secondary);
+  border: 0.5px solid var(--border);
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 12px; color: var(--text-secondary);
+  cursor: pointer; transition: border-color .15s, color .15s;
+}
+.chip:hover { border-color: var(--border-hover); color: var(--text); }

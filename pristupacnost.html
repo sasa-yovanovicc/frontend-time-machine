@@ -463,13 +463,13 @@ function toggleSize(dir) {
 }
 
 function toggleHC() {
-  document.body.classList.toggle('hc');
-  document.getElementById('btn-hc').classList.toggle('active');
+  var isOn = document.body.classList.toggle('hc');
+  document.getElementById('btn-hc').classList.toggle('active', isOn);
 }
 
 function toggleDyslexia() {
-  document.body.classList.toggle('dyslexia');
-  document.getElementById('btn-dys').classList.toggle('active');
+  var isOn = document.body.classList.toggle('dyslexia');
+  document.getElementById('btn-dys').classList.toggle('active', isOn);
 }
 
 // ── Screen Reader Engine ──────────────────────────────────────────────────────
