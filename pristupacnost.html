@@ -24,6 +24,7 @@
   <button class="a11y-btn" id="btn-dys" onclick="toggleDyslexia()" aria-label="Font za disleksiju">Aa Disleksija</button>
   <span class="a11y-sep">│</span>
   <button class="a11y-btn" onclick="simulateSR()" aria-label="Simuliraj screen reader">🔊 Screen reader demo</button>
+  <button class="a11y-btn" onclick="srStop()" aria-label="Zaustavi čitanje">⏹ Zaustavi</button>
 </div>
 
 <!-- NAV -->
@@ -471,51 +472,192 @@ function toggleDyslexia() {
   document.getElementById('btn-dys').classList.toggle('active');
 }
 
-// Screen reader simulacija
-function srRead(text) {
-  var el = document.getElementById('sr-output');
-  el.innerHTML = '<span style="color:var(--amber);">🔊</span> ' + text;
+// ── Screen Reader Engine ──────────────────────────────────────────────────────
 
-  // Web Speech API ako je dostupan
-  if ('speechSynthesis' in window) {
-    var utt = new SpeechSynthesisUtterance(text);
-    utt.lang = 'sr-RS';
-    utt.rate = 1.1;
-    // Fallback na engleski
-    utt.onstart = function() {};
-    try { speechSynthesis.speak(utt); } catch(e) {}
+var sr = {
+  active: false,
+  hl: null,       // currently highlighted element
+  btnCursor: null // floating "Čitaj odavde" button
+};
+
+// Voice helper: sr-RS → sr → browser default
+function makeSrUtt(text) {
+  var utt = new SpeechSynthesisUtterance(text);
+  utt.rate  = 0.95;
+  utt.pitch = 1;
+  var voices = (speechSynthesis.getVoices ? speechSynthesis.getVoices() : []);
+  var v = voices.find(function(v) { return v.lang === 'sr-RS'; }) ||
+          voices.find(function(v) { return v.lang.startsWith('sr'); });
+  if (v) utt.voice = v;
+  utt.lang = v ? v.lang : 'sr-RS';
+  return utt;
+}
+
+// Highlight the element currently being read
+function srHL(el) {
+  if (sr.hl) { sr.hl.style.outline = ''; sr.hl.style.outlineOffset = ''; }
+  sr.hl = el || null;
+  if (sr.hl) {
+    sr.hl.style.outline    = '2px solid var(--green)';
+    sr.hl.style.outlineOffset = '2px';
+    sr.hl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 }
 
-function simulateSR() {
-  var msgs = [
-    'Preskoči na sadržaj. Link.',
-    'Opcije pristupačnosti. Toolbar.',
-    'A minus. Dugme. Smanji tekst.',
-    'Visoki kontrast. Dugme.',
-    'Glavna navigacija. ERA nula. Link. Monitori. Link. 1994. Link.',
-    'Pristupačnost nije feature. Heading level 1.',
-    'Screen readeri — glas koji čita web. Heading level 2.',
-    'Lična priča. Region.',
-    'Znam programera koji je oslepeo sa 27 godina...'
-  ];
-  var i = 0;
-  var el = document.getElementById('sr-output');
+// Stop all speech and reset state
+function srStop() {
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  srHL(null);
+  sr.active = false;
+  srRemoveCursorBtn();
+  var out = document.getElementById('sr-output');
+  if (out) out.innerHTML = '<span style="color:var(--muted);">⏹ Čitanje zaustavljeno</span>';
+}
+
+// Collect block-level readable elements inside root, skip aria-hidden
+function getReadableEls(root) {
+  var sel = 'h1,h2,h3,h4,p,li,blockquote,figcaption,td,th,dt,dd';
+  return Array.from(root.querySelectorAll(sel)).filter(function(el) {
+    if (!el.textContent.trim()) return false;
+    if (el.closest('[aria-hidden="true"]')) return false;
+    return true;
+  });
+}
+
+// Build a screen-reader-style label for an element
+function srLabel(el) {
+  var text = el.textContent.trim();
+  if (!text) return null;
+  var tag = el.tagName;
+  if (/^H[1-6]$/.test(tag)) return 'Naslov nivoa ' + tag[1] + '. ' + text;
+  if (tag === 'LI')          return 'Stavka liste. ' + text;
+  if (tag === 'BLOCKQUOTE')  return 'Citat. ' + text;
+  if (tag === 'TH')          return 'Zaglavlje tabele. ' + text;
+  return text;
+}
+
+// Read an ordered queue of {el, text} items starting at startIdx
+function srReadQueue(queue, startIdx) {
+  if (sr.active) srStop();
+  sr.active = true;
+  var idx = startIdx || 0;
+  var out = document.getElementById('sr-output');
 
   function next() {
-    if (i >= msgs.length) return;
-    el.innerHTML = '<span style="color:var(--amber);">🔊</span> ' + msgs[i];
+    if (!sr.active || idx >= queue.length) { srStop(); return; }
+    var item = queue[idx];
+    srHL(item.el);
+    if (out) {
+      var preview = item.text.length > 90 ? item.text.slice(0, 90) + '…' : item.text;
+      out.innerHTML = '<span style="color:var(--amber);">🔊</span> ' + preview;
+    }
     if ('speechSynthesis' in window) {
-      var utt = new SpeechSynthesisUtterance(msgs[i]);
-      utt.rate = 1.15;
-      utt.onend = function() { i++; setTimeout(next, 300); };
-      speechSynthesis.speak(utt);
+      var utt = makeSrUtt(item.text);
+      utt.onend  = function() { idx++; setTimeout(next, 180); };
+      utt.onerror = function() { idx++; setTimeout(next, 180); };
+      try { speechSynthesis.speak(utt); } catch(e) { idx++; setTimeout(next, 1000); }
     } else {
-      i++;
-      setTimeout(next, 1200);
+      idx++;
+      setTimeout(next, 1400);
     }
   }
   next();
+}
+
+// "Simuliraj screen reader" — reads #main-content only, skips nav/toolbar/footer
+function simulateSR() {
+  if (sr.active) { srStop(); return; }
+  var main = document.getElementById('main-content');
+  if (!main) return;
+  var queue = getReadableEls(main).map(function(el) {
+    return { el: el, text: srLabel(el) };
+  }).filter(function(item) { return item.text; });
+  srReadQueue(queue, 0);
+}
+
+// srRead — individual demo buttons (single element, no highlight loop)
+function srRead(text) {
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  var out = document.getElementById('sr-output');
+  if (out) out.innerHTML = '<span style="color:var(--amber);">🔊</span> ' + text;
+  if ('speechSynthesis' in window) {
+    try { speechSynthesis.speak(makeSrUtt(text)); } catch(e) {}
+  }
+}
+
+// ── "Čitaj od kursora" ────────────────────────────────────────────────────────
+
+function srRemoveCursorBtn() {
+  if (sr.btnCursor) {
+    clearTimeout(sr.btnCursor._t);
+    sr.btnCursor.remove();
+    sr.btnCursor = null;
+  }
+}
+
+function srShowCursorBtn(clientX, clientY, targetEl) {
+  srRemoveCursorBtn();
+  var btn = document.createElement('button');
+  btn.className = 'a11y-btn';
+  btn.style.cssText =
+    'position:fixed;z-index:9999;' +
+    'left:' + Math.min(clientX, window.innerWidth - 175) + 'px;' +
+    'top:'  + Math.max(clientY - 50, 8) + 'px;' +
+    'background:var(--s1);border:1px solid var(--green);color:var(--green);' +
+    'padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;' +
+    'box-shadow:0 4px 16px rgba(0,0,0,0.5);white-space:nowrap;';
+  btn.textContent = '▶ Čitaj odavde';
+  btn.setAttribute('aria-label', 'Čitaj od ovog mjesta');
+
+  btn.onclick = function(e) {
+    e.stopPropagation();
+    srRemoveCursorBtn();
+    if (sr.active) { srStop(); return; }
+    var main = document.getElementById('main-content');
+    if (!main) return;
+    var els = getReadableEls(main);
+    var BLOCK = 'h1,h2,h3,h4,h5,h6,p,li,blockquote,td,th,dt,dd';
+    var startIdx = 0;
+    for (var i = 0; i < els.length; i++) {
+      if (els[i] === targetEl ||
+          els[i].contains(targetEl) ||
+          (targetEl.closest && targetEl.closest(BLOCK) === els[i])) {
+        startIdx = i; break;
+      }
+    }
+    var queue = els.map(function(el) {
+      return { el: el, text: srLabel(el) };
+    }).filter(function(item) { return item.text; });
+    srReadQueue(queue, startIdx);
+  };
+
+  document.body.appendChild(btn);
+  sr.btnCursor = btn;
+  sr.btnCursor._t = setTimeout(srRemoveCursorBtn, 5000);
+}
+
+// Page click → show "Čitaj odavde" button; second click while reading → stop
+document.addEventListener('click', function(e) {
+  if (e.target.closest('button,a,nav,.a11y-bar,.sr-demo,footer')) return;
+
+  var main = document.getElementById('main-content');
+  if (!main || !main.contains(e.target)) return;
+
+  if (sr.active) { srStop(); return; }   // second click = stop
+
+  srRemoveCursorBtn();
+  var BLOCK = 'p,h1,h2,h3,h4,h5,h6,li,blockquote,td,th,dt,dd';
+  var block = e.target.closest ? e.target.closest(BLOCK) : null;
+  if (!block) return;
+  srShowCursorBtn(e.clientX, e.clientY, block);
+}, false);
+
+// Pre-load voices list (Chrome defers this until first call)
+if ('speechSynthesis' in window) {
+  speechSynthesis.getVoices();
+  if (typeof speechSynthesis.onvoiceschanged !== 'undefined') {
+    speechSynthesis.onvoiceschanged = function() { speechSynthesis.getVoices(); };
+  }
 }
 </script>
 </body>
